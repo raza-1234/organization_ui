@@ -11,6 +11,7 @@
   color: white;
   align-items: center;
   height: 2rem;
+  position: relative;
 }
 
 .organization-header_logo-wrapper {
@@ -22,7 +23,6 @@
   justify-content: space-between;
   max-width: 65%;
   width: 100%;
-  position: relative;
   align-items: center;
 }
 
@@ -49,26 +49,34 @@
 .organization-header_dropdown-menu {
   background-color: white;
   position: absolute;
-  color: black;
-  top: 100%;
+  top: 134%;
   right: 0;
   z-index: 2;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgb(54, 117, 158) 0%, rgb(117, 168, 123) 100%);
+  width: 15%;
 }
 
 .organization-header-dropdown_menu-list {
   list-style: none;
+  border-radius: 50px; 
+  width: 100%;
 }
 
 .organization-header_dropdown-menu li {
-  border-bottom: 1px solid white;
   color: white;
-  background-image: linear-gradient(90deg, rgb(54, 117, 158) 0%, rgb(117, 168, 123) 100%);
   font-size: 13px;
   font-weight: 600;
   text-align: start;
   cursor: pointer;
   text-transform: capitalize;
-  padding: 10px;
+  padding: 20px;
+}
+
+.organization-header_dropdown-menu li:hover {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(117, 168, 123, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 a {
@@ -101,5 +109,20 @@ li.organization-header_user-info {
   }
   .organization-header_menu-wrapper {
     width: auto;
+  }
+  .organization-header_dropdown-menu {
+    width: 50%;
+    right: -2.15%;
+    height: 90vh;
+  }
+  .organization-header_dropdown-menu li {
+    padding: 28px 20px;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .organization-header_dropdown-menu {
+    width: 100%;
+    left: 0;
   }
 }

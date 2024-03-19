@@ -23,12 +23,12 @@ const Header = () => {
     setWidth(window.innerWidth);
   };
 
-  const handleMobileMenu = (): void => {
-    if (width <= 786){
-      setIsMobileMenu(true);
-      return;
-    }
-    setIsMobileMenu(false);
+  const handleMobileMenu = () => {
+    setIsMobileMenu(width <= 768);
+  }
+
+  const toggleDropDown = () => {
+    setIsDropDown(!isDropDown);
   }
   
   return (
@@ -54,20 +54,20 @@ const Header = () => {
           </ul>
           <GiHamburgerMenu
             className="organization-header_hamburger-menu"
-            onClick={() => setIsDropDown(!isDropDown)}
+            onClick={toggleDropDown}
           />
           {
             isDropDown &&
             <div className="organization-header_dropdown-menu">
               <ul className="organization-header-dropdown_menu-list">
                 <li className="organization-header_user-info">ahmed raza</li>
-                <li className="organization-header_user-info">ahmed@gmail.com</li>
+                <li className="organization-header_user-info">ahmed</li>
                 {
                   isMobileMenu &&
                   <Fragment>
                     <li>projects</li>
                     <li>courses</li>
-                    <Link to="/asset-library" onClick={() => setIsDropDown(!isDropDown)}>
+                    <Link to="/asset-library" onClick={toggleDropDown}>
                       <li>asset library</li>
                     </Link>
                     <li>insights</li>
@@ -84,7 +84,7 @@ const Header = () => {
       </div>
       {
         isDropDown && 
-        <div className="organization-screen_wrapper" onClick={() => setIsDropDown(!isDropDown)}/>
+        <div className="organization-screen_wrapper" onClick={toggleDropDown}/>
       }
     </div>
   )
