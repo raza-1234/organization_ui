@@ -1,0 +1,7 @@
+.custom-button {
+  border: 0px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding: 10px 15px;
+}
