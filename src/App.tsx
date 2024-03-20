@@ -1,11 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import { Routes, Route } from "react-router-dom";
+
+import Asset from './components/Asset';
 
 function App() {
   return (
     <div className="App">
-      <p>Hello</p>
+      <Header/>
+      <Routes>
+        <Route path='/asset-library' element = {<Asset/>}/>
+      </Routes>
     </div>
   );
 }
