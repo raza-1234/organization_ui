@@ -54,7 +54,6 @@
   z-index: 2;
   border-radius: 10px;
   background: linear-gradient(90deg, rgb(54, 117, 158) 0%, rgb(117, 168, 123) 100%);
-  width: 15%;
 }
 
 .organization-header-dropdown_menu-list {
@@ -112,7 +111,7 @@ li.organization-header_user-info {
   }
   .organization-header_dropdown-menu {
     width: 50%;
-    right: -2.15%;
+    right: 0;
     height: 90vh;
   }
   .organization-header_dropdown-menu li {

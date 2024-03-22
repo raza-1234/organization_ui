@@ -3,12 +3,15 @@ import "../css/Header.css";
 import { Fragment, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import Logout from "../utils/Logout";
+import UseAuthData from "../contexts/authContext";
 
 const Header = () => {
 
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
+  const { userInfo, setUserInfo } = UseAuthData();
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -29,6 +32,12 @@ const Header = () => {
 
   const toggleDropDown = () => {
     setIsDropDown(!isDropDown);
+  }
+
+  const logOut = async () => {
+    await Logout();
+    setUserInfo(undefined);
+    toggleDropDown();
   }
   
   return (
@@ -60,8 +69,8 @@ const Header = () => {
             isDropDown &&
             <div className="organization-header_dropdown-menu">
               <ul className="organization-header-dropdown_menu-list">
-                <li className="organization-header_user-info">ahmed raza</li>
-                <li className="organization-header_user-info">ahmed</li>
+                <li className="organization-header_user-info">{userInfo?.userName || "no user"}</li>
+                <li className="organization-header_user-info">{userInfo?.email || "no email"}</li>
                 {
                   isMobileMenu &&
                   <Fragment>
@@ -76,7 +85,9 @@ const Header = () => {
                     <li>people</li>
                   </Fragment>
                 }
-                <li>log out</li>
+                <Link to="/" onClick={logOut}>
+                  <li>log out</li>
+                </Link>
               </ul>
             </div>
           }

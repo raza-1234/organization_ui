@@ -1,13 +1,16 @@
 import "../../css/Select.css";
 
 import React from 'react';
+import { Document } from "../../types/types";
 
 type ParentProp = {
-  documents: any[],
+  documents?: Document[],
   type: string
 }
 
 const Select = ({documents, type}: ParentProp) => {
+  console.log("documentsssss", documents);
+  
   return (
     <select className={
       type.toLowerCase() === "primary"? "primarySelectInput": 
@@ -15,9 +18,9 @@ const Select = ({documents, type}: ParentProp) => {
       ""
       }>
       {
-        documents.map((document, index) => (
+        documents?.map((document, index) => (
           <option key={index}>
-            {document.name}
+            {document.documentName.toUpperCase()}
           </option>
         ))
       }
