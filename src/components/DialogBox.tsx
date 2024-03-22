@@ -1,33 +1,41 @@
 import "../css/DialogBox.css";
 
-import Button from "./shared/Button";
+import { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
-import { useEffect, useState } from "react";
-import Select from "./shared/Select";
-import api from "../axios/api";
 import { AxiosResponse } from "axios";
+import Select from "./utils/Select";
+import api from "../axios/api";
+import Button from "./utils/Button";
+import { STATUS_TEXT, Document } from "../types/types";
+import { useQuery } from "react-query";
+import Cookies from "js-cookie";
 
 type ParentProp = {
   toggleModel: () => void
 }
 
 const DialogBox = ({toggleModel}: ParentProp) => {
-  const dummyArray = [{name: "doc1"},{name: "doc1"},{name: "doc1"},{name: "doc1"}];
-
+  const [documents, setDocuments] = useState<Document[]>();
+  const cookie = Cookies.get("session_id");
+  
   const fetchDocuments = async () => {
     try {
       const response: AxiosResponse = await api.get("document/getDocument");
-      if (response.statusText === "Ok"){
-        console.log(response.data);
-      }
+      if (response.statusText !== STATUS_TEXT){
+        return {};
+      }      
+      return response.data.documentData;
     } catch (err){
       console.log("Fetchdocuments: Something went wrong.", err);
     }
   }
 
-  useEffect(() => {
-    fetchDocuments();
-  }, [])
+  const { isLoading, isError } = useQuery("organizationDocuments", fetchDocuments, {
+    enabled: !!cookie,
+    onSuccess: (data) => {
+      setDocuments(data);
+    }
+  });
 
   return (
     <div className='organization-dialogBox_wrapper'>
@@ -40,7 +48,7 @@ const DialogBox = ({toggleModel}: ParentProp) => {
       <div className='organization-dialogBox_body'>
         <form>
           <Select
-            documents={dummyArray}
+            documents={documents}
             type="primary"
           />
           <div className='organization-dialogBox_button-grp'>
