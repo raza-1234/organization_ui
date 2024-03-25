@@ -1,12 +1,13 @@
 import './App.css';
 
-import { Routes, Route, useActionData } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import PrivateRoutes from './components/utils/PrivateRoutes';
 import Asset from './components/Asset';
 import UseAuthData from './contexts/authContext';
+import Missing from './components/Missing';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path='/asset-library' element = {<Asset/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
         </Route>
+        <Route path='*' element={<Missing/>}/>
       </Routes>
     </div>
   );
