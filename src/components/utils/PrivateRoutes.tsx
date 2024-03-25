@@ -1,15 +1,18 @@
 import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import UseAuthData from '../../contexts/authContext';
+import Cookies from 'js-cookie';
 
 const PrivateRoutes = () => {
 
   const { userInfo } = UseAuthData();
+  const location = useLocation();
+  const cookie = Cookies.get("session_id");
 
   return (
     <div>
       {
-        userInfo?.email ? <Outlet/> : <Navigate to="/"/>
+        cookie ? <Outlet/> : <Navigate to="/" state = {{from: location}} replace/>
       }
     </div>
   )
