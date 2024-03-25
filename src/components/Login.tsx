@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../axios/api";
 import { STATUS_TEXT } from "../types/types";
 import UseAuthData from "../contexts/authContext";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,9 +30,7 @@ const Login = () => {
         return {};
       }
       return response.data;
-    } catch (err: any){
-      console.log("checking errrorrrr", err);
-      
+    } catch (err: any){      
       console.log("CheckEmail: Something went wrong", err);
       throw new Error(err.response?.data?.message || "Something went wrong. Please try again.");
     }

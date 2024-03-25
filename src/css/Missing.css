@@ -1,0 +1,21 @@
+.bloowatch-404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-transform: capitalize;
+  color: black;
+}
+.bloowatch-404 h1{
+  font-size: 100px;
+  color: red;
+}
+
+.bloowatch-404 h3{
+  margin-bottom: 10px;
+}
+
+.bloowatch-404 p {
+  color: black;
+}
