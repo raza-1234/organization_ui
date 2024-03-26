@@ -1,0 +1,20 @@
+.toast-wrapper {
+  background-color: aliceblue;
+  padding: 15px 30px;
+  width: fit-content;
+  position: fixed;
+  top: 15px;
+  right: 0;
+  color: white;
+  border-radius: 5px;
+  z-index: 1;
+  font-weight: 500;
+}
+
+.success {
+  background-color: rgb(53, 121, 146);
+}
+
+.error {
+  background-color: rgb(233, 128, 72);
+}

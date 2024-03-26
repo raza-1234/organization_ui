@@ -3,11 +3,11 @@ import "../../css/Button.css";
 
 type ParentProp = {
   value: string;
-  clickHandler: () => void;
+  clickHandler?: () => void;
   className?: string;
 }
 
-const Button = ({value, clickHandler, className}: ParentProp) => {
+const Button = ({value, clickHandler, className}: ParentProp) => {  
   return (
     <div>
       <button

@@ -44,6 +44,12 @@
   width: 100%;
 }
 
+.selectDocs {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 .organization-dialogBox_button-grp {
   display: flex;
   justify-content: flex-end;

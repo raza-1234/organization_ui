@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
       {
-        userInfo?.email && 
+        userInfo?.email &&
         <Header/>
       }
       <Routes>
