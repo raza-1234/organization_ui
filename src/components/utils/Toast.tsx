@@ -1,33 +1,39 @@
 import "../../css/Toast.css";
 import React, { useState, useEffect } from 'react';
 
-const toastTimeouttt = 5000;
+const successTimeout = 4000;
 const errorTimeout = 6000;
-// enum Variant {
-//   success: 'sucess', 
-//   error: error
-// }
-// const toastVariant = 
 
-type ParentProp = {
-  variant: String
-  message: string
-  timeOut: number
+enum Variant {
+  success = 'success',
+  error =  'error'
 }
 
-const Toast = ({variant, message, timeOut}: ParentProp) => {  
-  const [showToast, setShowToast] = useState(true);
-  const toastVariant = variant.toLowerCase();  
-  // let toastTimeout; 
-  // if(variant == enum) {
-  //   toastTimeout = toastTimeouttt
-  // } else if {
+type ParentProp = {
+  variant?: string
+  message?: string
+  timeOut?: number
+}
 
-  // }
+const Toast = ({variant = Variant.success, message = variant, timeOut}: ParentProp) => {  
+    
+  const [showToast, setShowToast] = useState(true);
+  let toastVariant = variant?.toLowerCase();
+  
+  let toastTimeout: number;
+  if (toastVariant !== Variant.success && toastVariant !== Variant.error){
+    toastVariant = Variant.success;
+  }
+  if (toastVariant === Variant.success){
+    toastTimeout = timeOut || successTimeout;
+  } else if (toastVariant === Variant.error){
+    toastTimeout = timeOut || errorTimeout;
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setShowToast(false);
-    },timeOut);
+    }, toastTimeout);
   }, []);
   
   return (
@@ -42,14 +48,5 @@ const Toast = ({variant, message, timeOut}: ParentProp) => {
   )
 }
 
-const toastMessage = (variant: string, message: string, timeOut: number) => {  // remove
-  return (
-    <Toast
-      variant = {variant}
-      message = {message}
-      timeOut = {timeOut}
-    />
-  )
-}
 
-export default toastMessage;
+export default Toast;
