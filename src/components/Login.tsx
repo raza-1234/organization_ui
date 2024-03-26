@@ -18,10 +18,10 @@ const Login = () => {
   const {userInfo, setUserInfo} = UseAuthData();
 
   useEffect(() => {    
-    if (userInfo?.email){      
+    if (Cookies.get("session_id")){
       navigate("/dashboard");
     }
-  }, [userInfo?.email]);
+  }, []);
 
   const checkEmail = async () => {    
     try {
@@ -42,7 +42,7 @@ const Login = () => {
       setError("");
     },
     onError: (err: any) => {
-      setError(err.message || "Something went wrong. Please try again.")
+      setError(err.message || "Something went wrong while verifying email. Please try again.")
     }
   });
 
@@ -57,20 +57,20 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
-      const response: AxiosResponse = await api.post("login", { email, password });
+      const response: AxiosResponse = await api.post("login", { email, password });      
       if (response?.statusText !== STATUS_TEXT){
         return {};
       }
       return response.data.user;
     } catch (err: any){
       console.log("LoginUser: Something went wrong", err);
-      throw new Error(err.response?.data?.message || "Somethong went wrong. Please try again.");
+      throw new Error(err.response?.data?.message || "Something went wrong while try to login. Please try again.");
     }
   }
 
   const { mutate: loginUserMutation } = useMutation(loginUser, {
-    onSuccess: (data) => {      
-      setUserInfo(data);
+    onSuccess: (data) => {
+      setUserInfo({...userInfo, ...data});
       navigate("/dashboard");
       setEmail("");
       setPassword("");

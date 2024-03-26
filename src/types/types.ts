@@ -1,10 +1,10 @@
 export type User = {
-  id: number | null,
-  userName: string,
-  email: string,
-  role: string,
-  rights: string,
-  organizationId: number | null,
+  id: number | null
+  userName: string
+  email: string
+  role: string
+  rights: string
+  organizationId: number | null
 }
 
 export type UserInfo = {
