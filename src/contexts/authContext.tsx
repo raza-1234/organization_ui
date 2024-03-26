@@ -1,10 +1,10 @@
-import React, {createContext, useState, useContext} from 'react';
+import React, { createContext, useState, useContext } from 'react';
+import { useQuery } from 'react-query';
 import Cookies from "js-cookie";
-import { Children, User, AuthContextType, STATUS_TEXT, Document } from '../types/types';
+import { Children, User, AuthContextType, STATUS_TEXT } from '../types/types';
 import api from '../axios/api';
 import { AxiosResponse } from 'axios';
-import { useQuery } from 'react-query';
-import toastMessage from '../components/utils/Toast';
+import Toast from '../components/utils/Toast';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -17,26 +17,6 @@ export const AuthProvider = ({children}: Children) => {
     rights: "",
     organizationId: null
   });
-  // const [documents, setDocuments] = useState<Document[]>();
-
-  // const fetchDocuments = async () => {
-  //   try {
-  //     const response: AxiosResponse = await api.get("document/getDocument");
-  //     if (response.statusText !== STATUS_TEXT){
-  //       return {};
-  //     }      
-  //     return response.data.documentData;
-  //   } catch (err){
-  //     console.log("Fetchdocuments: Something went wrong.", err);
-  //   }
-  // }
-
-  // const { isLoading: documentLoading, isError: documentError, data: documentData } = useQuery("organizationDocuments", fetchDocuments, {
-  //   enabled: !!cookie,
-  //   onSuccess: (data) => {
-  //     setDocuments(data);
-  //   }
-  // });
 
   const fetchUser = async () => {    
     try {
@@ -50,7 +30,7 @@ export const AuthProvider = ({children}: Children) => {
     }
   }
 
-  const { isLoading, isError, data, error }: any = useQuery('userData', fetchUser, {
+  const { isError, error }: any = useQuery('userData', fetchUser, {
     enabled: !!Cookies.get("session_id"),
     onSuccess: (data) => {
       setUserInfo({...userInfo, ...data?.user});
@@ -60,12 +40,11 @@ export const AuthProvider = ({children}: Children) => {
   return (
     <>
       {
-        isError &&
-        toastMessage("error", error.message, 4000)
-      }
-      {
-        data &&
-        toastMessage("success", "User fetched successfully.", 5000)
+        isError && 
+        <Toast
+          variant='error'
+          message={error.message}
+        />
       }
       <AuthContext.Provider value={{userInfo, setUserInfo}}>
         {children}

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery } from "react-query";
 import { Document, STATUS_TEXT } from "../../types/types";
 import api from "../../axios/api";
-import toastMessage from "./Toast";
+// import toastMessage from "./Toast";
 
 type ParentProp = {
   documents?: Document[]
@@ -38,8 +38,7 @@ const SelectDocument = ({documents}: ParentProp) => {
   return (
     <>
       {
-        data && 
-        toastMessage("success", "Assets fetched sucessfully.", 5000)
+        data 
       }
       <select className="primary"
         onChange={(e) => setDocumentId(e.target.value)}
