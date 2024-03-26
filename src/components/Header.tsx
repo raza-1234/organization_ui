@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Logout from "../utils/Logout";
 import UseAuthData from "../contexts/authContext";
 import { STATUS_TEXT } from "../types/types";
-import toastMessage from "./utils/Toast";
+import Toast from "./utils/Toast";
 
 const Header = () => {
 
@@ -44,7 +44,10 @@ const Header = () => {
         toggleDropDown();
       }
     } catch(err: any){
-      toastMessage("error", err, 5000);
+      <Toast
+        variant="error"
+        message={err?.message}
+      />
     }
   }
   

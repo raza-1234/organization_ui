@@ -8,7 +8,7 @@ import Button from "./utils/Button";
 import { STATUS_TEXT, Document } from "../types/types";
 import { useMutation, useQuery } from "react-query";
 import Cookies from "js-cookie";
-import toastMessage from "./utils/Toast";
+// import toastMessage from "./utils/Toast";
 
 type ParentProp = {
   toggleModel: () => void
@@ -99,10 +99,10 @@ const DialogBox = ({toggleModel}: ParentProp) => {
           </div>
         </form>
       </div>
-      {
+      {/* {
         data && 
         toastMessage("successs", "Documents fetched successfully.", 5000)
-      }
+      } */}
     </div>
   )
 }

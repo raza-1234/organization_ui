@@ -1,13 +1,14 @@
 import "../css/Login.css";
 
 import React, { FormEvent, useState, useEffect } from 'react';
+import Cookies from "js-cookie";
 import { AxiosResponse } from "axios";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import api from "../axios/api";
 import { STATUS_TEXT } from "../types/types";
 import UseAuthData from "../contexts/authContext";
-import Cookies from "js-cookie";
+import Toast from "./utils/Toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -130,6 +131,12 @@ const Login = () => {
           <div className="organization_input-field-error">
             <p>{error}</p>
           </div>
+        }
+        {
+          userInfo?.email && 
+          <Toast
+            message="successfully login"
+          />
         }
       </div>
     </div>

@@ -1,10 +1,9 @@
 .toast-wrapper {
-  background-color: aliceblue;
   padding: 15px 30px;
   width: fit-content;
   position: fixed;
-  top: 15px;
-  right: 0;
+  top: 6px;
+  right: 50px;
   color: white;
   border-radius: 5px;
   z-index: 1;
@@ -17,4 +16,16 @@
 
 .error {
   background-color: rgb(233, 128, 72);
+}
+
+@media only screen and (max-width: 768px) {
+  .toast-wrapper {
+    right: 15px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .toast-wrapper {
+    left: 15px;
+  }
 }
