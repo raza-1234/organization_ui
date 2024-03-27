@@ -1,22 +1,30 @@
-import React from 'react';
 import "../../css/Button.css";
+import { ButtonVariant } from "../../utils/constants";
 
 type ParentProp = {
-  value: string;
+  value?: string;
   clickHandler?: () => void;
-  className?: string;
+  variant?: string;
 }
 
-const Button = ({value, clickHandler, className}: ParentProp) => {  
+const Button = ({variant = ButtonVariant.PRIMARY, value, clickHandler}: ParentProp) => {
+
+  const formatVariant = variant?.toLowerCase();
+  let variantType;
+
+  if (formatVariant !== ButtonVariant.PRIMARY && formatVariant !== ButtonVariant.SECONDARY){
+    variantType = ButtonVariant.PRIMARY;
+  } else {
+    variantType = formatVariant
+  }
+
   return (
-    <div>
-      <button
-        className={`custom-button ${className}`}
-        onClick={clickHandler}
-      >
-        {value}
-      </button>
-    </div>
+    <button
+      className={`custom-button ${variantType}`}
+      onClick={clickHandler}
+    >
+      {value || variantType}
+    </button>
   )
 }
 

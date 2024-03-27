@@ -37,3 +37,10 @@ export type AuthContextType = {
   userInfo?: User;
   setUserInfo: (User: User | undefined) => void;
 }
+
+export enum ButtonText {
+  LogIn = "log in",
+  Next = "next"
+}
+
+export const API_FAILS = "Something went wrong. Please try again."
