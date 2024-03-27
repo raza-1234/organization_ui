@@ -2,12 +2,11 @@ import "../css/Login.css";
 
 import React, { FormEvent, useState, useEffect } from 'react';
 import Cookies from "js-cookie";
-import { AxiosResponse } from "axios";
-import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import api from "../axios/api";
-import { STATUS_TEXT } from "../types/types";
-import UseAuthData from "../contexts/authContext";
+
+import { API_FAILS, ButtonText } from "../types/types";
+import { useCheckEmail } from "../hooks/useCheckEmail";
+import { useLogin } from "../hooks/useLogin";
 import Toast from "./utils/Toast";
 
 const Login = () => {
@@ -16,79 +15,39 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isEmailExist, setIsEmailExist] = useState(false);
-  const {userInfo, setUserInfo} = UseAuthData();
 
-  useEffect(() => {    
+  useEffect(() => {
     if (Cookies.get("session_id")){
       navigate("/dashboard");
     }
   }, []);
 
-  const checkEmail = async () => {    
-    try {
-      const response: AxiosResponse = await api.post("check-email", { email });
-      if (response?.statusText !== STATUS_TEXT){
-        return {};
-      }
-      return response.data;
-    } catch (err: any){      
-      console.log("CheckEmail: Something went wrong", err);
-      throw new Error(err.response?.data?.message || "Something went wrong. Please try again.");
-    }
+  const resetFields = () => {
+    setEmail("");
+    setPassword("");
+    setError("");
   }
 
-  const { mutate: checkEmailMutation } = useMutation(checkEmail, {
-    onSuccess: () => {
-      setIsEmailExist(true);
-      setError("");
-    },
-    onError: (err: any) => {
-      setError(err.message || "Something went wrong while verifying email. Please try again.")
-    }
-  });
+  const { mutate: checkEmailMutation, isError: isEmailError, error: emailError }: any = useCheckEmail(setIsEmailExist, setError);  
+  const { mutate: logInMutation, isError: isLoginError, error: loginError }: any = useLogin(resetFields, setError);
 
-  const submitEmailHandler = (event: FormEvent<HTMLFormElement>) => {
+  const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!email.trim()){
-      setError("Missing Email.");
-      return;
-    }
-    checkEmailMutation();
-  }
 
-  const loginUser = async () => {
-    try {
-      const response: AxiosResponse = await api.post("login", { email, password });      
-      if (response?.statusText !== STATUS_TEXT){
-        return {};
+    if (isEmailExist){
+      if (!(email && password)){
+        setError("Missing Credentials.");
+        return;
       }
-      return response.data.user;
-    } catch (err: any){
-      console.log("LoginUser: Something went wrong", err);
-      throw new Error(err.response?.data?.message || "Something went wrong while try to login. Please try again.");
+      logInMutation({email, password});
+    } else {
+      if (!email.trim()){
+        setError("Missing Email.");
+        return;
+      }
+      checkEmailMutation(email);
     }
-  }
-
-  const { mutate: loginUserMutation } = useMutation(loginUser, {
-    onSuccess: (data) => {
-      setUserInfo({...userInfo, ...data});
-      navigate("/dashboard");
-      setEmail("");
-      setPassword("");
-      setError("");
-    },
-    onError: (err: any) => {
-      setError(err.message || "Somwthing went wrong. Please try again.")
-    }
-  });
-
-  const submitLoginHandler = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!(email && password)){
-      setError("Missing Credentials.");
-      return;
-    }
-    loginUserMutation();
+    setError("");
   }
 
   return (
@@ -98,7 +57,7 @@ const Login = () => {
           <h1>inkling</h1>
           <div className="organization-login_form-container">
             <h3>Welcome to Habitat</h3>
-            <form className="organization-login_form" onSubmit={isEmailExist? submitLoginHandler: submitEmailHandler}>
+            <form className="organization-login_form" onSubmit={submitHandler}>
               <input
                 placeholder="Email Address"
                 className="organization-login_fields"
@@ -121,7 +80,7 @@ const Login = () => {
                   ${isEmailExist ? 'organization-login-form_button': 'organization-email-form_button'}`
                 }
               >
-                {isEmailExist ? "log in": "next"}
+                {isEmailExist ? ButtonText.LogIn: ButtonText.Next}
               </button>
             </form>
           </div>
@@ -133,9 +92,17 @@ const Login = () => {
           </div>
         }
         {
-          userInfo?.email && 
+          isEmailError && emailError?.message === API_FAILS &&
           <Toast
-            message="successfully login"
+            variant="error"
+            message={emailError?.message}
+          />
+        }
+        {
+          isLoginError && loginError.message === API_FAILS &&
+          <Toast
+            variant="error"
+            message={loginError.message}
           />
         }
       </div>

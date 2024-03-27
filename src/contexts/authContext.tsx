@@ -1,10 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
-import { useQuery } from 'react-query';
-import Cookies from "js-cookie";
-import { Children, User, AuthContextType, STATUS_TEXT } from '../types/types';
-import api from '../axios/api';
-import { AxiosResponse } from 'axios';
+import { Children, User, AuthContextType } from '../types/types';
 import Toast from '../components/utils/Toast';
+import { useFetchUser } from '../hooks/useFetchUser';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -18,24 +15,7 @@ export const AuthProvider = ({children}: Children) => {
     organizationId: null
   });
 
-  const fetchUser = async () => {    
-    try {
-      const response: AxiosResponse = await api.get("user");
-      if (response.statusText !== STATUS_TEXT){
-        return {};
-      }      
-      return response?.data;
-    } catch (err){
-      throw new Error("Something went wrong while fetching user.");
-    }
-  }
-
-  const { isError, error }: any = useQuery('userData', fetchUser, {
-    enabled: !!Cookies.get("session_id"),
-    onSuccess: (data) => {
-      setUserInfo({...userInfo, ...data?.user});
-    }
-  });
+  const {isError, error}: any = useFetchUser(setUserInfo);
 
   return (
     <>
