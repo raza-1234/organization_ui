@@ -6,19 +6,13 @@ import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import PrivateRoutes from './components/utils/PrivateRoutes';
 import Asset from './components/Asset';
-import UseAuthData from './contexts/authContext';
 import Missing from './components/Missing';
 
 function App() {
 
-  const { userInfo } = UseAuthData();
-
   return (
     <div className="App">
-      {
-        userInfo?.email &&
-        <Header/>
-      }
+      <Header/>
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route element={<PrivateRoutes/>}>
