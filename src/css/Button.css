@@ -2,6 +2,18 @@
   border: 0px;
   border-radius: 5px;
   text-transform: capitalize;
-  font-weight: 500;
+  font-weight: 800;
+  font-size: 16px;
   padding: 10px 15px;
+  cursor: pointer;
+}
+
+.primary {
+  background-color: purple;
+  color: white;
+}
+
+.secondary {
+  background-color: white;
+  color: #707584;
 }

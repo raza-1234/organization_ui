@@ -32,21 +32,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   justify-content: space-between;
 }
 
-/* will remove it */
-.organization_document_field { 
-  border: 1px solid grey;
-  border-radius: 5px;
-  padding: 8px;
+/* organization-form_input-field should be the class of input field */
+.organization-form_input-field {
   width: 100%;
-}
-
-.selectDocs {
-  width: 100%;
-  padding: 10px;
   border-radius: 5px;
 }
 
@@ -54,17 +45,6 @@
   display: flex;
   justify-content: flex-end;
   gap: 20px;
-}
-
-.done-btn {
-  background-color: purple;
-  color: white;
-  cursor: pointer;
-}
-
-.cancel-btn {
-  background-color: white;
-  cursor: pointer;
 }
 
 @media only screen and (max-width: 768px) {

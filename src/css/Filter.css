@@ -1,0 +1,39 @@
+.organization_filter-section-wrapper {
+  background-color: #F2F2F6;
+}
+
+.organization_filter-section-content {
+  padding: 10px 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-document h3{
+  color: #373D50;
+  font-weight: 500;
+}
+
+.filter-document {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+}
+
+.select-document-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 60%;
+}
+
+.select-document-wrapper h5{
+  color: #272D41;
+  font-weight: 600;
+}
+
+.select-document {
+  width: 100%;
+}
