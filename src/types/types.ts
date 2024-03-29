@@ -43,4 +43,9 @@ export enum ButtonText {
   Next = "next"
 }
 
-export const API_FAILS = "Something went wrong. Please try again."
+export const API_FAILS = "Something went wrong. Please try again.";
+
+export type PayloadType = {
+  id: number;
+  value: string
+}

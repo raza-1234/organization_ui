@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import api from "../axios/api";
-import { STATUS_TEXT, API_FAILS, User } from "../types/types";
-import { useMutation, useQuery } from "react-query";
+import { STATUS_TEXT, API_FAILS } from "../types/types";
+import { useQuery } from "react-query";
 import Cookies from "js-cookie";
 
 const fetchDocuments = async () => {
@@ -13,6 +13,7 @@ const fetchDocuments = async () => {
     return response.data.documentData;
   } catch (err){
     console.log("Fetchdocuments: Something went wrong.", err);
+    throw new Error(API_FAILS)
   }
 }
 
