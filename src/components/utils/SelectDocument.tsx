@@ -1,27 +1,43 @@
 import "../../css/Select.css";
 
-import { Document } from "../../types/types";
+import classNames from "classnames";
+import { PayloadType } from "../../types/types";
+import { Boolean_False, Select_Option_PlaceHolder } from "../../utils/constants";
 
 type ParentProp = {
-  documents?: Document[];
+  payLoad?: PayloadType[];
   className?: string
-  getDocumentId: (id: string) => void
+  onChange: (id: string) => void
+  placeholder?: string
+  required?: boolean
 }
 
-const SelectDocument = ({documents, className, getDocumentId}: ParentProp) => { // placeholder missing
+const SelectDocument = (prop: ParentProp) => {
+
+  const {
+    payLoad,
+    className,
+    onChange,
+    required = Boolean_False,
+    placeholder = Select_Option_PlaceHolder
+  } = prop;
+
+  const select_input_field_classes = classNames("organization_select-option-field", className);
+
   return (
     <select
-      className={`organization_select-option-field ${className}`}
-      onChange={(e) => getDocumentId(e.target.value)}
+      required={required}
+      className={select_input_field_classes}
+      onChange={(e) => onChange(e.target.value)}
     >
-      <option hidden></option>
+      <option hidden>{placeholder}</option>
       {
-        documents?.map((document) => (
+        payLoad?.map((item) => (
           <option
-            key={document.id}
-            value={document.id}
+            key={item.id}
+            value={item.id}
           >
-            {document.documentName.toUpperCase()}
+            {item.value?.toUpperCase()}
           </option>
         ))
       }
