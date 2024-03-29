@@ -1,8 +1,7 @@
 import { AxiosResponse } from "axios";
 import api from "../axios/api";
-import { STATUS_TEXT, API_FAILS, User } from "../types/types";
-import { useMutation, useQuery } from "react-query";
-import Cookies from "js-cookie";
+import { STATUS_TEXT, API_FAILS } from "../types/types";
+import { useMutation } from "react-query";
 
 const fetchAssets = async (documentId: string) => {
   try {
