@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './contexts/authContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { DashboardProvider } from './contexts/DashboardContext';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,9 @@ root.render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <App />
+        <DashboardProvider>
+          <App />
+        </DashboardProvider>
       </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>
