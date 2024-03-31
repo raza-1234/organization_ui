@@ -17,7 +17,7 @@ type ParentProp = {
   cancelButtonText?: string;
   footer?: boolean;
   crossIconClassName?: string;
-  button_position?: string;
+  buttonPosition?: string;
   closeOnBgClick?: boolean;
   loading?: boolean;
   error?: string
@@ -35,14 +35,14 @@ const Modal = (prop: ParentProp) => {
     cancelButtonText = ModalButtonText.CANCEL,
     footer = Boolean_True,
     crossIconClassName,
-    button_position,
+    buttonPosition,
     closeOnBgClick = Boolean_True,
     loading = Boolean_False,
     error
   } = prop;
 
   const [isShowModal, setIsShowModal] = useState(Boolean_True);
-  const modal_button_group_classes = classNames("modal_button-grp", button_position?.toLowerCase());
+  const modal_button_group_classes = classNames("modal_button-grp", buttonPosition?.toLowerCase());
 
   const closeModal = () => {
     setIsShowModal(!isShowModal);

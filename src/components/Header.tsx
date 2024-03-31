@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import Logout from "../utils/logout";
-import UseAuthData from "../contexts/authContext";
+import useAuthData from "../contexts/authContext";
 import { STATUS_TEXT } from "../types/types";
 import Toast from "./utils/Toast";
 
@@ -13,7 +13,7 @@ const Header = () => {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
-  const { userInfo, setUserInfo } = UseAuthData();
+  const { userInfo, setUserInfo } = useAuthData();
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);

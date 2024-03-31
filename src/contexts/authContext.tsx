@@ -33,7 +33,7 @@ export const AuthProvider = ({children}: Children) => {
   )
 }
 
-const UseAuthData = () => { 
+const useAuthData = () => { 
   const context = useContext(AuthContext);
   
   if (!context){
@@ -42,4 +42,4 @@ const UseAuthData = () => {
   return context;
 }
 
-export default UseAuthData;
+export default useAuthData;

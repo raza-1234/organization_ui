@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { STATUS_TEXT, API_FAILS } from "../types/types";
 import api from "../axios/api";
 import { useMutation } from "react-query";
-import UseAuthData from "../contexts/authContext";
+import useAuthData from "../contexts/authContext";
 import useDashboardContext from "../contexts/DashboardContext";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const loginUser = async ({email, password}: {email: string, password: string}) =
 export const useLogin = (resetFields: () => void, setError: (message: string) => void) => {
 
   const navigate = useNavigate();
-  const { setUserInfo } = UseAuthData();
+  const { setUserInfo } = useAuthData();
   const { setIsLoginToast } = useDashboardContext();
 
   return useMutation(loginUser, {
