@@ -20,18 +20,16 @@
 
 .organization-header_menu-wrapper {
   display: flex;
-  justify-content: space-between;
-  max-width: 65%;
-  width: 100%;
+  gap: 20px;
   align-items: center;
 }
 
 .organization-header_menu-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   list-style: none;
   text-transform: capitalize;
-  max-width: 600px;
+  gap: 20px;
   width: 100%;
 }
 

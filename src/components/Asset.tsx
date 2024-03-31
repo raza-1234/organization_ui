@@ -1,5 +1,6 @@
 import "../css/Asset.css";
 
+<<<<<<< Updated upstream
 import React, { FormEvent, useEffect, useState } from 'react';
 import DialogBox from './DialogBox';
 import SelectDocument from "./utils/SelectDocument";
@@ -8,6 +9,12 @@ import { STATUS_TEXT, Document } from "../types/types";
 import { useMutation, useQuery } from "react-query";
 import Cookies from "js-cookie";
 import { AxiosResponse } from "axios";
+=======
+import React, { useEffect, useState } from 'react';
+import DialogBox from './utils/Modal';
+import SelectDocument from "./utils/SelectInput";
+import { Document, PayloadType } from "../types/types";
+>>>>>>> Stashed changes
 import Toast from "./utils/Toast";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
@@ -33,24 +40,40 @@ const Asset = () => {
   const { mutate: fetchAssets, isError: isFetchAssetError, error: assetError }: any = useFetchAssets(setAssets);
   const { isError: isDocumentError, error: documentError }: any = useFecthDocuments(setDocuments);
 
+<<<<<<< Updated upstream
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => { //
     event.preventDefault();
     fetchAssets(documentId);
+=======
+  const successHandler = () => {
+    if (documentId){
+      fetchAssets(documentId);
+    }
+>>>>>>> Stashed changes
   }
 
   const getDocumentId = (id: string) => {
     setDocumentId(id);
+<<<<<<< Updated upstream
   }
 
   const onChange = (id: string) => {
     setDocumentId(id);
   }
 
+=======
+  }  
+  
+>>>>>>> Stashed changes
   return (
     <div className='organization-asset_wrapper'>
-      <Filter/>
+      <Filter
+        payload = {createDocumentPayload()}
+        setAssets = {setAssets}
+      />
       {
         isModelOpen &&
+<<<<<<< Updated upstream
         <div className='organization-document_model-wrapper'>
           <DialogBox
             toggleModel={toggleModel}
@@ -59,6 +82,16 @@ const Asset = () => {
             submitHandler={submitHandler}
           />
         </div>
+=======
+        <DialogBox
+          title="select a document to view assets"
+          component={<SelectDocument payLoad= {createDocumentPayload()} onChange={getDocumentId}/>}
+          okButtonText="done"
+          loading={isDocumentLoading}
+          error = {documentError?.message}
+          onOk={successHandler}
+        />
+>>>>>>> Stashed changes
       }
       {
         isFetchAssetError && 
