@@ -15,9 +15,6 @@ export enum ToastTimeout {
 export enum ToastVariant {
   SUCCESS = 'success',
   ERROR =  'error'
-<<<<<<< Updated upstream
-}
-=======
 }
 
 export enum ModalButtonText {
@@ -32,4 +29,3 @@ export const ModalTitle = "modal title text";
 export const Select_Option_PlaceHolder = "select option";
 
 export const InputType = "text"; 
->>>>>>> Stashed changes
