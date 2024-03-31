@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
-import PrivateRoutes from './components/utils/PrivateRoutes';
+import PrivateRoutes from './components/PrivateRoutes';
 import Asset from './components/Asset';
 import Missing from './components/Missing';
 

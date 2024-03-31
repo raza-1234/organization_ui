@@ -3,9 +3,9 @@ import api from "../axios/api";
 import { STATUS_TEXT, API_FAILS } from "../types/types";
 import { useMutation } from "react-query";
 
-const fetchAssets = async (documentId: string) => {
+const fetchAssets = async (documentId: string, search?: undefined) => {
   try {
-    const response: AxiosResponse = await api.get(`assets/getDocumentAssets/${documentId}`);
+    const response: AxiosResponse = await api.get(`assets/getDocumentAssets/${documentId}?search=${search}`);
     if (response.statusText !== STATUS_TEXT){
       return {};
     }

@@ -1,32 +1,31 @@
 .organization_filter-section-wrapper {
   background-color: #F2F2F6;
+  padding: 1rem;
 }
 
 .organization_filter-section-content {
   padding: 10px 0;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column-reverse;
 }
 
 .filter-document h3{
+  text-align: left;
   color: #373D50;
   font-weight: 500;
 }
 
 .filter-document {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 30%;
+  flex-direction: column-reverse;
+  gap: 10px;
 }
 
 .select-document-wrapper {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 60%;
 }
 
 .select-document-wrapper h5{
@@ -36,4 +35,45 @@
 
 .select-document {
   width: 100%;
+  padding: 5px !important;
+  border-radius: 2px !important;
+  border: 1px solid #DBDBDB;
+}
+
+.search-assets-wrapper {
+  margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 425px) {
+  .filter-document {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .organization_filter-section-content {
+    padding: 0;
+  }
+  .organization_filter-section-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .search-assets-wrapper {
+    width: 23%;
+    margin-bottom: 0px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .filter-document {
+    align-items: center;
+    width: 32%;
+  }
+  .select-document-wrapper {
+    width: 60%;
+  }
 }

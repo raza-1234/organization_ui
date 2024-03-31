@@ -3,6 +3,9 @@ export enum ButtonVariant {
   SECONDARY = "secondary"
 }
 
+export type ButtonType = "submit" | "reset" | "button";
+export const DefaultButtonType = "button";
+
 export enum ToastTimeout {
   LONG = 6000,
   STANDARD = 4000,
@@ -12,6 +15,9 @@ export enum ToastTimeout {
 export enum ToastVariant {
   SUCCESS = 'success',
   ERROR =  'error'
+<<<<<<< Updated upstream
+}
+=======
 }
 
 export enum ModalButtonText {
@@ -23,4 +29,7 @@ export const Boolean_True: boolean = true;
 export const Boolean_False: boolean = false;
 export const ModalTitle = "modal title text";
 
-export const Select_Option_PlaceHolder = "Select";
+export const Select_Option_PlaceHolder = "select option";
+
+export const InputType = "text"; 
+>>>>>>> Stashed changes

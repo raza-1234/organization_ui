@@ -1,13 +1,24 @@
 import "../../css/Button.css";
-import { ButtonVariant } from "../../utils/constants";
+import classNames from "classnames";
+import { ButtonVariant, ButtonType, DefaultButtonType } from "../../utils/constants";
 
 type ParentProp = {
   value?: string;
   clickHandler?: () => void;
   variant?: string;
+  type?: ButtonType
+  className?: string
 }
 
-const Button = ({variant = ButtonVariant.PRIMARY, value, clickHandler}: ParentProp) => {
+const Button = (prop: ParentProp) => {
+
+  const {
+    variant = ButtonVariant.PRIMARY,
+    value,
+    clickHandler,
+    type = DefaultButtonType,
+    className
+  } = prop;
 
   const formatVariant = variant?.toLowerCase();
   let variantType;
@@ -18,10 +29,13 @@ const Button = ({variant = ButtonVariant.PRIMARY, value, clickHandler}: ParentPr
     variantType = formatVariant
   }
 
+  const button_classes = classNames("custom-button", variantType, className);
+
   return (
     <button
-      className={`custom-button ${variantType}`}
+      className={button_classes}
       onClick={clickHandler}
+      type={type}
     >
       {value || variantType}
     </button>
