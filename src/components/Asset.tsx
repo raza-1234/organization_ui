@@ -107,8 +107,6 @@ const Asset = () => {
           title="select a document to view assets"
           component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
           okButtonText="done"
-          loading={isDocumentLoading}
-          error = {documentError?.message}
           onOk={modalSuccessHandler}
         />
       }
