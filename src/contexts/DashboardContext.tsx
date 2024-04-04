@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
 import { Children } from '../types/types';
 
-const DashboardContext = createContext<any>(undefined);
+const DashboardContext = createContext<any>(undefined); // type
 
 export const DashboardProvider = ({children}: Children) => {
 

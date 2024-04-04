@@ -3,20 +3,46 @@ import "../css/Asset.css";
 import React, { useEffect, useState } from 'react';
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
-import { Document, PayloadType } from "../types/types";
+import { Document, PayloadType, AssetsType } from "../types/types";
+import { Boolean_False } from "../utils/constants";
 import Toast from "./utils/Toast";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
+import Table from "./utils/Table";
+import useAssetColumns from "../hooks/useAssetColumns";
 
 const Asset = () => {
 
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [isModelOpen, setIsModelOpen] = useState(Boolean_False);
   const [documents, setDocuments] = useState<Document[]>();
-  const [documentId, setDocumentId] = useState<string | null>(null);
-  const [assets, setAssets] = useState<any[]>();
+  const [documentId, setDocumentId] = useState<string>();
+  const [pageCount, setPageCount] = useState<number>(10);
+  const [assets, setAssets] = useState<AssetsType>({
+    documentAsset: [],
+    pagination: {}
+  });
 
-  const createDocumentPayload = () => {
+  useEffect(() => {
+    setIsModelOpen(!isModelOpen);
+  }, []);
+
+  const columns = useAssetColumns();
+
+  const { 
+    mutate: fetchAssets, 
+    isError: isAssetError, 
+    error: assetError,
+    isLoading: assetLoading
+  }: any = useFetchAssets(setAssets); // types 
+
+  const { 
+    isError: isDocumentError, 
+    error: documentError, 
+    isLoading: isDocumentLoading 
+  }: any = useFecthDocuments(setDocuments);// types 
+  
+  const documentPayload = () => {
     const payload: PayloadType[] = [];
     documents?.map((document) => {
       payload.push({
@@ -27,46 +53,88 @@ const Asset = () => {
     return payload;
   }
 
-  const toggleModel = () => {
-    setIsModelOpen(!isModelOpen);
-  }
-
-  useEffect(() => {
-    toggleModel();
-  }, []);
-
-  const { mutate: fetchAssets, isError: isFetchAssetError, error: assetError }: any = useFetchAssets(setAssets);
-  const { isError: isDocumentError, error: documentError, isLoading: isDocumentLoading }: any = useFecthDocuments(setDocuments);
-
-  const successHandler = () => {
+  const modalSuccessHandler = () => {
     if (documentId){
-      fetchAssets(documentId);
+      fetchAssets({documentId});
     }
   }
 
-  const onChange = (id: string) => {
+  const onSelectDocument = (id: string) => {    
     setDocumentId(id);
   }
 
+  const onPageChange = (value: number) => {
+    console.log(">>>>>>", value);
+  }
+
+  const onPageSizeChanged = (value: string) => {
+    console.log("chefkingggg sizeeee", value);
+  }
+
+  const tableRowClickHandler = () => {
+    console.log("table row clickkeddddd");
+  }
+
+  const getCurrentPage = (start: number, currentDataCount: number) => {
+    const currentPage = Math.ceil((start + 1)/ currentDataCount);
+    return currentPage;
+  }
+
+  // const handleError = (loading, error) => {
+  //   return (
+  //     if(error) {
+  //       <></> // message function 
+
+  //     }
+
+  //     if(loading) {
+  //       <></> // loading 
+  //     }
+  //   )
+  // }
+
   return (
     <div className='organization-asset_wrapper'>
-      <Filter
-        payload = {createDocumentPayload()}
+      <Filter // NAME
+        payload = {documentPayload()}
         setAssets = {setAssets}
+        documentId = {documentId}
+        setDocumentId = {setDocumentId}
       />
       {
         isModelOpen &&
         <DialogBox
           title="select a document to view assets"
-          component={<SelectDocument payLoad= {createDocumentPayload()} onChange={onChange}/>}
+          component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
           okButtonText="done"
           loading={isDocumentLoading}
           error = {documentError?.message}
-          onOk={successHandler}
+          onOk={modalSuccessHandler}
         />
       }
+
+      <div className="organization-asset-table">
+        { assets.documentAsset.length > 0 &&
+          <Table
+            columns = {columns}
+            data = {assets.documentAsset}
+            isLoading = {assetLoading}
+            didFail = {isAssetError}
+            error={assetError?.message}
+            onRowClicked={()=> {}}
+            pageCount = {pageCount}
+            onPageChange = {onPageChange}
+            onPageSizeChanged = {onPageSizeChanged}
+            currentDataCount={assets.pagination.currentDataCount as number}
+            totalDataCount={assets.pagination.totalCount as number}
+            moreData={assets.pagination.nextPage ? true: false}
+            currentPage={getCurrentPage(assets.pagination.start as number, assets.pagination.currentDataCount as number)}
+          />
+        }
+      </div>
+      
       {
-        isFetchAssetError && 
+        isAssetError && 
         <Toast
           message={assetError.message}
           variant="error"

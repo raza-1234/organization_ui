@@ -3,13 +3,20 @@ import api from "../axios/api";
 import { STATUS_TEXT, API_FAILS } from "../types/types";
 import { useMutation } from "react-query";
 
-const fetchAssets = async (documentId: string, search?: undefined) => {
+const fetchAssets = async ({documentId, search}: {documentId: string, search?: string}) => {
+
+  let url = `assets/getDocumentAssets/${documentId}`;
+  if (search){
+    url += `?search=${search}`
+  }  
+  
   try {
-    const response: AxiosResponse = await api.get(`assets/getDocumentAssets/${documentId}?search=${search}`);
+    const response: AxiosResponse = await api.get(url);
     if (response.statusText !== STATUS_TEXT){
       return {};
     }
-    return response.data?.documentAssets;
+    
+    return response.data;
   } catch (err: any){
     console.log("Assets: Something went wrong.", err.response?.data?.message);
     throw new Error(err.response?.data?.message || API_FAILS);
@@ -18,8 +25,8 @@ const fetchAssets = async (documentId: string, search?: undefined) => {
 
 export const useFetchAssets  = (setAssets: (data: any) => void) => {
   return useMutation(fetchAssets, {
-    onSuccess: (data) => {      
-      setAssets(data);
+    onSuccess: (data) => {   
+      setAssets({documentAsset: data.documentAssets, pagination: data.pagingInfo});
     }
   })
 }

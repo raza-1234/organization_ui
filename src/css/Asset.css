@@ -1,3 +1,41 @@
 .organization-asset_wrapper {
   position: relative;
 }
+
+.organization-asset-table {
+  min-height: 84vh;
+  background-color: #FAFAFB;
+}
+
+.organization_assets-media {
+  width: 30px;
+  height: 20px;
+  color: #4E8891;
+}
+
+.asset_type_column {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+}
+
+.organization_assets-updated-date {
+  text-align: center;
+}
+
+.delete_icon {
+  color: #C9263F;
+  cursor: pointer;
+}
+
+/* below two classes are used in useAssetColumns */
+.sort_data_icons {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.column_wrapper {
+  display: flex;
+  align-items: center;
+}
