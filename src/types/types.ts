@@ -29,6 +29,26 @@ export type Document = {
   updatedAt: string;
 }
 
+export type DocumentAssetType = {
+  Document: Document;
+  Organization: Organization;
+  createdAt: string;
+  date: string;
+  documentId: string;
+  id: string;
+  organizationId: number;
+  title: string;
+  type: string;
+  updatedAt: string; 
+  url: string;
+}
+
+export enum AssetMedia {
+  IMAGE = "image",
+  AUDIO = "audio",
+  VIDEO = "video"
+}
+
 export type Children = {
   children: JSX.Element | JSX.Element[]
 }
@@ -48,4 +68,24 @@ export const API_FAILS = "Something went wrong. Please try again.";
 export type PayloadType = {
   id: number;
   value: string
+}
+
+export type ColumnType = {
+  header: string | JSX.Element,
+  key: string,
+  field?: string,
+  className?: string,
+  render?: (value?: any, item?: any) => any  
+}
+
+export type AssetPagination = {
+  currentDataCount?: number;
+  nextPage?: number;
+  start?: number;
+  totalCount?: number;
+}
+
+export type AssetsType = {
+  documentAsset: DocumentAssetType[];
+  pagination: AssetPagination
 }
