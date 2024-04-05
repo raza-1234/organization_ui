@@ -1,6 +1,7 @@
 import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
+
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
 import { Document, PayloadType, AssetsType } from "../types/types";
@@ -11,6 +12,7 @@ import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
 import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
+import Status from "./utils/Status";
 
 const Asset = () => {
 
@@ -80,19 +82,6 @@ const Asset = () => {
     return currentPage;
   }
 
-  // const handleError = (loading, error) => {
-  //   return (
-  //     if(error) {
-  //       <></> // message function 
-
-  //     }
-
-  //     if(loading) {
-  //       <></> // loading 
-  //     }
-  //   )
-  // }
-
   return (
     <div className='organization-asset_wrapper'>
       <Filter // NAME
@@ -101,6 +90,33 @@ const Asset = () => {
         documentId = {documentId}
         setDocumentId = {setDocumentId}
       />
+
+      <div className="organization-asset-table">
+        { !isAssetError && !assetError?.message ?
+          <Table
+            columns = {columns}
+            data = {assets.documentAsset}
+            isLoading = {assetLoading}
+            didFail = {isAssetError}
+            error={assetError?.message}
+            onRowClicked={tableRowClickHandler}
+            pageCount = {pageCount}
+            onPageChange = {onPageChange}
+            onPageSizeChanged = {onPageSizeChanged}
+            currentDataCount={assets.pagination?.currentDataCount as number}
+            totalDataCount={assets.pagination?.totalCount as number}
+            moreData={assets.pagination?.nextPage ? true: false}
+            currentPage={getCurrentPage(assets.pagination?.start as number, assets.pagination?.currentDataCount as number)}
+          />
+          :
+          <Status
+            className="asset_error"
+            variant="ERROR"
+            message={"assetError?.message"}
+          />
+        }
+      </div>
+
       {
         isModelOpen &&
         <DialogBox
@@ -112,26 +128,6 @@ const Asset = () => {
           onOk={modalSuccessHandler}
         />
       }
-
-      <div className="organization-asset-table">
-        { assets.documentAsset.length > 0 &&
-          <Table
-            columns = {columns}
-            data = {assets.documentAsset}
-            isLoading = {assetLoading}
-            didFail = {isAssetError}
-            error={assetError?.message}
-            onRowClicked={()=> {}}
-            pageCount = {pageCount}
-            onPageChange = {onPageChange}
-            onPageSizeChanged = {onPageSizeChanged}
-            currentDataCount={assets.pagination.currentDataCount as number}
-            totalDataCount={assets.pagination.totalCount as number}
-            moreData={assets.pagination.nextPage ? true: false}
-            currentPage={getCurrentPage(assets.pagination.start as number, assets.pagination.currentDataCount as number)}
-          />
-        }
-      </div>
       
       {
         isAssetError && 

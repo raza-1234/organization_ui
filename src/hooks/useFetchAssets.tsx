@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios";
+import { useMutation } from "react-query";
+
 import api from "../axios/api";
 import { STATUS_TEXT, API_FAILS } from "../types/types";
-import { useMutation } from "react-query";
 
 const fetchAssets = async ({documentId, search}: {documentId: string, search?: string}) => {
 

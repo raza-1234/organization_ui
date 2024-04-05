@@ -1,9 +1,6 @@
 .table_Wrapper {
   overflow-x: auto;
   margin: 0 auto;
-  min-height: 300px;
-  /* border: 2px solid grey; */
-  position: relative;
   padding: 50px 0;
   width: 70%;
 }
@@ -28,10 +25,17 @@
 .table-body_Cell {
   font-size: 14px;
   padding: 10px;
-  max-width: 150px;
 }
 
-.status {
+.table-body_status-row {
+  text-align: center;
+}
+
+.table-body_status-row td {
+  padding: 10px;
+}
+
+.table-status_wrapper {
   padding: 100px 0;
   width: 100%;
   display: flex;
@@ -40,23 +44,10 @@
   gap: 10px;
 }
 
-.tableError {
-  color: red;
-  font-weight: 800;
-  font-size: 14px;
-  text-transform: capitalize;
+.sort_data_icons {
+  display: inline-flex;
+  flex-direction: column;
 }
-
-.date {
-  text-align: center;
-}
-
-.pagination {
-  /* border: 2px solid red; */
-  margin: 0 auto;
-  padding: 10px;
-}
-
 
 @media only screen and (max-width: 768px) {
   .table_Wrapper {
