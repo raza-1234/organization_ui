@@ -1,9 +1,9 @@
 import React, { createContext, useState, useContext } from 'react';
 
-import { Children, toastInfo } from '../types/types';
+import { Children, toastInfo, ToastContext } from '../types/types';
 import Toast from '../components/utils/Toast';
 
-const ToastContext = createContext<any>(undefined); // type
+const ToastContext = createContext<ToastContext | undefined>(undefined);
 
 export const ToastProvider = ({children}: Children) => {
 
@@ -21,7 +21,7 @@ export const ToastProvider = ({children}: Children) => {
     })
   }
 
-  const toastHandler = (message: "", variant: string , timeOut?: number) => {
+  const toastHandler = (message: string, variant: string , timeOut?: number) => {
     setToastInfo({
       variant: variant,
       message: message,
