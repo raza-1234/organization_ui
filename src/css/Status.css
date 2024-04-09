@@ -4,15 +4,10 @@
   text-transform: capitalize;
 }
 
-.error {
+.Error {
   color: red;
-  background-color: transparent
 }
 
-.information {
+.Information {
   color: #17A2B8;
-}
-
-.loading {
-  color: black;
 }

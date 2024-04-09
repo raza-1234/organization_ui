@@ -9,12 +9,12 @@ type ParentProp = {
 }
 
 export enum StausVariant {
-  ERROR = "error",
-  INFORMATION = "information"
+  ERROR = "Error",
+  INFORMATION = "Information"
 }
 
 const Status = ({message = StausVariant.INFORMATION, className, variant = StausVariant.INFORMATION}: ParentProp) => {
-  let statusVariant = variant.toLowerCase();
+  let statusVariant = variant.charAt(0).toUpperCase() + variant.slice(1).toLowerCase();
 
   if (
     statusVariant !== StausVariant.ERROR && 
