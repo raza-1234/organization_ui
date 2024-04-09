@@ -7,13 +7,19 @@ import { useNavigate } from "react-router-dom";
 import { ButtonText } from "../types/types";
 import { useCheckEmail } from "../hooks/useCheckEmail";
 import { useLogin } from "../hooks/useLogin";
+import useToastContext from "../contexts/ToastContext";
+import useAuthData from "../contexts/authContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isEmailExist, setIsEmailExist] = useState(false);
+
+  const { toastHandler } = useToastContext();
+  const { setUserInfo } = useAuthData();
 
   useEffect(() => {
     if (Cookies.get("session_id")){
@@ -27,8 +33,13 @@ const Login = () => {
     setError("");
   }
 
-  const { mutate: checkEmailMutation, isError: isEmailError, error: emailError }: any = useCheckEmail(setIsEmailExist, setError);  
-  const { mutate: logInMutation, isError: isLoginError, error: loginError }: any = useLogin(resetFields, setError);
+  const { 
+    mutate: checkEmailMutation
+  }: any = useCheckEmail(setIsEmailExist, setError, toastHandler);  
+
+  const { 
+    mutate: logInMutation, 
+  }: any = useLogin(resetFields, setError, toastHandler, setUserInfo);
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

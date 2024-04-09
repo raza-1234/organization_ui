@@ -3,7 +3,6 @@ import { useMutation } from "react-query";
 
 import api from "../axios/api";
 import { STATUS_TEXT } from "../types/types";
-import useToastContext from "../contexts/ToastContext";
 
 const checkEmail = async (email: string) => {
   try {
@@ -18,8 +17,11 @@ const checkEmail = async (email: string) => {
   }
 }
 
-export const useCheckEmail  = (setIsEmailExist: (data: boolean) => void, setError: (message: string) => void) => {
-  const { toastHandler } = useToastContext();
+export const useCheckEmail  = (
+  setIsEmailExist: (data: boolean) => void, 
+  setError: (message: string) => void, 
+  toastHandler: (message: string, variant: string, timeOut?: number) => void
+  ) => {
 
   return useMutation(checkEmail, {
     onError: (error: any) => {

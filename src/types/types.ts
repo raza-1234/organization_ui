@@ -94,6 +94,6 @@ export type toastInfo = {
   timeOut?: number;
 }
 
-export type ToastContext = {
+export type ToastContextType = {
   toastHandler: (message: string, variant: string, timeOut?: number ) =>  void
 }

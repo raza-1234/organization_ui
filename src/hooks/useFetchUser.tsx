@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
 import api from "../axios/api";
-import { STATUS_TEXT, User } from "../types/types";
 import { useQuery } from "react-query";
 import Cookies from "js-cookie";
-import useToastContext from "../contexts/ToastContext";
+
+import { STATUS_TEXT, User } from "../types/types";
 
 const fetchUser = async () => {    
   try {
@@ -17,12 +17,14 @@ const fetchUser = async () => {
   }
 }
 
-export const useFetchUser  = (setUserInfo: (data: User | undefined) => void) => {
-  const { toastHandler } = useToastContext();
+export const useFetchUser  = (
+  setUserInfo: (data: User) => void,
+  toastHandler: (message: string, variant: string, timeOut?: number) => void,
+  ) => {
 
   return useQuery("fetchUserData", fetchUser, {
     enabled: !!Cookies.get("session_id"),
-    onSuccess: (data) => {      
+    onSuccess: (data) => {
       setUserInfo(data.user);
     },
     onError: () => {

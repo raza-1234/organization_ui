@@ -1,9 +1,9 @@
 import React, { createContext, useState, useContext } from 'react';
 
-import { Children, toastInfo, ToastContext } from '../types/types';
+import { Children, toastInfo, ToastContextType } from '../types/types';
 import Toast from '../components/utils/Toast';
 
-const ToastContext = createContext<ToastContext | undefined>(undefined);
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider = ({children}: Children) => {
 

@@ -2,10 +2,8 @@ import { AxiosResponse } from "axios";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
-import { STATUS_TEXT } from "../types/types";
+import { STATUS_TEXT, User } from "../types/types";
 import api from "../axios/api";
-import useAuthData from "../contexts/authContext";
-import useToastContext from "../contexts/ToastContext";
 
 const loginUser = async ({email, password}: {email: string, password: string}) => {
   try {
@@ -20,11 +18,14 @@ const loginUser = async ({email, password}: {email: string, password: string}) =
   }
 }
 
-export const useLogin = (resetFields: () => void, setError: (message: string) => void) => {
+export const useLogin = (
+  resetFields: () => void, 
+  setError: (message: string) => void,
+  toastHandler: (message: string, variant: string, timeOut?: number) => void,
+  setUserInfo: (data: User) => void
+  ) => {
 
   const navigate = useNavigate();
-  const { setUserInfo } = useAuthData();
-  const { toastHandler } = useToastContext();
 
   return useMutation(loginUser, {
     onSuccess(data) {
@@ -35,7 +36,7 @@ export const useLogin = (resetFields: () => void, setError: (message: string) =>
     },
     onError(error: any) {
       if (error.message === "Something went wrong. Please try again."){
-        toastHandler(error.message, "error");
+        toastHandler("Something went wrong at login. Please try again.", "error");
         return;
       }
       setError(error.message);

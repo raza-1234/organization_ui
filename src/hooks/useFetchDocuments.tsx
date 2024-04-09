@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
-import api from "../axios/api";
-import { STATUS_TEXT } from "../types/types";
 import { useQuery } from "react-query";
+import api from "../axios/api";
 import Cookies from "js-cookie";
-import useToastContext from "../contexts/ToastContext";
+
+import { STATUS_TEXT } from "../types/types";
 
 const fetchDocuments = async () => {
   try {
@@ -18,16 +18,13 @@ const fetchDocuments = async () => {
   }
 }
 
-export const useFecthDocuments = (setDocuments: (data: any) => void) => {
-  const { toastHandler } = useToastContext();
+export const useFecthDocuments = (toastHandler: (message: string, variant: string, timeOut?: number) => void) => {
 
   return useQuery("fetchDocuments", fetchDocuments, {
     enabled: !!Cookies.get("session_id"),
-    onSuccess: (data) => {
-      setDocuments(data)
-    },
     onError: () => {
       toastHandler("Something went wrong while fetching documents. Please try again.", "error")
     }
   })
+
 }

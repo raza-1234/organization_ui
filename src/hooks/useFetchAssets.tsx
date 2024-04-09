@@ -1,8 +1,8 @@
 import { AxiosResponse } from "axios";
+import { useMutation } from "react-query";
+
 import api from "../axios/api";
 import { STATUS_TEXT } from "../types/types";
-import { useMutation } from "react-query";
-import useToastContext from "../contexts/ToastContext";
 
 const fetchAssets = async ({documentId, search}: {documentId: string, search?: string}) => {
 
@@ -24,17 +24,13 @@ const fetchAssets = async ({documentId, search}: {documentId: string, search?: s
   }
 }
 
-export const useFetchAssets  = (setAssets: (data: any) => void) => {
-
-  const { toastHandler } = useToastContext();
+export const useFetchAssets  = (toastHandler: (message: string, variant: string, timeOut?: number) => void) => {
 
   return useMutation(fetchAssets, {
     retry: 3,
-    onSuccess: (data) => {   
-      setAssets({documentAsset: data.documentAssets, pagination: data.pagingInfo});
-    },
     onError: () => {  
       toastHandler("Something went wrong while fetching assets. Please try again.", "error")
     }
   })
+
 }
