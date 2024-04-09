@@ -32,7 +32,7 @@ export const ToastProvider = ({children}: Children) => {
   return (
     <ToastContext.Provider value={{toastHandler}}>
       {
-        toastInfo.message && 
+        toastInfo.message && //have to work on it.
         <Toast resetToast={resetToastInfo} {...toastInfo}/>
       }
       {children}

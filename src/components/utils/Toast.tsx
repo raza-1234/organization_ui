@@ -26,26 +26,14 @@ const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut, resetToast}: P
     defaultTimeout = timeOut || ToastTimeout.LONG;
   }
 
-  // useEffect(() => {
-  //   if (message) {
-  //     setShowToast(true);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowToast(false);
+      resetToast()
+    }, timeOut || ToastTimeout.STANDARD);
 
-  //     const timeoutId = setTimeout(() => {
-  //       setShowToast(false);
-  //     }, timeOut || ToastTimeout.STANDARD);
-
-  //     return () => clearTimeout(timeoutId);
-  //   }
-  // }, [message, defaultTimeout]);
-
-    useEffect(() => {
-      const timeoutId = setTimeout(() => {
-        setShowToast(false);
-        resetToast()
-      }, timeOut || ToastTimeout.STANDARD);
-
-      return () => clearTimeout(timeoutId);
-  }, [message, defaultTimeout]);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <>
