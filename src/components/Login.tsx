@@ -4,10 +4,9 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-import { API_FAILS, ButtonText } from "../types/types";
+import { ButtonText } from "../types/types";
 import { useCheckEmail } from "../hooks/useCheckEmail";
 import { useLogin } from "../hooks/useLogin";
-import Toast from "./utils/Toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -90,20 +89,6 @@ const Login = () => {
           <div className="organization_input-field-error">
             <p>{error}</p>
           </div>
-        }
-        {
-          isEmailError && emailError?.message === API_FAILS &&
-          <Toast
-            variant="error"
-            message={emailError?.message}
-          />
-        }
-        {
-          isLoginError && loginError.message === API_FAILS &&
-          <Toast
-            variant="error"
-            message={loginError.message}
-          />
         }
       </div>
     </div>

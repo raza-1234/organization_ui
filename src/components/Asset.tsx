@@ -5,7 +5,6 @@ import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
 import { Document, PayloadType, AssetsType } from "../types/types";
 import { Boolean_False } from "../utils/constants";
-import Toast from "./utils/Toast";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
@@ -33,7 +32,7 @@ const Asset = () => {
     mutate: fetchAssets, 
     isError: isAssetError, 
     error: assetError,
-    isLoading: assetLoading
+    isLoading: assetLoading,
   }: any = useFetchAssets(setAssets); // types 
 
   const { 
@@ -59,7 +58,7 @@ const Asset = () => {
     }
   }
 
-  const onSelectDocument = (id: string) => {    
+  const onSelectDocument = (id: string) => {   
     setDocumentId(id);
   }
 
@@ -79,19 +78,6 @@ const Asset = () => {
     const currentPage = Math.ceil((start + 1)/ currentDataCount);
     return currentPage;
   }
-
-  // const handleError = (loading, error) => {
-  //   return (
-  //     if(error) {
-  //       <></> // message function 
-
-  //     }
-
-  //     if(loading) {
-  //       <></> // loading 
-  //     }
-  //   )
-  // }
 
   return (
     <div className='organization-asset_wrapper'>
@@ -132,21 +118,6 @@ const Asset = () => {
           />
         }
       </div>
-      
-      {
-        isAssetError && 
-        <Toast
-          message={assetError.message}
-          variant="error"
-        />
-      }
-      {
-        isDocumentError && 
-        <Toast
-          message={documentError.message}
-          variant="error"
-        />
-      }
     </div>
   )
 }

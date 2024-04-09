@@ -1,21 +1,22 @@
 import { AxiosResponse } from "axios";
-import { STATUS_TEXT, API_FAILS } from "../types/types";
-import api from "../axios/api";
 import { useMutation } from "react-query";
-import useAuthData from "../contexts/authContext";
-import useDashboardContext from "../contexts/DashboardContext";
 import { useNavigate } from "react-router-dom";
+
+import { STATUS_TEXT } from "../types/types";
+import api from "../axios/api";
+import useAuthData from "../contexts/authContext";
+import useToastContext from "../contexts/ToastContext";
 
 const loginUser = async ({email, password}: {email: string, password: string}) => {
   try {
-    const response: AxiosResponse = await api.post("login", {email, password });      
+    const response: AxiosResponse = await api.post("login", {email, password });
     if (response?.statusText !== STATUS_TEXT){
       return {};
     }
     return response.data.user;
   } catch (err: any){
     console.log("LoginUser: Something went wrong", err);
-    throw new Error(err.response?.data?.message || API_FAILS);
+    throw new Error(err.response?.data?.message || "Something went wrong. Please try again.");
   }
 }
 
@@ -23,19 +24,21 @@ export const useLogin = (resetFields: () => void, setError: (message: string) =>
 
   const navigate = useNavigate();
   const { setUserInfo } = useAuthData();
-  const { setIsLoginToast } = useDashboardContext();
+  const { toastHandler } = useToastContext();
 
   return useMutation(loginUser, {
-    onSuccess(data, variables, context) {
+    onSuccess(data) {
       setUserInfo({...data})
-      setIsLoginToast(true);
       navigate("/dashboard");
       resetFields();
+      toastHandler("successfully login", "success")
     },
-    onError(error: any, variables, context) {
-      if (error.message !== API_FAILS){
-        setError(error.message);
+    onError(error: any) {
+      if (error.message === "Something went wrong. Please try again."){
+        toastHandler(error.message, "error");
+        return;
       }
+      setError(error.message);
     },
   })
 }

@@ -63,8 +63,6 @@ export enum ButtonText {
   Next = "next"
 }
 
-export const API_FAILS = "Something went wrong. Please try again.";
-
 export type PayloadType = {
   id: number;
   value: string
@@ -88,4 +86,10 @@ export type AssetPagination = {
 export type AssetsType = {
   documentAsset: DocumentAssetType[];
   pagination: AssetPagination
+}
+
+export type toastInfo = {
+  variant: string;
+  message: string;
+  timeOut?: number;
 }

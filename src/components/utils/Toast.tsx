@@ -3,14 +3,15 @@ import { useState, useEffect } from 'react';
 import { ToastVariant, ToastTimeout } from "../../utils/constants";
 
 type ParentProp = {
-  variant?: string
-  message: string
-  timeOut?: number
+  variant?: string;
+  message: string;
+  timeOut?: number;
+  resetToast: () => void
 }
 
-const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut}: ParentProp) => {  
-    
-  const [showToast, setShowToast] = useState(true);
+const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut, resetToast}: ParentProp) => {  
+
+  const [showToast, setShowToast] = useState(message ? true: false);
   let toastVariant = variant?.toLowerCase();
   
   let defaultTimeout : number = timeOut || ToastTimeout.STANDARD;
@@ -25,12 +26,27 @@ const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut}: ParentProp) =
     defaultTimeout = timeOut || ToastTimeout.LONG;
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowToast(false);
-    }, defaultTimeout);
-  }, []);
-  
+  // useEffect(() => {
+  //   if (message) {
+  //     setShowToast(true);
+
+  //     const timeoutId = setTimeout(() => {
+  //       setShowToast(false);
+  //     }, timeOut || ToastTimeout.STANDARD);
+
+  //     return () => clearTimeout(timeoutId);
+  //   }
+  // }, [message, defaultTimeout]);
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        setShowToast(false);
+        resetToast()
+      }, timeOut || ToastTimeout.STANDARD);
+
+      return () => clearTimeout(timeoutId);
+  }, [message, defaultTimeout]);
+
   return (
     <>
     {

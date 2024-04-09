@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
 import { Children, User, AuthContextType } from '../types/types';
-import Toast from '../components/utils/Toast';
 import { useFetchUser } from '../hooks/useFetchUser';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,18 +17,9 @@ export const AuthProvider = ({children}: Children) => {
   const {isError, error}: any = useFetchUser(setUserInfo);
 
   return (
-    <>
-      {
-        isError && 
-        <Toast
-          variant='error'
-          message={error.message}
-        />
-      }
-      <AuthContext.Provider value={{userInfo, setUserInfo}}>
-        {children}
-      </AuthContext.Provider>
-    </>
+    <AuthContext.Provider value={{userInfo, setUserInfo}}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 

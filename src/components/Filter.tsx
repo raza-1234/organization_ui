@@ -7,7 +7,6 @@ import Input from "./utils/Input";
 import { PayloadType } from "../types/types";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useDebounce } from "use-debounce";
-import Toast from "./utils/Toast";
 
 type ParentProp = {
   payload: PayloadType[];
@@ -65,13 +64,6 @@ const Filter = ({payload, setAssets, documentId, setDocumentId}: ParentProp) => 
             icon={<LiaSearchSolid/>}
           />
         </div>
-        {
-          isFetchAssetError && 
-          <Toast
-            message={assetError.message}
-            variant="error"
-          />
-        }
       </div>
     </div>
   )
