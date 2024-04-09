@@ -13,6 +13,7 @@ import { useFecthDocuments } from "../hooks/useFetchDocuments";
 import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
 import Status from "./utils/Status";
+import Button from "./utils/Button";
 
 const Asset = () => {
 
@@ -109,11 +110,16 @@ const Asset = () => {
             currentPage={getCurrentPage(assets.pagination?.start as number, assets.pagination?.currentDataCount as number)}
           />
           :
-          <Status
-            className="asset_error"
-            variant="ERROR"
-            message={"assetError?.message"}
-          />
+          <div className="assets-error_wrapper">
+            <Status
+              variant="error"
+              message={assetError?.message}
+            />
+            <Button
+              value="retry"
+              clickHandler={modalSuccessHandler}
+            />
+          </div>
         }
       </div>
 

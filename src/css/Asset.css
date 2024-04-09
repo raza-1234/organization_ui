@@ -3,8 +3,18 @@
   background-color: #FAFAFB;
 }
 
-.asset_error {
-  padding-top: 100px;
+.assets-error_wrapper {
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px ;
+}
+
+@media only screen and (max-width: 425px) {
+  .assets-error_wrapper {
+    flex-direction: column;
+  }
 }
 
 /* below classes used in useAssetColumns hook */
