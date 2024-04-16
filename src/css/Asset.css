@@ -1,11 +1,23 @@
-.organization-asset_wrapper {
-  position: relative;
-}
-
 .organization-asset-table {
   min-height: 84vh;
   background-color: #FAFAFB;
 }
+
+.assets-error_wrapper {
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px ;
+}
+
+@media only screen and (max-width: 425px) {
+  .assets-error_wrapper {
+    flex-direction: column;
+  }
+}
+
+/* below classes used in useAssetColumns hook */
 
 .organization_assets-media {
   width: 30px;
@@ -13,29 +25,21 @@
   color: #4E8891;
 }
 
-.asset_type_column {
+.asset-type_column {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 5px;
 }
 
-.organization_assets-updated-date {
-  text-align: center;
-}
-
-.delete_icon {
+.action-column_delete-icon {
   color: #C9263F;
   cursor: pointer;
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
 }
 
-/* below two classes are used in useAssetColumns */
-.sort_data_icons {
-  display: inline-flex;
-  flex-direction: column;
-}
-
-.column_wrapper {
-  display: flex;
-  align-items: center;
+.date {
+  text-align: center;
 }

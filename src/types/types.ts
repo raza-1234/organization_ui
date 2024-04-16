@@ -71,11 +71,13 @@ export type PayloadType = {
 }
 
 export type ColumnType = {
-  header: string | JSX.Element,
+  header: string,
   key: string,
   field?: string,
   className?: string,
-  render?: (value?: any, item?: any) => any  
+  render?: (value?: any, item?: any) => any;
+  width?: string;
+  sort?: boolean;
 }
 
 export type AssetPagination = {
