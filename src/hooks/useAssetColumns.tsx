@@ -1,6 +1,6 @@
 import React from 'react'
 import { BsCameraVideoFill, BsImage } from 'react-icons/bs';
-import { MdAudioFile, MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { MdAudioFile } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { DocumentAssetType, AssetMedia } from '../types/types';
 
@@ -11,6 +11,8 @@ const useAssetColumns = () => {
         header: "",
         key: "image",
         field: "image",
+        width: "10%",
+        sort: false,
         render: (value: string, item: DocumentAssetType) => {
           const Url = item.url.slice(item.url.indexOf("Assets"));
           let children: JSX.Element;
@@ -28,22 +30,19 @@ const useAssetColumns = () => {
         }
       },  
       {
-        header: 
-        <div className='column_wrapper'>
-          FileName
-          <span className='sort_data_icons'>
-            <MdOutlineKeyboardArrowUp />
-            <MdOutlineKeyboardArrowDown/>
-          </span>
-        </div>,
+        header: "FileName",
+        width: "25%",
         key: "title",
-        field: "title"  
+        field: "title",
+        sort: true
       },
       {
         header: "Date Last Updated",
         key: "date",
         field: "date",
         className: "date",
+        width: "30%",
+        sort: true,
         render: (value: string, item: DocumentAssetType) => {
           return (
             <div className="date">
@@ -56,6 +55,8 @@ const useAssetColumns = () => {
         header: "Type",
         key: "type",
         field: "type",
+        width: "25%",
+        sort: true,
         render: (value: string, item: DocumentAssetType) => {
           const fileExtension = item.url.slice(item.url.indexOf(".") + 1).toUpperCase();
           let children: JSX.Element;
@@ -69,7 +70,7 @@ const useAssetColumns = () => {
             children = <></>
           }
           return (
-            <div className="asset_type_column">
+            <div className="asset-type_column">
               {children}
               {fileExtension}
             </div>
@@ -80,8 +81,10 @@ const useAssetColumns = () => {
         header: "",
         key: "action",
         field: "deleteIcon",
+        width: "10%",
+        sort: false,
         render: (value: string, item: DocumentAssetType) => (
-          <RiDeleteBin6Line className="delete_icon" onClick={(event) => {
+          <RiDeleteBin6Line className="action-column_delete-icon" onClick={(event) => {
             event.stopPropagation();
             console.log("item presssing del button");
           }}/>

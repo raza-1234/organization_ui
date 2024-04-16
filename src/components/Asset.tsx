@@ -2,6 +2,7 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 
+
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
 import { Document, PayloadType } from "../types/types";
@@ -11,6 +12,8 @@ import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
 import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
+import Status from "./utils/Status";
+import Button from "./utils/Button";
 import useToastContext from "../contexts/ToastContext";
 
 const Asset = () => {
@@ -77,7 +80,7 @@ const Asset = () => {
   const getCurrentPage = (start: number, currentDataCount: number) => {
     const currentPage = Math.ceil((start + 1)/ currentDataCount);
     return currentPage;
-  }  
+  }
 
   return (
     <div className='organization-asset_wrapper'>
@@ -100,14 +103,14 @@ const Asset = () => {
       }
 
       <div className="organization-asset-table">
-        { assetsData?.documentAssets?.length > 0 &&
+        { !isAssetError && !assetError?.message ?
           <Table
             columns = {columns}
             data = {assetsData?.documentAssets}
             isLoading = {assetLoading}
             didFail = {isAssetError}
             error={assetError?.message}
-            onRowClicked={()=> {}}
+            onRowClicked={tableRowClickHandler}
             pageCount = {pageCount}
             onPageChange = {onPageChange}
             onPageSizeChanged = {onPageSizeChanged}
@@ -116,8 +119,44 @@ const Asset = () => {
             moreData={assetsData?.pagingInfo.nextPage ? true: false}
             currentPage={getCurrentPage(assetsData?.pagingInfo.start as number, assetsData?.pagingInfo.currentDataCount as number)}
           />
+          :
+          <div className="assets-error_wrapper">
+            <Status
+              variant="error"
+              message={assetError?.message}
+            />
+            <Button
+              value="retry"
+              clickHandler={modalSuccessHandler}
+            />
+          </div>
         }
       </div>
+
+      {
+        isModelOpen &&
+        <DialogBox
+          title="select a document to view assets"
+          component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
+          okButtonText="done"
+          onOk={modalSuccessHandler}
+        />
+      }
+      
+      {
+        isAssetError && 
+        <Toast
+          message={assetError.message}
+          variant="error"
+        />
+      }
+      {
+        isDocumentError && 
+        <Toast
+          message={documentError.message}
+          variant="error"
+        />
+      }
     </div>
   )
 }

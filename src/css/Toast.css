@@ -1,11 +1,11 @@
 .toast-wrapper {
-  padding: 15px 30px;
+  padding: 10px 30px;
   width: fit-content;
   position: fixed;
-  top: 6px;
+  top: 13px;
   right: 50px;
   color: white;
-  border-radius: 5px;
+  border-radius: 4px;
   z-index: 1;
   font-weight: 500;
 }
