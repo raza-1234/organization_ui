@@ -19,17 +19,15 @@ type ParentProp = {
   crossIconClassName?: string;
   buttonPosition?: string;
   closeOnBgClick?: boolean;
-  loading?: boolean;
-  error?: string
 }
 
 const Modal = (prop: ParentProp) => {
 
   const {
     title = ModalTitle,
-    component, 
-    onClose, 
-    onOk, 
+    component,
+    onClose,
+    onOk,
     onCancel,
     okButtonText = ModalButtonText.OK,
     cancelButtonText = ModalButtonText.CANCEL,
@@ -37,8 +35,6 @@ const Modal = (prop: ParentProp) => {
     crossIconClassName,
     buttonPosition,
     closeOnBgClick = Boolean_True,
-    loading = Boolean_False,
-    error
   } = prop;
 
   const [isShowModal, setIsShowModal] = useState(Boolean_True);
@@ -92,21 +88,9 @@ const Modal = (prop: ParentProp) => {
             <Button
               value={okButtonText}
               clickHandler={handleOk}
+              className="ok_button"
             />
           </footer>
-          }
-          {
-            loading &&
-            <div className="data_loader">
-              <Loader/>
-              <h4>Loading Data</h4>
-            </div>
-          }
-          {
-            !loading && error && 
-            <div className="modal_error">
-              <h5>{error}</h5>
-            </div>
           }
         </div>
         <div className="modal_screen-wrapper" onClick={() => closeOnBgClick && closeModal()}/>
