@@ -2,7 +2,6 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 
-
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
 import { Document, PayloadType } from "../types/types";
@@ -90,17 +89,6 @@ const Asset = () => {
         setDocumentId = {setDocumentId}
         fetchAssets = {fetchAssets}
       />
-      {
-        isModelOpen &&
-        <DialogBox
-          title="select a document to view assets"
-          component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
-          okButtonText="done"
-          loading={isDocumentLoading}
-          error = {documentError?.message}
-          onOk={modalSuccessHandler}
-        />
-      }
 
       <div className="organization-asset-table">
         { !isAssetError && !assetError?.message ?
@@ -114,10 +102,10 @@ const Asset = () => {
             pageCount = {pageCount}
             onPageChange = {onPageChange}
             onPageSizeChanged = {onPageSizeChanged}
-            currentDataCount={assetsData?.pagingInfo.currentDataCount as number}
-            totalDataCount={assetsData?.pagingInfo.totalCount as number}
-            moreData={assetsData?.pagingInfo.nextPage ? true: false}
-            currentPage={getCurrentPage(assetsData?.pagingInfo.start as number, assetsData?.pagingInfo.currentDataCount as number)}
+            currentDataCount={assetsData?.pagingInfo?.currentDataCount as number}
+            totalDataCount={assetsData?.pagingInfo?.totalCount as number}
+            moreData={assetsData?.pagingInfo?.nextPage ? true: false}
+            currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, assetsData?.pagingInfo?.currentDataCount as number)}
           />
           :
           <div className="assets-error_wrapper">
@@ -140,21 +128,6 @@ const Asset = () => {
           component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
           okButtonText="done"
           onOk={modalSuccessHandler}
-        />
-      }
-      
-      {
-        isAssetError && 
-        <Toast
-          message={assetError.message}
-          variant="error"
-        />
-      }
-      {
-        isDocumentError && 
-        <Toast
-          message={documentError.message}
-          variant="error"
         />
       }
     </div>
