@@ -39,7 +39,7 @@ const Login = () => {
 
   const { 
     mutate: logInMutation, 
-  }: any = useLogin(resetFields, setError, toastHandler, setUserInfo);
+  }: any = useLogin(resetFields, setError, toastHandler, setUserInfo, navigate);
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
