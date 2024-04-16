@@ -2,11 +2,11 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 
+
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
-import { Document, PayloadType, AssetsType } from "../types/types";
+import { Document, PayloadType } from "../types/types";
 import { Boolean_False } from "../utils/constants";
-import Toast from "./utils/Toast";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
@@ -14,40 +14,39 @@ import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
 import Status from "./utils/Status";
 import Button from "./utils/Button";
+import useToastContext from "../contexts/ToastContext";
 
 const Asset = () => {
 
   const [isModelOpen, setIsModelOpen] = useState(Boolean_False);
-  const [documents, setDocuments] = useState<Document[]>();
   const [documentId, setDocumentId] = useState<string>();
   const [pageCount, setPageCount] = useState<number>(10);
-  const [assets, setAssets] = useState<AssetsType>({
-    documentAsset: [],
-    pagination: {}
-  });
+
+  const { toastHandler } = useToastContext();
+  const columns = useAssetColumns();
 
   useEffect(() => {
     setIsModelOpen(!isModelOpen);
   }, []);
 
-  const columns = useAssetColumns();
-
   const { 
     mutate: fetchAssets, 
     isError: isAssetError, 
     error: assetError,
-    isLoading: assetLoading
-  }: any = useFetchAssets(setAssets); // types 
+    isLoading: assetLoading,
+    data: assetsData
+  }: any = useFetchAssets(toastHandler); // types
 
-  const { 
+  const {
     isError: isDocumentError, 
     error: documentError, 
-    isLoading: isDocumentLoading 
-  }: any = useFecthDocuments(setDocuments);// types 
+    isLoading: isDocumentLoading,
+    data: documentsData
+  }: any = useFecthDocuments(toastHandler); // types
   
   const documentPayload = () => {
     const payload: PayloadType[] = [];
-    documents?.map((document) => {
+    documentsData?.map((document: Document) => {
       payload.push({
         id: document.id,
         value: document.documentName
@@ -62,7 +61,7 @@ const Asset = () => {
     }
   }
 
-  const onSelectDocument = (id: string) => {    
+  const onSelectDocument = (id: string) => {   
     setDocumentId(id);
   }
 
@@ -85,18 +84,29 @@ const Asset = () => {
 
   return (
     <div className='organization-asset_wrapper'>
-      <Filter // NAME
+      <Filter
         payload = {documentPayload()}
-        setAssets = {setAssets}
         documentId = {documentId}
         setDocumentId = {setDocumentId}
+        fetchAssets = {fetchAssets}
       />
+      {
+        isModelOpen &&
+        <DialogBox
+          title="select a document to view assets"
+          component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
+          okButtonText="done"
+          loading={isDocumentLoading}
+          error = {documentError?.message}
+          onOk={modalSuccessHandler}
+        />
+      }
 
       <div className="organization-asset-table">
         { !isAssetError && !assetError?.message ?
           <Table
             columns = {columns}
-            data = {assets.documentAsset}
+            data = {assetsData?.documentAssets}
             isLoading = {assetLoading}
             didFail = {isAssetError}
             error={assetError?.message}
@@ -104,10 +114,10 @@ const Asset = () => {
             pageCount = {pageCount}
             onPageChange = {onPageChange}
             onPageSizeChanged = {onPageSizeChanged}
-            currentDataCount={assets.pagination?.currentDataCount as number}
-            totalDataCount={assets.pagination?.totalCount as number}
-            moreData={assets.pagination?.nextPage ? true: false}
-            currentPage={getCurrentPage(assets.pagination?.start as number, assets.pagination?.currentDataCount as number)}
+            currentDataCount={assetsData?.pagingInfo.currentDataCount as number}
+            totalDataCount={assetsData?.pagingInfo.totalCount as number}
+            moreData={assetsData?.pagingInfo.nextPage ? true: false}
+            currentPage={getCurrentPage(assetsData?.pagingInfo.start as number, assetsData?.pagingInfo.currentDataCount as number)}
           />
           :
           <div className="assets-error_wrapper">

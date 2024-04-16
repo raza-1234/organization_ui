@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { useMutation } from "react-query";
 
 import api from "../axios/api";
-import { STATUS_TEXT, API_FAILS } from "../types/types";
+import { STATUS_TEXT } from "../types/types";
 
 const fetchAssets = async ({documentId, search}: {documentId: string, search?: string}) => {
 
@@ -20,14 +20,17 @@ const fetchAssets = async ({documentId, search}: {documentId: string, search?: s
     return response.data;
   } catch (err: any){
     console.log("Assets: Something went wrong.", err.response?.data?.message);
-    throw new Error(err.response?.data?.message || API_FAILS);
+    throw new Error(err.response?.data?.message || "Something went wrong while fetching assets. Please try again.");
   }
 }
 
-export const useFetchAssets  = (setAssets: (data: any) => void) => {
+export const useFetchAssets  = (toastHandler: (message: string, variant: string, timeOut?: number) => void) => {
+
   return useMutation(fetchAssets, {
-    onSuccess: (data) => {   
-      setAssets({documentAsset: data.documentAssets, pagination: data.pagingInfo});
+    retry: 3,
+    onError: () => {  
+      toastHandler("Something went wrong while fetching assets. Please try again.", "error")
     }
   })
+
 }

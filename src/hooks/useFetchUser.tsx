@@ -1,8 +1,9 @@
 import { AxiosResponse } from "axios";
 import api from "../axios/api";
-import { STATUS_TEXT, API_FAILS, User } from "../types/types";
 import { useQuery } from "react-query";
 import Cookies from "js-cookie";
+
+import { STATUS_TEXT, User } from "../types/types";
 
 const fetchUser = async () => {    
   try {
@@ -12,15 +13,22 @@ const fetchUser = async () => {
     }      
     return response?.data;
   } catch (err){
-    throw new Error(API_FAILS);
+    throw new Error("Something went wrong while fetching user.");
   }
 }
 
-export const useFetchUser  = (setUserInfo: (data: User | undefined) => void) => {
+export const useFetchUser  = (
+  setUserInfo: (data: User) => void,
+  toastHandler: (message: string, variant: string, timeOut?: number) => void,
+  ) => {
+
   return useQuery("fetchUserData", fetchUser, {
     enabled: !!Cookies.get("session_id"),
-    onSuccess: (data) => {      
+    onSuccess: (data) => {
       setUserInfo(data.user);
+    },
+    onError: () => {
+      toastHandler("Something went wrong while fetching user. Please try again.", "error")
     }
   })
 }
