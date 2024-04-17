@@ -114,3 +114,7 @@ export type FetchDocuments = {
   error: any;
   refetch: () => void;
 }
+
+export type CheckEmail = {
+  message: string
+}

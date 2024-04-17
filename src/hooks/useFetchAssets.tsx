@@ -2,9 +2,9 @@ import { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 
 import api from "../axios/api";
-import { STATUS_TEXT } from "../types/types";
+import { AssetsType, STATUS_TEXT } from "../types/types";
 
-const fetchAssets = async ({documentId, search}: {documentId?: string, search?: string}) => {
+const fetchAssets = async ({documentId, search}: {documentId?: string, search?: string}): Promise<AssetsType | undefined> => {
   
   let url = `assets/getDocumentAssets/${documentId}`;
   if (search){
