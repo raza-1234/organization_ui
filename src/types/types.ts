@@ -110,4 +110,7 @@ export type FetchAssetsResult = {
 
 export type FetchDocuments = {
   data?: Document[]; 
+  isLoading: boolean;
+  error: any;
+  refetch: () => void;
 }

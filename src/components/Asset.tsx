@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
 
 import DialogBox from './utils/Modal';
-import SelectDocument from "./utils/SelectInput";
 import { Document, PayloadType, FetchAssetsResult, FetchDocuments } from "../types/types";
 import { Boolean_False } from "../utils/constants";
 import Filter from "./Filter";
@@ -15,6 +14,7 @@ import useAssetColumns from "../hooks/useAssetColumns";
 import Status from "./utils/Status";
 import Button from "./utils/Button";
 import useToastContext from "../contexts/ToastContext";
+import SearchableSelect from "./utils/SearchableSelect";
 
 const Asset = () => {
 
@@ -42,7 +42,10 @@ const Asset = () => {
   }: FetchAssetsResult = useFetchAssets(toastHandler, documentId, debouncedValue);
 
   const {
-    data: documentsData
+    data: documentsData,
+    isLoading: isDocumentLoading,
+    error: documentError,
+    refetch: refetchDocuments
   }: FetchDocuments = useFecthDocuments(toastHandler);
   
   const documentPayload = () => {
@@ -94,6 +97,9 @@ const Asset = () => {
         documentId = {documentId}
         setDocumentId = {setDocumentId}
         onChange = {onChange}
+        loading = {isDocumentLoading}
+        error = {documentError?.message && "Something went wrong."}
+        refetchDocuments = {refetchDocuments}
       />
 
       <div className="organization-asset-table">
@@ -131,7 +137,16 @@ const Asset = () => {
         isModelOpen &&
         <DialogBox
           title="select a document to view assets"
-          component={<SelectDocument payLoad= {documentPayload()} onChange={onSelectDocument}/>}
+          component={
+            <SearchableSelect 
+              payLoad= {documentPayload()}
+              onChange={onSelectDocument}
+              loading={isDocumentLoading}
+              error={documentError?.message}
+              placeholder="Select Document"
+              retryHandler={refetchDocuments}
+            />
+          }
           okButtonText="done"
           onOk={modalSuccessHandler}
         />

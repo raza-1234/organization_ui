@@ -2,25 +2,28 @@ import "../css/Filter.css";
 
 import { LiaSearchSolid } from "react-icons/lia";
 
-import SelectDocument from './utils/SelectInput';
 import Input from "./utils/Input";
 import { PayloadType } from "../types/types";
+import SearchableSelect from "./utils/SearchableSelect";
 
 type ParentProp = {
-  payload: PayloadType[];
+  payload?: PayloadType[];
   documentId?: string;
   setDocumentId: (value: string) => void;
-  onChange: (value: string) => void
+  onChange: (value: string) => void;
+  loading?: boolean;
+  error?: string;
+  refetchDocuments?: () => void;
 }
 
-const Filter = ({payload, documentId, setDocumentId, onChange}: ParentProp) => {
+const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments}: ParentProp) => {
 
   const onSelect = (value: string) => {
     setDocumentId(value)
   }
 
   const selectedDocument = () => {
-    const filteredDocument = payload.find((document) => document.id.toString() === documentId);
+    const filteredDocument = payload?.find((document) => document.id.toString() === documentId);
     return filteredDocument?.value;
   }
   
@@ -31,11 +34,14 @@ const Filter = ({payload, documentId, setDocumentId, onChange}: ParentProp) => {
           <h3>Asset Library</h3>
           <div className="select-document-wrapper">
             <h5>Document:</h5> 
-            <SelectDocument
-              placeholder={selectedDocument()}
+            <SearchableSelect
               onChange={onSelect}
               payLoad={payload}
-              className="select-document"
+              placeholder="Select Document"
+              initialValue={selectedDocument()}
+              loading={loading}
+              error={error}
+              retryHandler={refetchDocuments}
             />
           </div>
         </div>
