@@ -35,11 +35,11 @@ const Login = () => {
 
   const { 
     mutate: checkEmailMutation
-  }: any = useCheckEmail(setIsEmailExist, setError, toastHandler);  
+  } = useCheckEmail(setIsEmailExist, setError, toastHandler);  
 
   const { 
-    mutate: logInMutation, 
-  }: any = useLogin(resetFields, setError, toastHandler, setUserInfo, navigate);
+    mutate: logInMutation
+  } = useLogin(resetFields, setError, toastHandler, setUserInfo, navigate);
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

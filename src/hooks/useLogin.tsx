@@ -4,7 +4,7 @@ import { useMutation } from "react-query";
 import { STATUS_TEXT, User } from "../types/types";
 import api from "../axios/api";
 
-const loginUser = async ({email, password}: {email: string, password: string}) => {
+const loginUser = async ({email, password}: {email: string, password: string}): Promise<User | undefined> => {
   try {
     const response: AxiosResponse = await api.post("login", {email, password });
     if (response?.statusText === STATUS_TEXT){
@@ -26,10 +26,12 @@ export const useLogin = (
 
   return useMutation(loginUser, {
     onSuccess(data) {
-      setUserInfo({...data})
-      navigate("/dashboard");
-      resetFields();
-      toastHandler("successfully login", "success");
+      if (data){
+        setUserInfo(data)
+        navigate("/dashboard");
+        resetFields();
+        toastHandler("successfully login", "success");
+      }
     },
     onError(error: any) {
       if (error.message === "User does not exists." || error.message === "Incorrect password"){

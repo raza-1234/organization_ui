@@ -2,12 +2,12 @@ import { AxiosResponse } from "axios";
 import { useMutation } from "react-query";
 
 import api from "../axios/api";
-import { STATUS_TEXT } from "../types/types";
+import { STATUS_TEXT, CheckEmail } from "../types/types";
 
-const checkEmail = async (email: string) => {
+const checkEmail = async (email: string): Promise<CheckEmail | undefined> => {
   try {
     const response: AxiosResponse = await api.post("check-email", { email });
-    if (response?.statusText === STATUS_TEXT){
+    if (response?.statusText === STATUS_TEXT){      
       return response.data;
     }
   } catch (err: any){      

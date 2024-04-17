@@ -5,11 +5,11 @@ import Cookies from "js-cookie";
 import api from "../axios/api";
 import { STATUS_TEXT, User } from "../types/types";
 
-const fetchUser = async () => {    
+const fetchUser = async (): Promise<User | undefined> => {
   try {
     const response: AxiosResponse = await api.get("user");
-    if (response.statusText === STATUS_TEXT){
-      return response?.data;
+    if (response.statusText === STATUS_TEXT){      
+      return response?.data?.user;
     }      
   } catch (err){
     console.log("Fetching User: Something went wrong.", err);
@@ -25,7 +25,9 @@ export const useFetchUser  = (
   return useQuery("fetchUserData", fetchUser, {
     enabled: !!Cookies.get("session_id"),
     onSuccess: (data) => {
-      setUserInfo(data.user);
+      if (data){
+        setUserInfo(data);
+      }
     },
     onError: () => {
       toastHandler("Something went wrong while fetching user. Please try again.", "error")

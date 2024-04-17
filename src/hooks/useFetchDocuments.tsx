@@ -4,12 +4,12 @@ import Cookies from "js-cookie";
 
 import api from "../axios/api";
 
-import { STATUS_TEXT } from "../types/types";
+import { STATUS_TEXT, Document } from "../types/types";
 
-const fetchDocuments = async () => {
+const fetchDocuments = async (): Promise<Document[] | undefined> => {
   try {
     const response: AxiosResponse = await api.get("document/getDocument");
-    if (response.statusText === STATUS_TEXT){
+    if (response.statusText === STATUS_TEXT){      
       return response.data.documentData;
     }      
   } catch (err){
