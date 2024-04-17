@@ -123,7 +123,7 @@ const Table = (prop: ParentProp) => {
             </tbody>
           </table>
           {
-            data?.length !== 0 &&
+            data?.length !== 0 && data?.length &&
             <Pagination
               onPageChange={onPageChange}
               pageCount = {pageCount}

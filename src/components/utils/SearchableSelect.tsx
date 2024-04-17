@@ -11,7 +11,9 @@ type ParentProp = {
   loading?: boolean;
   error?: string;
   onChange: (id: string) => void;
-  placeholder?: string
+  placeholder?: string;
+  initialValue?: string;
+  retryHandler?: () => void
 }
 
 const SearchableSelecet = (prop: ParentProp) => {
@@ -21,18 +23,26 @@ const SearchableSelecet = (prop: ParentProp) => {
     loading,
     error,
     onChange,
-    placeholder
-  } = prop;
-
+    placeholder,
+    initialValue,
+    retryHandler
+  } = prop;  
+  
   const [isDropdown, setIsDropDown] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialValue ? initialValue: "");
   const [filteredOptions, setFilteredOption] = useState<PayloadType[]>();
 
   useEffect(() => {
     const data = formatPayload();
-    const filterOptions = data.filter((item) => item.value?.includes(search));
+    const filterOptions = data.filter((item) => item.value?.includes(search.toLowerCase()));
     setFilteredOption(filterOptions);
-  }, [search])
+  }, [search, payLoad])
+
+  useEffect(() => { //not sure is this approach ok or not.
+    if (initialValue?.trim()){
+      setSearch(initialValue)
+    }
+  }, [initialValue])
 
   const closeDropDown = () => {
     setIsDropDown(false);
@@ -45,7 +55,7 @@ const SearchableSelecet = (prop: ParentProp) => {
 
   const formatPayload = () => {
     const data: PayloadType[] = [];
-    for (let i = 0; i < payLoad.length; i++){
+    for (let i = 0; i < payLoad?.length; i++){
       data.push({
         id: payLoad[i].id,
         value: payLoad[i].value
@@ -62,7 +72,7 @@ const SearchableSelecet = (prop: ParentProp) => {
 
   return (
     <div className="select_wrapper">
-      <div className="input_wrapper">
+      <div className="select_input_wrapper">
         <input
           type="text"
           onChange = {(e) => onChangeInput(e.target.value)}
@@ -87,7 +97,12 @@ const SearchableSelecet = (prop: ParentProp) => {
             </div>
             : !loading && error ? 
             <div className="select-option error_status">
-              {error}
+              <p>
+                {error}
+                <span className="retry" onClick={retryHandler}>
+                  Retry
+                </span>
+              </p>
             </div>
             :<div className="select-options_wrapper">
               {
