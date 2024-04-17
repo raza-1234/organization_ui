@@ -86,8 +86,8 @@ export type AssetPagination = {
 }
 
 export type AssetsType = {
-  documentAsset: DocumentAssetType[];
-  pagination: AssetPagination
+  documentAssets: DocumentAssetType[];
+  pagingInfo: AssetPagination
 }
 
 export type toastInfo = {
@@ -98,4 +98,16 @@ export type toastInfo = {
 
 export type ToastContextType = {
   toastHandler: (message: string, variant: string, timeOut?: number ) =>  void
+}
+
+export type FetchAssetsResult = {
+  isError: boolean;
+  error: any; 
+  isLoading: boolean;
+  data?: AssetsType; 
+  refetch: () => void; 
+}
+
+export type FetchDocuments = {
+  data?: Document[]; 
 }
