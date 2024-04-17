@@ -1,20 +1,20 @@
 import { AxiosResponse } from "axios";
-import { useMutation } from "react-query";
+import { useQuery } from "react-query";
 
 import api from "../axios/api";
 import { STATUS_TEXT } from "../types/types";
 
-const fetchAssets = async ({documentId, search}: {documentId: string, search?: string}) => {
-
+const fetchAssets = async ({documentId, search}: {documentId?: string, search?: string}) => {
+  
   let url = `assets/getDocumentAssets/${documentId}`;
   if (search){
     url += `?search=${search}`
-  }  
+  }
   
   try {
     const response: AxiosResponse = await api.get(url);
     if (response.statusText !== STATUS_TEXT){
-      return {};
+      throw new Error("Something went wrong while fetching assets. Please try again.");
     }
     
     return response.data;
@@ -24,13 +24,16 @@ const fetchAssets = async ({documentId, search}: {documentId: string, search?: s
   }
 }
 
-export const useFetchAssets  = (toastHandler: (message: string, variant: string, timeOut?: number) => void) => {
+export const useFetchAssets  = (
+  toastHandler: (message: string, variant: string, timeOut?: number) => void,
+  documentId?: string,
+  search?: string
+) => {    
 
-  return useMutation(fetchAssets, {
-    retry: 3,
+  return useQuery(["fetchAssets", {documentId, search}], () => fetchAssets({documentId, search}), {
+    enabled: !!documentId,
     onError: () => {  
       toastHandler("Something went wrong while fetching assets. Please try again.", "error")
     }
   })
-
 }

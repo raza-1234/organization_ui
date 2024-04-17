@@ -1,6 +1,7 @@
 import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
+import { useDebounce } from "use-debounce";
 
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
@@ -20,26 +21,27 @@ const Asset = () => {
   const [isModelOpen, setIsModelOpen] = useState(Boolean_False);
   const [documentId, setDocumentId] = useState<string>();
   const [pageCount, setPageCount] = useState<number>(10);
+  const [id, setId] = useState<string>();
+
+  const [search, setSearch] = useState("");
+  const [debouncedValue] = useDebounce(search, 500);
 
   const { toastHandler } = useToastContext();
   const columns = useAssetColumns();
 
   useEffect(() => {
-    setIsModelOpen(!isModelOpen);
+    setIsModelOpen(true);
   }, []);
 
   const { 
-    mutate: fetchAssets, 
     isError: isAssetError, 
     error: assetError,
     isLoading: assetLoading,
-    data: assetsData
-  }: any = useFetchAssets(toastHandler); // types
+    data: assetsData,
+    refetch: refetchAssets
+  }: any = useFetchAssets(toastHandler, documentId, debouncedValue); // types
 
   const {
-    isError: isDocumentError, 
-    error: documentError, 
-    isLoading: isDocumentLoading,
     data: documentsData
   }: any = useFecthDocuments(toastHandler); // types
   
@@ -54,14 +56,18 @@ const Asset = () => {
     return payload;
   }
 
+  const onChange = (value: string) => {
+    setSearch(value);
+  }
+
   const modalSuccessHandler = () => {
-    if (documentId){
-      fetchAssets({documentId});
+    if (id){
+      setDocumentId(id)
     }
   }
 
   const onSelectDocument = (id: string) => {   
-    setDocumentId(id);
+    setId(id)
   }
 
   const onPageChange = (value: number) => {
@@ -87,7 +93,7 @@ const Asset = () => {
         payload = {documentPayload()}
         documentId = {documentId}
         setDocumentId = {setDocumentId}
-        fetchAssets = {fetchAssets}
+        onChange = {onChange}
       />
 
       <div className="organization-asset-table">
@@ -115,7 +121,7 @@ const Asset = () => {
             />
             <Button
               value="retry"
-              clickHandler={modalSuccessHandler}
+              clickHandler={refetchAssets}
             />
           </div>
         }
