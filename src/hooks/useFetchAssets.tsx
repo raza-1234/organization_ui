@@ -6,18 +6,16 @@ import { STATUS_TEXT } from "../types/types";
 
 const fetchAssets = async ({documentId, search}: {documentId?: string, search?: string}) => {
   
-  let url = `assets/getDocumentAssets/${documentId}`;
+  let url = `assets/getDocumentAssetss/${documentId}`;
   if (search){
     url += `?search=${search}`
   }
   
   try {
     const response: AxiosResponse = await api.get(url);
-    if (response.statusText !== STATUS_TEXT){
-      throw new Error("Something went wrong while fetching assets. Please try again.");
+    if (response.statusText === STATUS_TEXT){
+      return response.data;
     }
-    
-    return response.data;
   } catch (err: any){
     console.log("Assets: Something went wrong.", err.response?.data?.message);
     throw new Error(err.response?.data?.message || "Something went wrong while fetching assets. Please try again.");

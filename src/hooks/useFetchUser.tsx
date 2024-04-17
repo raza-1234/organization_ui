@@ -1,18 +1,18 @@
 import { AxiosResponse } from "axios";
-import api from "../axios/api";
 import { useQuery } from "react-query";
 import Cookies from "js-cookie";
 
+import api from "../axios/api";
 import { STATUS_TEXT, User } from "../types/types";
 
 const fetchUser = async () => {    
   try {
     const response: AxiosResponse = await api.get("user");
-    if (response.statusText !== STATUS_TEXT){
-      return {};
+    if (response.statusText === STATUS_TEXT){
+      return response?.data;
     }      
-    return response?.data;
   } catch (err){
+    console.log("Fetching User: Something went wrong.", err);
     throw new Error("Something went wrong while fetching user.");
   }
 }
