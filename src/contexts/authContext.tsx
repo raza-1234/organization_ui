@@ -17,7 +17,7 @@ export const AuthProvider = ({children}: Children) => {
 
   const { toastHandler } = useToastContext();
 
-  const {isError, error}: any = useFetchUser(setUserInfo, toastHandler);
+  const results = useFetchUser(setUserInfo, toastHandler);
 
   return (
     <AuthContext.Provider value={{userInfo, setUserInfo}}>

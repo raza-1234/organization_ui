@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 
 import DialogBox from './utils/Modal';
 import SelectDocument from "./utils/SelectInput";
-import { Document, PayloadType } from "../types/types";
+import { Document, PayloadType, FetchAssetsResult, FetchDocuments } from "../types/types";
 import { Boolean_False } from "../utils/constants";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
@@ -39,11 +39,11 @@ const Asset = () => {
     isLoading: assetLoading,
     data: assetsData,
     refetch: refetchAssets
-  }: any = useFetchAssets(toastHandler, documentId, debouncedValue); // types
+  }: FetchAssetsResult = useFetchAssets(toastHandler, documentId, debouncedValue);
 
   const {
     data: documentsData
-  }: any = useFecthDocuments(toastHandler); // types
+  }: FetchDocuments = useFecthDocuments(toastHandler);
   
   const documentPayload = () => {
     const payload: PayloadType[] = [];

@@ -6,7 +6,7 @@ import { STATUS_TEXT } from "../types/types";
 
 const fetchAssets = async ({documentId, search}: {documentId?: string, search?: string}) => {
   
-  let url = `assets/getDocumentAssetss/${documentId}`;
+  let url = `assets/getDocumentAssets/${documentId}`;
   if (search){
     url += `?search=${search}`
   }
