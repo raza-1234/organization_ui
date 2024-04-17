@@ -2,10 +2,10 @@ import "../css/Header.css";
 
 import { Fragment, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { Link } from "react-router-dom";
-import Logout from "../utils/logout";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthData from "../contexts/authContext";
 import { STATUS_TEXT } from "../types/types";
+import { useLogout } from "../hooks/useLogout";
 
 const Header = () => {
 
@@ -13,6 +13,8 @@ const Header = () => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const { userInfo, setUserInfo } = useAuthData();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -35,16 +37,10 @@ const Header = () => {
     setIsDropDown(!isDropDown);
   }
 
+  const { mutate: logout } = useLogout(setUserInfo, toggleDropDown, navigate);
+
   const logOut = async () => {
-    try {
-      const response = await Logout();
-      if (response.statusText === STATUS_TEXT){
-        setUserInfo(undefined);
-        toggleDropDown();
-      }
-    } catch(err: any){
-      console.log("errror at logout", err);
-    }
+    logout()
   }
   
   return (
