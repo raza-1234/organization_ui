@@ -1,6 +1,7 @@
 import "../css/Filter.css";
 
 import { LiaSearchSolid } from "react-icons/lia";
+import { useSearchParams } from "react-router-dom";
 
 import Input from "./utils/Input";
 import { PayloadType } from "../types/types";
@@ -14,12 +15,19 @@ type ParentProp = {
   loading?: boolean;
   error?: string;
   refetchDocuments?: () => void;
+  value: string
 }
 
-const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments}: ParentProp) => {
+const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments, value}: ParentProp) => {
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const onSelect = (value: string) => {
     setDocumentId(value)
+    setSearchParams((prevValues) => {
+      prevValues.set("documentId",value)
+      return prevValues;
+    })
   }
 
   const selectedDocument = () => {
@@ -50,6 +58,7 @@ const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, r
             onChange={onChange}
             placeholder="Search by filename"
             icon={<LiaSearchSolid/>}
+            value = {value}
           />
         </div>
       </div>

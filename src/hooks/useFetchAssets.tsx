@@ -8,7 +8,7 @@ const fetchAssets = async ({documentId, search}: {documentId?: string, search?: 
   
   let url = `assets/getDocumentAssets/${documentId}`;
   if (search){
-    url += `?search=${search}`
+    url += `?search=${search.toLowerCase()}`
   }
   
   try {

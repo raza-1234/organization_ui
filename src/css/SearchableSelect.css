@@ -2,10 +2,6 @@
   position: relative;
 }
 
-.select_input_wrapper {
-  position: relative;
-}
-
 .select_input_wrapper input {
   padding: 5px 8px;
   text-transform: capitalize;
@@ -15,15 +11,14 @@
 .dropdown_icon {
   position: absolute;
   right: 0;
-  top: 2.80px;
+  top: 3px;
   font-size: 25px;
   cursor: pointer;
 }
 
 .dropdown {
-  max-height: 150px;
   overflow-x: hidden;
-  overflow-y: scroll;
+  max-height: 150px;
   border-radius: 6px;
   text-align: left;
   font-size: 14px;
@@ -65,5 +60,9 @@
   text-decoration: underline;
   font-style: italic;
   margin-left: 5px;
+}
+
+.select-options_wrapper {
+  overflow-y: auto;
 }
 
