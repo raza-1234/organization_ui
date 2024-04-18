@@ -19,31 +19,28 @@ import SearchableSelect from "./utils/SearchableSelect";
 
 const Asset = () => {
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isModelOpen, setIsModelOpen] = useState(Boolean_False);
-  const [documentId, setDocumentId] = useState<string>();
-  const [pageCount, setPageCount] = useState<number>(10);
   const [id, setId] = useState<string>();
 
-  const [title, setTitle] = useState("");
+  const document_id = searchParams.get("documentId");
+  const search_asset = searchParams.get("title");  
+  const page_number = searchParams.get("page");
+  const count = searchParams.get("count");
+
+  const [documentId, setDocumentId] = useState<string>(document_id as string);
+  const [pageCount, setPageCount] = useState<number>(Number(count) || 5);
+  const [title, setTitle] = useState(search_asset || "");
+  const [page, setPage] = useState<number>();
   const [debouncedValue] = useDebounce(title, 500);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const { toastHandler } = useToastContext();
   const columns = useAssetColumns();
 
   useEffect(() => {
 
-    const document_id = searchParams.get("documentId");
-    const search_asset = searchParams.get("title");    
-
-    if (document_id && search_asset){
-      setTitle(search_asset);
-      setDocumentId(document_id);
-      return;
-    }
-
-    if (document_id && !search_asset){
-      setDocumentId(document_id);
+    if (documentId){
+      page_number && setPage((Number(page_number) - 1) * Number(pageCount));
       return;
     }
     setIsModelOpen(true);
@@ -55,7 +52,7 @@ const Asset = () => {
     isLoading: assetLoading,
     data: assetsData,
     refetch: refetchAssets
-  }: FetchAssetsResult = useFetchAssets(toastHandler, documentId, debouncedValue);
+  }: FetchAssetsResult = useFetchAssets(toastHandler, documentId, debouncedValue, page?.toString(), pageCount.toString());
 
   const {
     data: documentsData,
@@ -73,16 +70,19 @@ const Asset = () => {
       })
     })
     return payload;
-  }
+  }  
 
   const onChange = (value: string) => {
     setTitle(value);
+    setPage(0);
     setSearchParams((prevValues) => {
       if (value.trim()){
         prevValues.set("title", value)
-        return prevValues;
       } else {
-        searchParams.delete("title")
+        prevValues.delete("title")
+      }
+      if (prevValues.has("page")){
+        prevValues.delete("page");
       }
       return prevValues
     })
@@ -97,25 +97,59 @@ const Asset = () => {
 
   const onSelectDocument = (id: string) => {   
     setId(id)
-  }
+  }  
 
   const onPageChange = (value: number) => {
-    console.log(">>>>>>", value);
+    
+    const currentPage =
+    getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number);
+
+    if (value === currentPage) return;
+
+    let pageStartFrom: number;
+
+    if (value === currentPage - 1) {
+      pageStartFrom = (assetsData?.pagingInfo?.start as number - pageCount);
+    } else if (value === currentPage + 1) {
+      pageStartFrom = (assetsData?.pagingInfo?.start as number) + pageCount;
+    } else {
+      pageStartFrom = (value - 1) * pageCount;
+    }
+
+    setPage(pageStartFrom);
+
+    setSearchParams((prevValues) => {
+      if (value === 1){
+        prevValues.delete("page");
+        return prevValues;
+      }
+      prevValues.set("page", value.toString());
+      return prevValues;
+    });
+    
   }
 
-  const onPageSizeChanged = (value: string) => {
-    console.log("chefkingggg sizeeee", value);
+  const onPageSizeChanged = (value: string) => {    
+    setPageCount(Number(value));
+    setPage(0);
+    setSearchParams((prevValues) => {
+      if (prevValues.has("page")){
+        prevValues.delete("page");
+      }
+      prevValues.set("count", value)
+      return prevValues;
+    })
+  }
+
+  const getCurrentPage = (start: number, pageCount: number) => {
+    const currentPage = Math.ceil((start + 1)/ pageCount);
+    return currentPage;
   }
 
   const tableRowClickHandler = () => {
     console.log("table row clickkeddddd");
   }
-
-  const getCurrentPage = (start: number, currentDataCount: number) => {
-    const currentPage = Math.ceil((start + 1)/ currentDataCount);
-    return currentPage;
-  }
-
+  
   return (
     <div className='organization-asset_wrapper'>
       <Filter
@@ -141,10 +175,9 @@ const Asset = () => {
             pageCount = {pageCount}
             onPageChange = {onPageChange}
             onPageSizeChanged = {onPageSizeChanged}
-            currentDataCount={assetsData?.pagingInfo?.currentDataCount as number}
             totalDataCount={assetsData?.pagingInfo?.totalCount as number}
             moreData={assetsData?.pagingInfo?.nextPage ? true: false}
-            currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, assetsData?.pagingInfo?.currentDataCount as number)}
+            currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number)}
           />
           :
           <div className="assets-error_wrapper">
@@ -165,7 +198,7 @@ const Asset = () => {
         <DialogBox
           title="select a document to view assets"
           component={
-            <SearchableSelect 
+            <SearchableSelect
               payLoad= {documentPayload()}
               onChange={onSelectDocument}
               loading={isDocumentLoading}
