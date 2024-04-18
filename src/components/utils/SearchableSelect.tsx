@@ -104,19 +104,19 @@ const SearchableSelecet = (prop: ParentProp) => {
                 </span>
               </p>
             </div>
-            :<div className="select-options_wrapper">
+            :<ul className="select-options_wrapper">
               {
                 filteredOptions?.length !== 0 ?
                 filteredOptions?.map((item: PayloadType) => (
-                  <div key={item.id} onClick={() => selectOptionHandler(item)} className="select-option">
+                  <li key={item.id} onClick={() => selectOptionHandler(item)} className="select-option">
                     {item.value}
-                  </div>
+                  </li>
                 ))
                 :<div className="select-option">
                   No Match
                 </div>
               }
-              </div>
+            </ul>
           }
         </div>
       }
