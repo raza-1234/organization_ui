@@ -2,6 +2,7 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
+import { useSearchParams } from "react-router-dom";
 
 import DialogBox from './utils/Modal';
 import { Document, PayloadType, FetchAssetsResult, FetchDocuments } from "../types/types";
@@ -23,18 +24,33 @@ const Asset = () => {
   const [pageCount, setPageCount] = useState<number>(10);
   const [id, setId] = useState<string>();
 
-  const [search, setSearch] = useState("");
-  const [debouncedValue] = useDebounce(search, 500);
+  const [title, setTitle] = useState("");
+  const [debouncedValue] = useDebounce(title, 500);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { toastHandler } = useToastContext();
   const columns = useAssetColumns();
 
   useEffect(() => {
+
+    const document_id = searchParams.get("documentId");
+    const search_asset = searchParams.get("title");    
+
+    if (document_id && search_asset){
+      setTitle(search_asset);
+      setDocumentId(document_id);
+      return;
+    }
+
+    if (document_id && !search_asset){
+      setDocumentId(document_id);
+      return;
+    }
     setIsModelOpen(true);
   }, []);
 
   const { 
-    isError: isAssetError, 
+    isError: isAssetError,
     error: assetError,
     isLoading: assetLoading,
     data: assetsData,
@@ -60,12 +76,22 @@ const Asset = () => {
   }
 
   const onChange = (value: string) => {
-    setSearch(value);
+    setTitle(value);
+    setSearchParams((prevValues) => {
+      if (value.trim()){
+        prevValues.set("title", value)
+        return prevValues;
+      } else {
+        searchParams.delete("title")
+      }
+      return prevValues
+    })
   }
 
   const modalSuccessHandler = () => {
     if (id){
       setDocumentId(id)
+      setSearchParams(`?documentId=${id}`)
     }
   }
 
@@ -100,6 +126,7 @@ const Asset = () => {
         loading = {isDocumentLoading}
         error = {documentError?.message && "Something went wrong."}
         refetchDocuments = {refetchDocuments}
+        value = {title}
       />
 
       <div className="organization-asset-table">
