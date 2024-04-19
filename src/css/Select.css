@@ -1,6 +1,7 @@
 .organization_select-option-field {
   border: 1px solid #B2B6BE;
   border-radius: 5px;
-  padding: 8px;
+  padding: 6px 4px;
   width: 100%;
+  cursor: pointer;
 }

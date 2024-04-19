@@ -29,6 +29,7 @@ const Select = (prop: ParentProp) => {
       required={required}
       className={select_input_field_classes}
       onChange={(e) => onChange(e.target.value)}
+      // defaultValue={payLoad?.find((item) => (item.value === placeholder))?.value}
     >
       <option hidden>{placeholder}</option>
       {
@@ -36,6 +37,8 @@ const Select = (prop: ParentProp) => {
           <option
             key={item.id}
             value={item.id}
+            // defaultValue={item.value === placeholder ? item.value: placeholder}
+            selected={item.value === placeholder}
           >
             {item.value}
           </option>
