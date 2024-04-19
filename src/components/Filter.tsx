@@ -15,16 +15,24 @@ type ParentProp = {
   loading?: boolean;
   error?: string;
   refetchDocuments?: () => void;
-  value: string
+  value: string;
+  resetFilter: () => void
 }
 
-const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments, value}: ParentProp) => {
+const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments, value, resetFilter}: ParentProp) => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const onSelect = (value: string) => {
-    setDocumentId(value)
+    setDocumentId(value);
+    resetFilter()
     setSearchParams((prevValues) => {
+      if (prevValues.has("page")){
+        prevValues.delete("page");
+      }
+      if (prevValues.has("title")){
+        prevValues.delete("title");
+      }
       prevValues.set("documentId",value)
       return prevValues;
     })

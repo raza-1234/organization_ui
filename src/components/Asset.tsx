@@ -150,6 +150,10 @@ const Asset = () => {
     console.log("table row clickkeddddd");
   }
   
+  const resetFilter = () => {
+    setPage(0);
+    setTitle("");
+  }
   return (
     <div className='organization-asset_wrapper'>
       <Filter
@@ -161,6 +165,7 @@ const Asset = () => {
         error = {documentError?.message && "Something went wrong."}
         refetchDocuments = {refetchDocuments}
         value = {title}
+        resetFilter = {resetFilter}
       />
 
       <div className="organization-asset-table">
