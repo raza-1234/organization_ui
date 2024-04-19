@@ -20,7 +20,6 @@ type ParentProp = {
   onPageChange: (value: number) => void,
   // onSortChanged: () => void, what this prop will do?
   onPageSizeChanged: (value: string) => void
-  currentDataCount: number;
   totalDataCount: number;
   moreData: boolean;
   currentPage: number
@@ -37,7 +36,6 @@ const Table = (prop: ParentProp) => {
     pageCount,
     onPageChange,
     onPageSizeChanged,
-    currentDataCount,
     totalDataCount,
     moreData,
     currentPage
@@ -128,7 +126,6 @@ const Table = (prop: ParentProp) => {
               onPageChange={onPageChange}
               pageCount = {pageCount}
               onPageSizeChanged = {onPageSizeChanged}
-              currentDataCount={currentDataCount}
               totalDataCount={totalDataCount}
               moreData={moreData}
               currentPage={currentPage}

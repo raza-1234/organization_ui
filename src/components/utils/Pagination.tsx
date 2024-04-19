@@ -2,7 +2,6 @@ import "../../css/Pagination.css";
 
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import classNames from "classnames";
-import Select from "./SelectInput";
 import SearchableSelect from "./SearchableSelect";
 
 type ParentProp = {
@@ -20,7 +19,6 @@ const Pagination = (prop: ParentProp) => {
     onPageChange,
     onPageSizeChanged,
     pageCount,
-    currentDataCount,
     moreData,
     currentPage,
     totalDataCount
@@ -60,7 +58,7 @@ const Pagination = (prop: ParentProp) => {
     "cursor": moreData
   })
 
-  const pages = totalPages(totalDataCount, currentDataCount);
+  const pages = totalPages(totalDataCount, pageCount);  
   
   return (
     <div className='pagination_wrapper'>
@@ -75,7 +73,14 @@ const Pagination = (prop: ParentProp) => {
         </button>
         {
           pages.map((page, index) => (
-            <p key = {++index} className="cursor" onClick={() => onPageChange(page)}>
+            <p key = {++index} 
+            className={classNames({
+              "cursor": true,
+              "selected_page": page === currentPage
+            })}
+ 
+              onClick={() => onPageChange(page)}
+            >
               {page}
             </p>
           ))
@@ -95,8 +100,20 @@ const Pagination = (prop: ParentProp) => {
           placeholder={pageCount?.toString()}
           onChange = {onPageSizeChanged}
           payLoad={dataPerPage()}
-          // className="select_pagecount"
         />
+        {/* <select 
+          className="select_page_limit"
+          onChange={(e) => onPageSizeChanged(e.target.value)}
+        >
+          <option disabled hidden>{pageCount}</option>
+          {
+            dataPerPage().map((data) => (
+              <option key={data.id} value={data.value}>
+                {data.value}
+              </option>
+            ))
+          }
+        </select> */}
       </div>
     </div>
   )

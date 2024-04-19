@@ -1,14 +1,29 @@
 import { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
+import queryString from "query-string";
+import { useLocation } from "react-router-dom";
 
 import api from "../axios/api";
 import { AssetsType, STATUS_TEXT } from "../types/types";
 
-const fetchAssets = async ({documentId, search}: {documentId?: string, search?: string}): Promise<AssetsType | undefined> => {
-  
+const fetchAssets = async (
+    {documentId, search, page, pageCount}:
+    {documentId?: string, search?: string, page?: string, pageCount?: string}
+  ): Promise<AssetsType | undefined> => {
+    
   let url = `assets/getDocumentAssets/${documentId}`;
-  if (search){
-    url += `?search=${search.toLowerCase()}`
+
+  if (search && page && pageCount){ //these checks will be removed by using query-string
+    url += `?search=${search.toLowerCase()}&start=${page}&count=${pageCount}`
+  }
+  else if (search && pageCount && !page){
+    url += `?search=${search.toLowerCase()}&count=${pageCount}`
+  }
+  else if (page && !search && pageCount){    
+    url += `?start=${page}&count=${pageCount}`
+  }
+  else if (!page && !search && pageCount){    
+    url += `?count=${pageCount}`
   }
   
   try {
@@ -25,10 +40,11 @@ const fetchAssets = async ({documentId, search}: {documentId?: string, search?: 
 export const useFetchAssets  = (
   toastHandler: (message: string, variant: string, timeOut?: number) => void,
   documentId?: string,
-  search?: string
-) => {    
-
-  return useQuery(["fetchAssets", {documentId, search}], () => fetchAssets({documentId, search}), {
+  search?: string,
+  page?: string,
+  pageCount?: string
+) => {
+  return useQuery(["fetchAssets", {documentId, search, page, pageCount}], () => fetchAssets({documentId, search, page, pageCount}), {
     enabled: !!documentId,
     onError: () => {  
       toastHandler("Something went wrong while fetching assets. Please try again.", "error")
