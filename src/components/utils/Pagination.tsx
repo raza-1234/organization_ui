@@ -1,8 +1,9 @@
 import "../../css/Pagination.css";
-
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import classNames from "classnames";
+
 import SearchableSelect from "./SearchableSelect";
+import Select from "./SelectInput";
 
 type ParentProp = {
   currentDataCount?: number;
@@ -11,8 +12,14 @@ type ParentProp = {
   currentPage: number;
   onPageChange: (value: number) => void;
   pageCount?: number;
-  onPageSizeChanged: (value: string) => void
-}
+  onPageSizeChanged: (value: string) => void;
+  previousButtonClass?: string;
+  nextButtonClass?: string;
+  previousArrowClass?: string;
+  nextArrowClass?: string;
+  selectedPageClass?: string;
+  ellipsisClass?: string
+};
 
 const Pagination = (prop: ParentProp) => {
   const {
@@ -21,102 +28,108 @@ const Pagination = (prop: ParentProp) => {
     pageCount,
     moreData,
     currentPage,
-    totalDataCount
+    totalDataCount,
+    previousButtonClass,
+    nextButtonClass,
+    previousArrowClass,
+    nextArrowClass,
+    selectedPageClass,
+    ellipsisClass
   } = prop;
 
-  const totalPages = (totalData?: number, currentData?: number) => {    
+  const totalPages = (totalData?: number, currentDataCount?: number) => {
     const pages = [];
-    if (totalData && currentData){
-      const totalPages = Math.ceil(totalData/currentData);
-      for (let i = 1; i <= totalPages; i++){
+    if (totalData && currentDataCount) {
+      const totalPages = Math.ceil(totalData / currentDataCount);
+      for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     }
     return pages;
-  }
+  };
 
   const dataPerPage = () => {
     const limit = [];
-    for (let i = 5; i <= 50; i += 5 ){
+    for (let i = 5; i <= 50; i += 5) {
       limit.push({
         id: i,
-        value: i.toString()
+        value: i.toString(),
       });
     }
     return limit;
-  }
+  };
 
   const previousPageButtonClasses = classNames({
-    "page_switcher_button": true,
-    "disabled_cursor": currentPage === 1 ,
-    "cursor": currentPage !== 1
-  })
+    page_switcher_button: true,
+    disabled_cursor: currentPage === 1,
+    cursor: currentPage !== 1,
+  });
 
   const nextPageButtonClasses = classNames({
-    "page_switcher_button": true,
-    "disabled_cursor": !moreData,
-    "cursor": moreData
-  })
+    page_switcher_button: true,
+    disabled_cursor: !moreData,
+    cursor: moreData,
+  });
 
-  const pages = totalPages(totalDataCount, pageCount);  
-  
+  const paginationEllipse = (currentPage: number) => {
+    let startPage = currentPage - 1;
+    let endPage = currentPage + 1;
+
+    if (startPage < 1) {
+      startPage = 1;
+      endPage = Math.min(3, pages.length);
+    } else if (endPage > pages.length) {
+      endPage = pages.length;
+      startPage = Math.max(1, endPage - 2);
+    }
+
+    return {startPage, endPage};
+  }
+
+  const pages = totalPages(totalDataCount, pageCount);
+  const { startPage, endPage } = paginationEllipse(currentPage);
+
   return (
-    <div className='pagination_wrapper'>
+    <div className="pagination_wrapper">
       <div className="pages_link_wrapper">
-        <button 
-          disabled={currentPage === 1} 
-          className={previousPageButtonClasses}
+        <button
+          disabled={currentPage === 1}
+          className={`${previousPageButtonClasses} ${previousButtonClass}`}
           onClick={() => onPageChange(currentPage - 1)}
         >
-          <GrFormPrevious />
+          <GrFormPrevious className={previousArrowClass} />
           <p className="previous_page">Previous</p>
         </button>
-        {
-          pages.map((page, index) => (
-            <p key = {++index} 
-            className={classNames({
-              "cursor": true,
-              "selected_page": page === currentPage
-            })}
- 
-              onClick={() => onPageChange(page)}
-            >
-              {page}
-            </p>
-          ))
-        }
+        {startPage > 1 && <p className={ellipsisClass}>...</p>}
+        {pages.slice(startPage - 1, endPage).map((page) => (
+          <p
+            key={page}
+            className={`cursor ${page === currentPage && `selected_page ${selectedPageClass}`}`}
+            onClick={() => onPageChange(page)}
+          >
+            {page}
+          </p>
+        ))}
+        {endPage < pages.length && <p className={ellipsisClass}>...</p>}
         <button
-          disabled = {!moreData}
-          className={nextPageButtonClasses}
+          disabled={!moreData}
+          className={`${nextPageButtonClasses} ${nextButtonClass}`}
           onClick={() => onPageChange(currentPage + 1)}
         >
           <p className="next_page">Next</p>
-          <GrFormNext />
+          <GrFormNext className={nextArrowClass} />
         </button>
       </div>
       <div className="data_limit_wrapper">
         <span className="select_limit_label">Rows Per Page</span>
-        <SearchableSelect //instead of this we can use html select tag
-          placeholder={pageCount?.toString()}
-          onChange = {onPageSizeChanged}
+        <Select
+          onChange={onPageSizeChanged}
           payLoad={dataPerPage()}
+          placeholder={pageCount?.toString()}
         />
-        {/* <select 
-          className="select_page_limit"
-          onChange={(e) => onPageSizeChanged(e.target.value)}
-        >
-          <option disabled hidden>{pageCount}</option>
-          {
-            dataPerPage().map((data) => (
-              <option key={data.id} value={data.value}>
-                {data.value}
-              </option>
-            ))
-          }
-        </select> */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Pagination
+export default Pagination;
