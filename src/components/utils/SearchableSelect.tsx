@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 import { PayloadType } from "../../types/types";
+import { Boolean_True } from "../../utils/constants";
 import Loader from "./Loader";
 
 type ParentProp = {
@@ -13,7 +14,8 @@ type ParentProp = {
   onChange: (id: string) => void;
   placeholder?: string;
   initialValue?: string;
-  retryHandler?: () => void
+  retryHandler?: () => void;
+  searchAble?: boolean
 }
 
 const SearchableSelecet = (prop: ParentProp) => {
@@ -25,17 +27,20 @@ const SearchableSelecet = (prop: ParentProp) => {
     onChange,
     placeholder,
     initialValue,
-    retryHandler
+    retryHandler,
+    searchAble = Boolean_True
   } = prop;  
-  
+
   const [isDropdown, setIsDropDown] = useState(false);
   const [search, setSearch] = useState(initialValue ? initialValue: "");
   const [filteredOptions, setFilteredOption] = useState<PayloadType[]>();
 
   useEffect(() => {
-    const data = formatPayload();
-    const filterOptions = data.filter((item) => item.value?.includes(search.toLowerCase()));
-    setFilteredOption(filterOptions);
+    if (searchAble){
+      const data = formatPayload();
+      const filteredResult = data.filter((item) => item.value?.includes(search.toLowerCase()));
+      setFilteredOption(filteredResult);
+    }
   }, [search, payLoad])
 
   useEffect(() => { //not sure is this approach ok or not.
@@ -78,6 +83,7 @@ const SearchableSelecet = (prop: ParentProp) => {
           onChange = {(e) => onChangeInput(e.target.value)}
           placeholder = {placeholder}
           value={search}
+          readOnly = {!searchAble}
         />
         <RiArrowDropDownLine 
           tabIndex={0}
@@ -106,15 +112,34 @@ const SearchableSelecet = (prop: ParentProp) => {
             </div>
             :<ul className="select-options_wrapper">
               {
-                filteredOptions?.length !== 0 ?
-                filteredOptions?.map((item: PayloadType) => (
-                  <li key={item.id} onClick={() => selectOptionHandler(item)} className="select-option">
-                    {item.value}
-                  </li>
-                ))
-                :<div className="select-option">
-                  No Match
-                </div>
+                searchAble ? 
+                <>
+                  {
+                    filteredOptions?.length !== 0 ?
+                    filteredOptions?.map((item: PayloadType) => (
+                      <li key={item.id} onClick={() => selectOptionHandler(item)} className="select-option">
+                        {item.value}
+                      </li>
+                    ))
+                    :<div className="select-option">
+                      No Match
+                    </div>
+                  }
+                </>
+                :
+                <>
+                  {
+                    formatPayload().map((item: PayloadType) => (
+                      <li 
+                        key={item.id} 
+                        onClick={() => selectOptionHandler(item)} 
+                        className={`select-option ${item.value === initialValue && "selected_option"}`}
+                      >
+                        {item.value}
+                      </li>
+                    ))
+                  }
+                </>
               }
             </ul>
           }
