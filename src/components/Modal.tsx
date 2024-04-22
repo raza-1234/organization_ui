@@ -4,7 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import Button from "./utils/Button";
 import { useState } from "react";
 import classNames from "classnames";
-import { ModalButtonText, Boolean_True, Boolean_False, ModalTitle } from "../utils/constants";
+import { ModalButtonText, ModalTitle } from "../utils/constants";
 import Loader from "./utils/Loader";
 
 type ParentProp = {
@@ -33,15 +33,15 @@ const Modal = (prop: ParentProp) => {
     onCancel,
     okButtonText = ModalButtonText.OK,
     cancelButtonText = ModalButtonText.CANCEL,
-    footer = Boolean_True,
+    footer = true,
     crossIconClassName,
     button_position,
-    closeOnBgClick = Boolean_True,
-    loading = Boolean_False,
+    closeOnBgClick = true,
+    loading = false,
     error
   } = prop;
 
-  const [isShowModal, setIsShowModal] = useState(Boolean_True);
+  const [isShowModal, setIsShowModal] = useState(true);
   const modal_button_group_classes = classNames("modal_button-grp", button_position?.toLowerCase());
 
   const closeModal = () => {

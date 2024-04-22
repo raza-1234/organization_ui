@@ -29,11 +29,13 @@ export const ToastProvider = ({children}: Children) => {
     })
   }
 
+  const props  = { resetToastInfo, ...toastInfo};
+
   return (
     <ToastContext.Provider value={{toastHandler}}>
       {
         toastInfo.message && //have to work on it.
-        <Toast resetToast={resetToastInfo} {...toastInfo}/>
+        <Toast {...props}/>
       }
       {children}
     </ToastContext.Provider>

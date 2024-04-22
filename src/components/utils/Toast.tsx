@@ -1,20 +1,20 @@
 import "../../css/Toast.css";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { ToastVariant, ToastTimeout } from "../../utils/constants";
 
 type ParentProp = {
   variant?: string;
   message: string;
   timeOut?: number;
-  resetToast: () => void
+  resetToastInfo: () => void
 }
 
-const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut, resetToast}: ParentProp) => {  
+const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut, resetToastInfo}: ParentProp) => {  
 
-  const [showToast, setShowToast] = useState(message ? true: false);
+  const [showToast, setShowToast] = useState(!!message);
   let toastVariant = variant?.toLowerCase();
   
-  let defaultTimeout : number = timeOut || ToastTimeout.STANDARD;
+  let defaultTimeout: number = timeOut || ToastTimeout.STANDARD;
 
   if (toastVariant !== ToastVariant.SUCCESS && toastVariant !== ToastVariant.ERROR){
     toastVariant = ToastVariant.SUCCESS;
@@ -29,21 +29,21 @@ const Toast = ({variant = ToastVariant.SUCCESS, message, timeOut, resetToast}: P
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowToast(false);
-      resetToast()
+      resetToastInfo()
     }, timeOut || ToastTimeout.STANDARD);
 
     return () => clearTimeout(timeoutId);
   }, []);
 
   return (
-    <>
+    <Fragment>
     {
       showToast && message && 
       <div className={`toast-wrapper ${toastVariant}`}>
         <p>{message}</p>
       </div>
     }
-    </>
+    </Fragment>
   )
 }
 

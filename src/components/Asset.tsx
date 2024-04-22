@@ -5,8 +5,7 @@ import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router-dom";
 
 import DialogBox from './utils/Modal';
-import { Document, PayloadType, FetchAssetsResult, FetchDocuments } from "../types/types";
-import { Boolean_False } from "../utils/constants";
+import { Document, PayloadType, FetchDocuments } from "../types/types";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
@@ -20,20 +19,21 @@ import SearchableSelect from "./utils/SearchableSelect";
 const Asset = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isModelOpen, setIsModelOpen] = useState(Boolean_False);
+  const [isModelOpen, setIsModelOpen] = useState(false);
   const [id, setId] = useState<string>();
 
   const document_id = searchParams.get("documentId");
   const search_asset = searchParams.get("title");  
   const page_number = searchParams.get("page");
   const count = searchParams.get("count");
-
+  
   const [documentId, setDocumentId] = useState<string>(document_id as string);
   const [pageCount, setPageCount] = useState<number>(Number(count) || 5);
   const [title, setTitle] = useState(search_asset || "");
   const [page, setPage] = useState<number>();
-  const [debouncedValue] = useDebounce(title, 500);
 
+  const [debouncedValue] = useDebounce(title, 500);
+  
   const { toastHandler } = useToastContext();
   const columns = useAssetColumns();
 
@@ -52,7 +52,7 @@ const Asset = () => {
     isLoading: assetLoading,
     data: assetsData,
     refetch: refetchAssets
-  }: FetchAssetsResult = useFetchAssets(toastHandler, documentId, debouncedValue, page?.toString(), pageCount.toString());
+  } = useFetchAssets(toastHandler, documentId, debouncedValue, page?.toString(), pageCount.toString()); // not good to practice to make param into tostring()
 
   const {
     data: documentsData,
@@ -169,13 +169,13 @@ const Asset = () => {
       />
 
       <div className="organization-asset-table">
-        { !isAssetError && !assetError?.message ?
+        { !isAssetError && !assetError ?
           <Table
             columns = {columns}
             data = {assetsData?.documentAssets}
             isLoading = {assetLoading}
             didFail = {isAssetError}
-            error={assetError?.message}
+            // error={assetError?.message}
             onRowClicked={tableRowClickHandler}
             pageCount = {pageCount}
             onPageChange = {onPageChange}
@@ -188,7 +188,7 @@ const Asset = () => {
           <div className="assets-error_wrapper">
             <Status
               variant="error"
-              message={assetError?.message}
+              message={('hellooooooooooo') as string}
             />
             <Button
               value="retry"

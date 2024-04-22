@@ -4,12 +4,16 @@ import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 
 import api from "../axios/api";
-import { AssetsType, STATUS_TEXT } from "../types/types";
+import { AssetsPayload, STATUS_TEXT } from "../types/types";
 
-const fetchAssets = async (
-    {documentId, search, page, pageCount}:
-    {documentId?: string, search?: string, page?: string, pageCount?: string}
-  ): Promise<AssetsType | undefined> => {
+type AssetsParams = {
+  documentId?: string,
+  search?: string,
+  page?: string,
+  pageCount?: string,
+}
+
+const fetchAssets = async ({documentId, search, page, pageCount}: AssetsParams) => {
     
   let url = `assets/getDocumentAssets/${documentId}`;
 
@@ -27,13 +31,14 @@ const fetchAssets = async (
   }
   
   try {
-    const response: AxiosResponse = await api.get(url);
+    const response = await api.get(url);
     if (response.statusText === STATUS_TEXT){
       return response.data;
     }
-  } catch (err: any){
-    console.log("Assets: Something went wrong.", err.response?.data?.message);
-    throw new Error(err.response?.data?.message || "Something went wrong while fetching assets. Please try again.");
+  } catch (err){
+    const error = err as Error;
+    console.log("Assets: Something went wrong.", error);
+    throw new Error("Something went wrong while fetching assets. Please try again.");
   }
 }
 

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 import { PayloadType } from "../../types/types";
-import { Boolean_True } from "../../utils/constants";
 import Loader from "./Loader";
 
 type ParentProp = {
@@ -28,26 +27,29 @@ const SearchableSelecet = (prop: ParentProp) => {
     placeholder,
     initialValue,
     retryHandler,
-    searchAble = Boolean_True
+    searchAble = true
   } = prop;  
 
   const [isDropdown, setIsDropDown] = useState(false);
-  const [search, setSearch] = useState(initialValue ? initialValue: "");
+  const [search, setSearch] = useState(initialValue || "");
   const [filteredOptions, setFilteredOption] = useState<PayloadType[]>();
 
-  useEffect(() => {
-    if (searchAble){
+  useEffect(() => {    
+    if (initialValue && !isDropdown) {
+      setSearch(initialValue)
+    }
+    else if (searchAble){
       const data = formatPayload();
       const filteredResult = data.filter((item) => item.value?.includes(search.toLowerCase()));
       setFilteredOption(filteredResult);
-    }
-  }, [search, payLoad])
+    } 
+  }, [search, payLoad, initialValue])
 
-  useEffect(() => { //not sure is this approach ok or not.
-    if (initialValue?.trim()){
-      setSearch(initialValue)
-    }
-  }, [initialValue])
+  // useEffect(() => { //not sure is this approach ok or not.
+  //   if (initialValue?.trim()){
+  //     setSearch(initialValue)
+  //   }
+  // }, [initialValue])
 
   const closeDropDown = () => {
     setIsDropDown(false);
