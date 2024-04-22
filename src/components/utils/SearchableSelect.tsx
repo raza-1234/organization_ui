@@ -31,25 +31,19 @@ const SearchableSelecet = (prop: ParentProp) => {
   } = prop;  
 
   const [isDropdown, setIsDropDown] = useState(false);
-  const [search, setSearch] = useState(initialValue || "");
+  const [search, setSearch] = useState("");
   const [filteredOptions, setFilteredOption] = useState<PayloadType[]>();
 
-  useEffect(() => {    
-    if (initialValue && !isDropdown) {
+  useEffect(() => {
+    if (initialValue && !isDropdown && !search.trim()){
       setSearch(initialValue)
     }
-    else if (searchAble){
+    if (searchAble){
       const data = formatPayload();
       const filteredResult = data.filter((item) => item.value?.includes(search.toLowerCase()));
       setFilteredOption(filteredResult);
     } 
-  }, [search, payLoad, initialValue])
-
-  // useEffect(() => { //not sure is this approach ok or not.
-  //   if (initialValue?.trim()){
-  //     setSearch(initialValue)
-  //   }
-  // }, [initialValue])
+  }, [search, payLoad, isDropdown])
 
   const closeDropDown = () => {
     setIsDropDown(false);
@@ -57,7 +51,7 @@ const SearchableSelecet = (prop: ParentProp) => {
 
   const onChangeInput = (value: string) => {
     setSearch(value);
-    setIsDropDown(true)
+    setIsDropDown(true);
   }
 
   const formatPayload = () => {
