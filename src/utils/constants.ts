@@ -22,8 +22,6 @@ export enum ModalButtonText {
   CANCEL = "cancel"
 }
 
-export const Boolean_True: boolean = true;
-export const Boolean_False: boolean = false;
 export const ModalTitle = "modal title text";
 
 export const Select_Option_PlaceHolder = "select option";

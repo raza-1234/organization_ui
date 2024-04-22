@@ -55,7 +55,7 @@ export type Children = {
 
 export type AuthContextType = {
   userInfo?: User;
-  setUserInfo: (User: User | undefined) => void;
+  setUserInfo: (User?: User) => void;
 }
 
 export enum ButtonText {
@@ -64,7 +64,7 @@ export enum ButtonText {
 }
 
 export type PayloadType = {
-  id: number;
+  id: number,
   value: string
 }
 
@@ -85,7 +85,7 @@ export type AssetPagination = {
   totalCount?: number;
 }
 
-export type AssetsType = {
+export type AssetsPayload = {
   documentAssets: DocumentAssetType[];
   pagingInfo: AssetPagination
 }
@@ -98,14 +98,6 @@ export type toastInfo = {
 
 export type ToastContextType = {
   toastHandler: (message: string, variant: string, timeOut?: number ) =>  void
-}
-
-export type FetchAssetsResult = {
-  isError: boolean;
-  error: any; 
-  isLoading: boolean;
-  data?: AssetsType; 
-  refetch: () => void; 
 }
 
 export type FetchDocuments = {

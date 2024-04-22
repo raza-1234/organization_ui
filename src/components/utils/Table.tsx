@@ -7,7 +7,6 @@ import Loader from "./Loader";
 import { ColumnType } from "../../types/types";
 import Pagination from "./Pagination";
 import Status from "./Status";
-import { Boolean_False } from "../../utils/constants";
 
 type ParentProp = {
   columns?: ColumnType[],
@@ -29,8 +28,8 @@ const Table = (prop: ParentProp) => {
   const {
     columns,
     data,
-    isLoading = Boolean_False,
-    didFail = Boolean_False,
+    isLoading = false,
+    didFail = false,
     error,
     onRowClicked,
     pageCount,
@@ -47,6 +46,7 @@ const Table = (prop: ParentProp) => {
 
   return (
     <>
+    {console.log('errrrrr', error)}
       {
         !didFail && !error  ?
         <div className="table_Wrapper container">

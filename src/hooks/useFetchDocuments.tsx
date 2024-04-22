@@ -6,7 +6,7 @@ import api from "../axios/api";
 
 import { STATUS_TEXT, Document } from "../types/types";
 
-const fetchDocuments = async (): Promise<Document[] | undefined> => {
+const fetchDocuments = async(): Promise<Document[] | undefined> => {
   try {
     const response: AxiosResponse = await api.get("document/getDocument");
     if (response.statusText === STATUS_TEXT){      
@@ -19,7 +19,6 @@ const fetchDocuments = async (): Promise<Document[] | undefined> => {
 }
 
 export const useFecthDocuments = (toastHandler: (message: string, variant: string, timeOut?: number) => void) => {
-
   return useQuery("fetchDocuments", fetchDocuments, {
     enabled: !!Cookies.get("session_id"),
     onError: () => {
