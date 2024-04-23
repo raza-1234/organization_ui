@@ -2,7 +2,7 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import DialogBox from './utils/Modal';
 import { Document, PayloadType, FetchDocuments } from "../types/types";
@@ -18,18 +18,16 @@ import SearchableSelect from "./utils/SearchableSelect";
 
 const Asset = () => {
 
+  const navigate = useNavigate();
+  const { documentID } = useParams();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [id, setId] = useState<string>();
-
-  const document_id = searchParams.get("documentId");
-  const search_asset = searchParams.get("title");  
-  const page_number = searchParams.get("page");
-  const count = searchParams.get("count");
   
-  const [documentId, setDocumentId] = useState<string>(document_id as string);
-  const [pageCount, setPageCount] = useState<number>(Number(count) || 5);
-  const [title, setTitle] = useState(search_asset || "");
+  const [documentId, setDocumentId] = useState<string>(documentID as string);
+  const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || 5);
+  const [title, setTitle] = useState(searchParams.get("title") || "");
   const [page, setPage] = useState<number>();
 
   const [debouncedValue] = useDebounce(title, 500);
@@ -38,9 +36,9 @@ const Asset = () => {
   const columns = useAssetColumns();
 
   useEffect(() => {
-
     if (documentId){
-      page_number && setPage((Number(page_number) - 1) * Number(pageCount));
+      const page_number = Number(searchParams.get("page"));
+      page_number && setPage((page_number - 1) * pageCount);
       return;
     }
     setIsModelOpen(true);
@@ -52,7 +50,7 @@ const Asset = () => {
     isLoading: assetLoading,
     data: assetsData,
     refetch: refetchAssets
-  } = useFetchAssets(toastHandler, documentId, debouncedValue, page?.toString(), pageCount.toString()); // not good to practice to make param into tostring()
+  } = useFetchAssets(toastHandler, documentId, debouncedValue, page, pageCount);
 
   const {
     data: documentsData,
@@ -90,8 +88,8 @@ const Asset = () => {
 
   const modalSuccessHandler = () => {
     if (id){
-      setDocumentId(id)
-      setSearchParams(`?documentId=${id}`)
+      setDocumentId(id);
+      navigate(`/asset-library/${id}`);
     }
   }
 
