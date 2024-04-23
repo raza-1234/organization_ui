@@ -1,11 +1,16 @@
 import "../../css/Status.css";
 
-import React from 'react'
+import Button from "./Button";
+import Loader from "./Loader";
 
 type ParentProp = {
   message?: string;
   className?: string;
   variant?: string;
+  showButton?: boolean;
+  buttonText?: string;
+  showLoader?: boolean;
+  onButtonClick?: () => void;
 }
 
 export enum StausVariant {
@@ -13,7 +18,18 @@ export enum StausVariant {
   INFORMATION = "Information"
 }
 
-const Status = ({message = StausVariant.INFORMATION, className, variant = StausVariant.INFORMATION}: ParentProp) => {
+const Status = (prop: ParentProp) => {
+
+  const {
+    className, 
+    message = StausVariant.INFORMATION, 
+    variant = StausVariant.INFORMATION,
+    showButton = false,
+    showLoader = false,
+    onButtonClick,
+    buttonText
+  } = prop;
+
   let statusVariant = variant.charAt(0).toUpperCase() + variant.slice(1).toLowerCase();
 
   if (
@@ -25,6 +41,8 @@ const Status = ({message = StausVariant.INFORMATION, className, variant = StausV
 
   return (
     <div className='status_wrapper'>
+      {showButton && !showLoader && <Button value={buttonText} clickHandler = {onButtonClick}/>}
+      {!showButton && showLoader && <Loader/>}
       <h4 className={`${statusVariant} ${className}`}>{message}</h4>
     </div>
   )

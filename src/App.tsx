@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route element={<PrivateRoutes/>}>
-          <Route path='/asset-library' element={<Asset/>}/>
+          <Route path='/asset-library/:documentID?' element={<Asset/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
         </Route>
         <Route path='*' element={<Missing/>}/>

@@ -1,14 +1,16 @@
 import "../css/Filter.css";
 
 import { LiaSearchSolid } from "react-icons/lia";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import queryString from "query-string";
+import { useLocation } from "react-router-dom";
 
 import Input from "./utils/Input";
-import { PayloadType } from "../types/types";
-import SearchableSelect from "./utils/SearchableSelect";
+import { Payload } from "../types/types";
+import Select from "./utils/Select";
 
 type ParentProp = {
-  payload?: PayloadType[];
+  payload?: Payload[];
   documentId?: string;
   setDocumentId: (value: string) => void;
   onChange: (value: string) => void;
@@ -21,21 +23,15 @@ type ParentProp = {
 
 const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments, value, resetFilter}: ParentProp) => {
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const onSelect = (value: string) => {
-    setDocumentId(value);
-    resetFilter()
-    setSearchParams((prevValues) => {
-      if (prevValues.has("page")){
-        prevValues.delete("page");
-      }
-      if (prevValues.has("title")){
-        prevValues.delete("title");
-      }
-      prevValues.set("documentId",value)
-      return prevValues;
-    })
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const parsedQuery = queryString.parse(search);
+  const parsedString =  queryString.stringify(parsedQuery);
+  
+  const onSelect = (id: string) => {
+    setDocumentId(id);
+    navigate(`/asset-library/${id}?${parsedString}`);
+    resetFilter();
   }
 
   const selectedDocument = () => {
@@ -50,7 +46,7 @@ const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, r
           <h3>Asset Library</h3>
           <div className="select-document-wrapper">
             <h5>Document:</h5> 
-            <SearchableSelect
+            <Select
               onChange={onSelect}
               payLoad={payload}
               placeholder="Select Document"

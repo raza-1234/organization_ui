@@ -1,9 +1,9 @@
 import React, { createContext, useState, useContext } from 'react';
-import { Children, User, AuthContextType } from '../types/types';
+import { Children, User, AuthUserContext } from '../types/types';
 import { useFetchUser } from '../hooks/useFetchUser';
 import useToastContext from './ToastContext';
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthUserContext | undefined>(undefined);
 
 export const AuthProvider = ({children}: Children) => {
   const [userInfo, setUserInfo] = useState<User | undefined>({

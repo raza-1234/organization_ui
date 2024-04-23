@@ -2,7 +2,7 @@ import "../../css/Pagination.css";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import classNames from "classnames";
 
-import SearchableSelect from "./SearchableSelect";
+import Select from "./Select";
 
 type ParentProp = {
   currentDataCount?: number;
@@ -121,7 +121,7 @@ const Pagination = (prop: ParentProp) => {
       </div>
       <div className="data_limit_wrapper">
         <span className="select_limit_label">Rows Per Page</span>
-        <SearchableSelect
+        <Select
           onChange={onPageSizeChanged}
           payLoad={dataPerPage()}
           initialValue={pageCount?.toString()}

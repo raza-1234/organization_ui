@@ -2,34 +2,31 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import DialogBox from './utils/Modal';
-import { Document, PayloadType, FetchDocuments } from "../types/types";
+import { Document, Payload, FetchDocuments } from "../types/types";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
 import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
 import Status from "./utils/Status";
-import Button from "./utils/Button";
 import useToastContext from "../contexts/ToastContext";
-import SearchableSelect from "./utils/SearchableSelect";
+import Select from "./utils/Select";
 
 const Asset = () => {
+
+  const navigate = useNavigate();
+  const { documentID } = useParams();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [id, setId] = useState<string>();
-
-  const document_id = searchParams.get("documentId");
-  const search_asset = searchParams.get("title");  
-  const page_number = searchParams.get("page");
-  const count = searchParams.get("count");
   
-  const [documentId, setDocumentId] = useState<string>(document_id as string);
-  const [pageCount, setPageCount] = useState<number>(Number(count) || 5);
-  const [title, setTitle] = useState(search_asset || "");
+  const [documentId, setDocumentId] = useState<string>(documentID as string);
+  const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || 5);
+  const [title, setTitle] = useState(searchParams.get("title") || "");
   const [page, setPage] = useState<number>();
 
   const [debouncedValue] = useDebounce(title, 500);
@@ -38,9 +35,9 @@ const Asset = () => {
   const columns = useAssetColumns();
 
   useEffect(() => {
-
     if (documentId){
-      page_number && setPage((Number(page_number) - 1) * Number(pageCount));
+      const page_number = Number(searchParams.get("page"));
+      page_number && setPage((page_number - 1) * pageCount);
       return;
     }
     setIsModelOpen(true);
@@ -52,7 +49,7 @@ const Asset = () => {
     isLoading: assetLoading,
     data: assetsData,
     refetch: refetchAssets
-  } = useFetchAssets(toastHandler, documentId, debouncedValue, page?.toString(), pageCount.toString()); // not good to practice to make param into tostring()
+  } = useFetchAssets(toastHandler, documentId, debouncedValue, page, pageCount);
 
   const {
     data: documentsData,
@@ -62,7 +59,7 @@ const Asset = () => {
   }: FetchDocuments = useFecthDocuments(toastHandler);
   
   const documentPayload = () => {
-    const payload: PayloadType[] = [];
+    const payload: Payload[] = [];
     documentsData?.map((document: Document) => {
       payload.push({
         id: document.id,
@@ -76,67 +73,64 @@ const Asset = () => {
     setTitle(value);
     setPage(0);
     setSearchParams((prevValues) => {
-      if (value.trim()){
-        prevValues.set("title", value)
-      } else {
+      if (!value.trim()){
         prevValues.delete("title")
+        return prevValues;
       }
-      if (prevValues.has("page")){
-        prevValues.delete("page");
-      }
+      prevValues.set("title", value)
+      prevValues.delete("page");
       return prevValues
     })
   }
 
   const modalSuccessHandler = () => {
     if (id){
-      setDocumentId(id)
-      setSearchParams(`?documentId=${id}`)
+      setDocumentId(id);
+      navigate(`/asset-library/${id}`);
     }
   }
 
-  const onSelectDocument = (id: string) => {   
+  const onSelectDocument = (id: string) => {
     setId(id)
   }  
 
-  const onPageChange = (value: number) => {
-    
+  const onPageChange = (page: number) => {
     const currentPage =
     getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number);
 
-    if (value === currentPage) return;
+    if (page === currentPage) return;
 
     let pageStartFrom: number;
 
-    if (value === currentPage - 1) {
+    if (page === currentPage - 1) {
       pageStartFrom = (assetsData?.pagingInfo?.start as number - pageCount);
-    } else if (value === currentPage + 1) {
+    } else if (page === currentPage + 1) {
       pageStartFrom = (assetsData?.pagingInfo?.start as number) + pageCount;
     } else {
-      pageStartFrom = (value - 1) * pageCount;
+      pageStartFrom = (page - 1) * pageCount;
     }
 
     setPage(pageStartFrom);
 
     setSearchParams((prevValues) => {
-      if (value === 1){
+      if (page === 1){
         prevValues.delete("page");
         return prevValues;
       }
-      prevValues.set("page", value.toString());
+      prevValues.set("page", page.toString());
       return prevValues;
     });
     
   }
 
-  const onPageSizeChanged = (value: string) => {    
-    setPageCount(Number(value));
+  const onPageSizeChanged = (count: string) => {
+    setPageCount(Number(count));
     setPage(0);
     setSearchParams((prevValues) => {
       if (prevValues.has("page")){
         prevValues.delete("page");
       }
-      prevValues.set("count", value)
+      prevValues.set("count", count)
       return prevValues;
     })
   }
@@ -154,6 +148,7 @@ const Asset = () => {
     setPage(0);
     setTitle("");
   }
+
   return (
     <div className='organization-asset_wrapper'>
       <Filter
@@ -183,16 +178,15 @@ const Asset = () => {
             totalDataCount={assetsData?.pagingInfo?.totalCount as number}
             moreData={assetsData?.pagingInfo?.nextPage ? true: false}
             currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number)}
+            refetchAssets={refetchAssets}
           />
-          :
-          <div className="assets-error_wrapper">
+          :<div className="assets-error_wrapper">
             <Status
+              showButton={true}
               variant="error"
-              message={('hellooooooooooo') as string}
-            />
-            <Button
-              value="retry"
-              clickHandler={refetchAssets}
+              message={"something went wrong, please try again."}
+              onButtonClick={refetchAssets}
+              buttonText="retry"
             />
           </div>
         }
@@ -203,7 +197,7 @@ const Asset = () => {
         <DialogBox
           title="select a document to view assets"
           component={
-            <SearchableSelect
+            <Select
               payLoad= {documentPayload()}
               onChange={onSelectDocument}
               loading={isDocumentLoading}

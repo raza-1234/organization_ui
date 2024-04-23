@@ -3,7 +3,7 @@ import "../../css/SearchableSelect.css"
 import React, { useEffect, useState } from 'react'
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-import { PayloadType } from "../../types/types";
+import { Payload } from "../../types/types";
 import Loader from "./Loader";
 
 type ParentProp = {
@@ -17,7 +17,7 @@ type ParentProp = {
   searchAble?: boolean
 }
 
-const SearchableSelecet = (prop: ParentProp) => {
+const Select = (prop: ParentProp) => {
 
   const {
     payLoad,
@@ -31,25 +31,19 @@ const SearchableSelecet = (prop: ParentProp) => {
   } = prop;  
 
   const [isDropdown, setIsDropDown] = useState(false);
-  const [search, setSearch] = useState(initialValue || "");
-  const [filteredOptions, setFilteredOption] = useState<PayloadType[]>();
+  const [search, setSearch] = useState("");
+  const [filteredOptions, setFilteredOption] = useState<Payload[]>();
 
-  useEffect(() => {    
-    if (initialValue && !isDropdown) {
+  useEffect(() => {
+    if (initialValue && !isDropdown && !search.trim()){
       setSearch(initialValue)
     }
-    else if (searchAble){
+    if (searchAble){
       const data = formatPayload();
       const filteredResult = data.filter((item) => item.value?.includes(search.toLowerCase()));
       setFilteredOption(filteredResult);
     } 
-  }, [search, payLoad, initialValue])
-
-  // useEffect(() => { //not sure is this approach ok or not.
-  //   if (initialValue?.trim()){
-  //     setSearch(initialValue)
-  //   }
-  // }, [initialValue])
+  }, [search, payLoad, isDropdown])
 
   const closeDropDown = () => {
     setIsDropDown(false);
@@ -57,11 +51,11 @@ const SearchableSelecet = (prop: ParentProp) => {
 
   const onChangeInput = (value: string) => {
     setSearch(value);
-    setIsDropDown(true)
+    setIsDropDown(true);
   }
 
   const formatPayload = () => {
-    const data: PayloadType[] = [];
+    const data: Payload[] = [];
     for (let i = 0; i < payLoad?.length; i++){
       data.push({
         id: payLoad[i].id,
@@ -71,7 +65,7 @@ const SearchableSelecet = (prop: ParentProp) => {
     return data;
   }
 
-  const selectOptionHandler = (item: PayloadType) => {
+  const selectOptionHandler = (item: Payload) => {
     onChange(item.id.toString());
     setSearch(item.value);
     closeDropDown()
@@ -118,7 +112,7 @@ const SearchableSelecet = (prop: ParentProp) => {
                 <>
                   {
                     filteredOptions?.length !== 0 ?
-                    filteredOptions?.map((item: PayloadType) => (
+                    filteredOptions?.map((item: Payload) => (
                       <li key={item.id} onClick={() => selectOptionHandler(item)} className="select-option">
                         {item.value}
                       </li>
@@ -131,7 +125,7 @@ const SearchableSelecet = (prop: ParentProp) => {
                 :
                 <>
                   {
-                    formatPayload().map((item: PayloadType) => (
+                    formatPayload().map((item: Payload) => (
                       <li 
                         key={item.id} 
                         onClick={() => selectOptionHandler(item)} 
@@ -151,4 +145,4 @@ const SearchableSelecet = (prop: ParentProp) => {
   )
 }
 
-export default SearchableSelecet
+export default Select

@@ -1,4 +1,9 @@
 .status_wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   font-size: 14px;
   font-weight: 800;
   text-transform: capitalize;
