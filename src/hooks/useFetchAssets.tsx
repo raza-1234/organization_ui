@@ -9,8 +9,8 @@ import { AssetsPayload, STATUS_TEXT } from "../types/types";
 type AssetsParams = {
   documentId?: string,
   search?: string,
-  page?: string,
-  pageCount?: string,
+  page?: number,
+  pageCount?: number,
 }
 
 const fetchAssets = async ({documentId, search, page, pageCount}: AssetsParams) => {
@@ -46,8 +46,8 @@ export const useFetchAssets  = (
   toastHandler: (message: string, variant: string, timeOut?: number) => void,
   documentId?: string,
   search?: string,
-  page?: string,
-  pageCount?: string
+  page?: number,
+  pageCount?: number
 ) => {
   return useQuery(["fetchAssets", {documentId, search, page, pageCount}], () => fetchAssets({documentId, search, page, pageCount}), {
     enabled: !!documentId,
