@@ -17,7 +17,7 @@ type ParentProp = {
   searchAble?: boolean
 }
 
-const SearchableSelecet = (prop: ParentProp) => {
+const Select = (prop: ParentProp) => {
 
   const {
     payLoad,
@@ -145,4 +145,4 @@ const SearchableSelecet = (prop: ParentProp) => {
   )
 }
 
-export default SearchableSelecet
+export default Select

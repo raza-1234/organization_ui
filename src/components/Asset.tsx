@@ -13,7 +13,7 @@ import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
 import Status from "./utils/Status";
 import useToastContext from "../contexts/ToastContext";
-import SearchableSelect from "./utils/SearchableSelect";
+import Select from "./utils/Select";
 
 const Asset = () => {
 
@@ -200,7 +200,7 @@ const Asset = () => {
         <DialogBox
           title="select a document to view assets"
           component={
-            <SearchableSelect
+            <Select
               payLoad= {documentPayload()}
               onChange={onSelectDocument}
               loading={isDocumentLoading}

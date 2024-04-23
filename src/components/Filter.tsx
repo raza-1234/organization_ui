@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Input from "./utils/Input";
 import { Payload } from "../types/types";
-import SearchableSelect from "./utils/SearchableSelect";
+import Select from "./utils/Select";
 
 type ParentProp = {
   payload?: Payload[];
@@ -47,7 +47,7 @@ const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, r
           <h3>Asset Library</h3>
           <div className="select-document-wrapper">
             <h5>Document:</h5> 
-            <SearchableSelect
+            <Select
               onChange={onSelect}
               payLoad={payload}
               placeholder="Select Document"
