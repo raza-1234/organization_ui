@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 import { Payload } from "../../types/types";
-import Loader from "./Loader";
+import DataStates from "./DataStates";
 
 type ParentProp = {
   payLoad?: any;
@@ -71,6 +71,59 @@ const Select = (prop: ParentProp) => {
     closeDropDown()
   }
 
+  const dropdownOptions = (data: Payload[]) => {
+    let render: JSX.Element | JSX.Element[]
+
+    if (data.length === 0){
+      render = 
+      <DataStates
+        isEmpty={true}
+        emptyMessage="Nothing Found"
+      />
+    } else {
+      render =
+      data.map((item: Payload) => (
+        <li
+          key={item.id}
+          onClick={() => selectOptionHandler(item)}
+          className={`select-option ${!searchAble && item.value === initialValue && "selected_option"}`}
+        >
+          {item.value}
+        </li>
+      ))
+    }
+    return render;
+  }
+
+  const dropdownContent = () => {
+    let render: JSX.Element;
+
+    if (loading){
+      render = 
+      <DataStates
+        isLoading={true}
+        loadingMessage="Loading ..."
+      />
+    } else if (error){
+      render = 
+      <div className="select-option error_status">
+        <p>
+          {error}
+          <span className="retry" onClick={retryHandler}>
+            Retry
+          </span>
+        </p>
+      </div>
+    } else {
+      render = 
+      <ul className="select-options_wrapper">
+        {dropdownOptions(searchAble? filteredOptions as Payload[]: formatPayload())}
+      </ul>
+    }
+
+    return render;
+  }
+
   return (
     <div className="select_wrapper">
       <div className="select_input_wrapper">
@@ -91,54 +144,7 @@ const Select = (prop: ParentProp) => {
       {
         isDropdown && 
         <div className="dropdown">
-          {
-            loading ?
-            <div className="select-option">
-              <Loader/>
-              Loading ...
-            </div>
-            : !loading && error ? 
-            <div className="select-option error_status">
-              <p>
-                {error}
-                <span className="retry" onClick={retryHandler}>
-                  Retry
-                </span>
-              </p>
-            </div>
-            :<ul className="select-options_wrapper">
-              {
-                searchAble ? 
-                <>
-                  {
-                    filteredOptions?.length !== 0 ?
-                    filteredOptions?.map((item: Payload) => (
-                      <li key={item.id} onClick={() => selectOptionHandler(item)} className="select-option">
-                        {item.value}
-                      </li>
-                    ))
-                    :<div className="select-option">
-                      No Match
-                    </div>
-                  }
-                </>
-                :
-                <>
-                  {
-                    formatPayload().map((item: Payload) => (
-                      <li 
-                        key={item.id} 
-                        onClick={() => selectOptionHandler(item)} 
-                        className={`select-option ${item.value === initialValue && "selected_option"}`}
-                      >
-                        {item.value}
-                      </li>
-                    ))
-                  }
-                </>
-              }
-            </ul>
-          }
+          {dropdownContent()}
         </div>
       }
     </div>
