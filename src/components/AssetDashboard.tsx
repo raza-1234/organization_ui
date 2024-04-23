@@ -15,7 +15,7 @@ import Status from "./utils/Status";
 import useToastContext from "../contexts/ToastContext";
 import Select from "./utils/Select";
 
-const Asset = () => {
+const AssetDashboard = () => {
 
   const navigate = useNavigate();
   const { documentID } = useParams();
@@ -25,7 +25,7 @@ const Asset = () => {
   const [id, setId] = useState<string>();
   
   const [documentId, setDocumentId] = useState<string>(documentID as string);
-  const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || 5);
+  const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || 5); //5 should be in const 
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const [page, setPage] = useState<number>();
 
@@ -45,7 +45,6 @@ const Asset = () => {
 
   const { 
     isError: isAssetError,
-    error: assetError,
     isLoading: assetLoading,
     data: assetsData,
     refetch: refetchAssets
@@ -54,9 +53,9 @@ const Asset = () => {
   const {
     data: documentsData,
     isLoading: isDocumentLoading,
-    error: documentError,
+    isError: isDocumentError,
     refetch: refetchDocuments
-  }: FetchDocuments = useFecthDocuments(toastHandler);
+  } = useFecthDocuments(toastHandler);
   
   const documentPayload = () => {
     const payload: Payload[] = [];
@@ -91,7 +90,7 @@ const Asset = () => {
   }
 
   const onSelectDocument = (id: string) => {
-    setId(id)
+    setId(id) // naming convention.
   }  
 
   const onPageChange = (page: number) => {
@@ -139,16 +138,12 @@ const Asset = () => {
     const currentPage = Math.ceil((start + 1)/ pageCount);
     return currentPage;
   }
-
-  const tableRowClickHandler = () => {
-    console.log("table row clickkeddddd");
-  }
   
   const resetFilter = () => {
     setPage(0);
     setTitle("");
   }
-
+  
   return (
     <div className='organization-asset_wrapper'>
       <Filter
@@ -157,43 +152,12 @@ const Asset = () => {
         setDocumentId = {setDocumentId}
         onChange = {onChange}
         loading = {isDocumentLoading}
-        error = {documentError?.message && "Something went wrong."}
+        // error = {documentError?.message && "Something went wrong."}
         refetchDocuments = {refetchDocuments}
         value = {title}
         resetFilter = {resetFilter}
       />
-
-      <div className="organization-asset-table">
-        { !isAssetError && !assetError ?
-          <Table
-            columns = {columns}
-            data = {assetsData?.documentAssets}
-            isLoading = {assetLoading}
-            didFail = {isAssetError}
-            // error={assetError?.message}
-            onRowClicked={tableRowClickHandler}
-            pageCount = {pageCount}
-            onPageChange = {onPageChange}
-            onPageSizeChanged = {onPageSizeChanged}
-            totalDataCount={assetsData?.pagingInfo?.totalCount as number}
-            moreData={assetsData?.pagingInfo?.nextPage ? true: false}
-            currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number)}
-            refetchAssets={refetchAssets}
-          />
-          :<div className="assets-error_wrapper">
-            <Status
-              showButton={true}
-              variant="error"
-              message={"something went wrong, please try again."}
-              onButtonClick={refetchAssets}
-              buttonText="retry"
-            />
-          </div>
-        }
-      </div>
-
-      {
-        isModelOpen &&
+      {isModelOpen &&
         <DialogBox
           title="select a document to view assets"
           component={
@@ -201,7 +165,7 @@ const Asset = () => {
               payLoad= {documentPayload()}
               onChange={onSelectDocument}
               loading={isDocumentLoading}
-              error={documentError?.message}
+              error={isDocumentError ? 'unable to load docs. something went wrong.' : ''}
               placeholder="Select Document"
               retryHandler={refetchDocuments}
             />
@@ -210,8 +174,27 @@ const Asset = () => {
           onOk={modalSuccessHandler}
         />
       }
+      <div className="organization-asset-table">
+        {(!isAssetError || !isDocumentError) &&
+          <Table
+            columns = {columns}
+            data = {assetsData?.documentAssets}
+            isLoading = {assetLoading}
+            didFail = {isAssetError}
+            onRowClicked={() => {}}
+            pageCount = {pageCount}
+            onPageChange = {onPageChange}
+            onPageSizeChanged = {onPageSizeChanged}
+            totalDataCount={assetsData?.pagingInfo?.totalCount as number}
+            moreData={assetsData?.pagingInfo?.nextPage ? true: false}
+            currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
+            refetchAssets={refetchAssets}
+          />
+          // <DataStates></DataStates>
+        }
+      </div>
     </div>
   )
 }
 
-export default Asset
+export default AssetDashboard;

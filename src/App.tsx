@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import PrivateRoutes from './components/PrivateRoutes';
-import Asset from './components/Asset';
+import AssetDashboard from './components/AssetDashboard';
 import Missing from './components/Missing';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route element={<PrivateRoutes/>}>
-          <Route path='/asset-library/:documentID?' element={<Asset/>}/>
+          <Route path='/asset-library/:documentID?' element={<AssetDashboard/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
         </Route>
         <Route path='*' element={<Missing/>}/>
