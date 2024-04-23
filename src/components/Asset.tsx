@@ -73,14 +73,12 @@ const Asset = () => {
     setTitle(value);
     setPage(0);
     setSearchParams((prevValues) => {
-      if (value.trim()){
-        prevValues.set("title", value)
-      } else {
+      if (!value.trim()){
         prevValues.delete("title")
+        return prevValues;
       }
-      if (prevValues.has("page")){
-        prevValues.delete("page");
-      }
+      prevValues.set("title", value)
+      prevValues.delete("page");
       return prevValues
     })
   }
@@ -92,47 +90,47 @@ const Asset = () => {
     }
   }
 
-  const onSelectDocument = (id: string) => {   
+  const onSelectDocument = (id: string) => {
     setId(id)
   }  
 
-  const onPageChange = (value: number) => {
+  const onPageChange = (page: number) => {
     const currentPage =
     getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number);
 
-    if (value === currentPage) return;
+    if (page === currentPage) return;
 
     let pageStartFrom: number;
 
-    if (value === currentPage - 1) {
+    if (page === currentPage - 1) {
       pageStartFrom = (assetsData?.pagingInfo?.start as number - pageCount);
-    } else if (value === currentPage + 1) {
+    } else if (page === currentPage + 1) {
       pageStartFrom = (assetsData?.pagingInfo?.start as number) + pageCount;
     } else {
-      pageStartFrom = (value - 1) * pageCount;
+      pageStartFrom = (page - 1) * pageCount;
     }
 
     setPage(pageStartFrom);
 
     setSearchParams((prevValues) => {
-      if (value === 1){
+      if (page === 1){
         prevValues.delete("page");
         return prevValues;
       }
-      prevValues.set("page", value.toString());
+      prevValues.set("page", page.toString());
       return prevValues;
     });
     
   }
 
-  const onPageSizeChanged = (value: string) => {    
-    setPageCount(Number(value));
+  const onPageSizeChanged = (count: string) => {
+    setPageCount(Number(count));
     setPage(0);
     setSearchParams((prevValues) => {
       if (prevValues.has("page")){
         prevValues.delete("page");
       }
-      prevValues.set("count", value)
+      prevValues.set("count", count)
       return prevValues;
     })
   }
