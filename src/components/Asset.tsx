@@ -97,7 +97,6 @@ const Asset = () => {
   }  
 
   const onPageChange = (value: number) => {
-    
     const currentPage =
     getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number);
 
