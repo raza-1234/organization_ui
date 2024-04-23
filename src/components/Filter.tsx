@@ -4,11 +4,11 @@ import { LiaSearchSolid } from "react-icons/lia";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Input from "./utils/Input";
-import { PayloadType } from "../types/types";
+import { Payload } from "../types/types";
 import SearchableSelect from "./utils/SearchableSelect";
 
 type ParentProp = {
-  payload?: PayloadType[];
+  payload?: Payload[];
   documentId?: string;
   setDocumentId: (value: string) => void;
   onChange: (value: string) => void;

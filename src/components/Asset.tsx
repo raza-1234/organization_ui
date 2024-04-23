@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import DialogBox from './utils/Modal';
-import { Document, PayloadType, FetchDocuments } from "../types/types";
+import { Document, Payload, FetchDocuments } from "../types/types";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
@@ -60,7 +60,7 @@ const Asset = () => {
   }: FetchDocuments = useFecthDocuments(toastHandler);
   
   const documentPayload = () => {
-    const payload: PayloadType[] = [];
+    const payload: Payload[] = [];
     documentsData?.map((document: Document) => {
       payload.push({
         id: document.id,
@@ -152,6 +152,7 @@ const Asset = () => {
     setPage(0);
     setTitle("");
   }
+
   return (
     <div className='organization-asset_wrapper'>
       <Filter

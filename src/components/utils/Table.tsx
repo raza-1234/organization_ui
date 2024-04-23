@@ -4,12 +4,12 @@ import React from 'react';
 import { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
 import Loader from "./Loader";
-import { ColumnType } from "../../types/types";
+import { Column } from "../../types/types";
 import Pagination from "./Pagination";
 import Status from "./Status";
 
 type ParentProp = {
-  columns?: ColumnType[],
+  columns?: Column[],
   data?: any[],
   isLoading?: boolean,
   didFail?: boolean,

@@ -29,7 +29,7 @@ export type Document = {
   updatedAt: string;
 }
 
-export type DocumentAssetType = {
+export type DocumentAsset = {
   Document: Document;
   Organization: Organization;
   createdAt: string;
@@ -53,7 +53,7 @@ export type Children = {
   children: JSX.Element | JSX.Element[]
 }
 
-export type AuthContextType = {
+export type AuthUserContext = {
   userInfo?: User;
   setUserInfo: (User?: User) => void;
 }
@@ -63,12 +63,12 @@ export enum ButtonText {
   Next = "next"
 }
 
-export type PayloadType = {
+export type Payload = {
   id: number,
   value: string
 }
 
-export type ColumnType = {
+export type Column = {
   header: string,
   key: string,
   field?: string,
@@ -86,17 +86,17 @@ export type AssetPagination = {
 }
 
 export type AssetsPayload = {
-  documentAssets: DocumentAssetType[];
+  documentAssets: DocumentAsset[];
   pagingInfo: AssetPagination
 }
 
-export type toastInfo = {
+export type ToastInfo = {
   variant: string;
   message: string;
   timeOut?: number;
 }
 
-export type ToastContextType = {
+export type ToastContext = {
   toastHandler: (message: string, variant: string, timeOut?: number ) =>  void
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { BsCameraVideoFill, BsImage } from 'react-icons/bs';
 import { MdAudioFile } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { DocumentAssetType, AssetMedia } from '../types/types';
+import { DocumentAsset, AssetMedia } from '../types/types';
 
 const useAssetColumns = () => {
   return (
@@ -13,7 +13,7 @@ const useAssetColumns = () => {
         field: "image",
         width: "10%",
         sort: false,
-        render: (value: string, item: DocumentAssetType) => {
+        render: (value: string, item: DocumentAsset) => {
           const Url = item.url.slice(item.url.indexOf("Assets"));
           let children: JSX.Element;
   
@@ -43,7 +43,7 @@ const useAssetColumns = () => {
         className: "date",
         width: "30%",
         sort: true,
-        render: (value: string, item: DocumentAssetType) => {
+        render: (value: string, item: DocumentAsset) => {
           return (
             <div className="date">
               {value}
@@ -57,7 +57,7 @@ const useAssetColumns = () => {
         field: "type",
         width: "25%",
         sort: true,
-        render: (value: string, item: DocumentAssetType) => {
+        render: (value: string, item: DocumentAsset) => {
           const fileExtension = item.url.slice(item.url.indexOf(".") + 1).toUpperCase();
           let children: JSX.Element;
           if (item.type === AssetMedia.IMAGE){
@@ -83,7 +83,7 @@ const useAssetColumns = () => {
         field: "deleteIcon",
         width: "10%",
         sort: false,
-        render: (value: string, item: DocumentAssetType) => (
+        render: (value: string, item: DocumentAsset) => (
           <RiDeleteBin6Line className="action-column_delete-icon" onClick={(event) => {
             event.stopPropagation();
             console.log("item presssing del button");
