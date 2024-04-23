@@ -12,10 +12,11 @@ type AssetsParams = {
 
 const fetchAssets = async ({documentId, search, pageNumber, pageCount}: AssetsParams): Promise<AssetsPayload | null> => {
   
-  if(documentId) {
+  if(!documentId) {
     return null;
   }
 
+//  const pageCount = PAGE_COUNT || pageCount;
   let url = `assets/getDocumentAssets/${documentId}`;
 
   if (search && pageNumber && pageCount){ //these checks will be removed by using query-string

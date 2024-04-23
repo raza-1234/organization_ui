@@ -11,9 +11,9 @@ import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
 import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
-import Status from "./utils/Status";
 import useToastContext from "../contexts/ToastContext";
 import Select from "./utils/Select";
+import DataStates from "./utils/DataStates";
 
 const AssetDashboard = () => {
 
@@ -142,7 +142,7 @@ const AssetDashboard = () => {
   const resetFilter = () => {
     setPage(0);
     setTitle("");
-  }
+  }  
   
   return (
     <div className='organization-asset_wrapper'>
@@ -175,7 +175,7 @@ const AssetDashboard = () => {
         />
       }
       <div className="organization-asset-table">
-        {(!isAssetError || !isDocumentError) &&
+        {(!isAssetError || !isDocumentError) ?
           <Table
             columns = {columns}
             data = {assetsData?.documentAssets}
@@ -190,7 +190,10 @@ const AssetDashboard = () => {
             currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
             refetchAssets={refetchAssets}
           />
-          // <DataStates></DataStates>
+          :<DataStates
+            isError={true}
+            errorMessage="Error while fetching assets."
+          />
         }
       </div>
     </div>

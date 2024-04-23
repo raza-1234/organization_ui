@@ -1,0 +1,17 @@
+.data-states_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.error_state {
+  color: red;
+}
+
+.information_state {
+  color: #17A2B8;
+}
