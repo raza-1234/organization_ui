@@ -110,3 +110,5 @@ export type FetchDocuments = {
 export type CheckEmail = {
   message: string
 }
+
+export const PAGE_COUNT = 5;

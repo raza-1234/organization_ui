@@ -5,7 +5,7 @@ import { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } from 'react-icon
 
 import { Column } from "../../types/types";
 import Pagination from "./Pagination";
-import Status from "./Status";
+import DataStates from "./DataStates";
 
 type ParentProp = {
   columns?: Column[],
@@ -73,8 +73,7 @@ const Table = (prop: ParentProp) => {
               </tr>
             </thead>
             <tbody className='table_body'>
-              {
-                data?.length ?
+              {data?.length ?
                 data?.map((item) => (
                   <tr
                     key={item.id}
@@ -97,25 +96,23 @@ const Table = (prop: ParentProp) => {
                     }
                   </tr>
                 ))
-                :
-                <tr className="table-body_status-row table-body_row">
+                :<tr className="table-body_status-row table-body_row">
                   <td colSpan={columns?.length}>
-                    {
-                      isLoading ? 
+                    {isLoading ?
                       <div className="table-status_wrapper">
-                        <Status
-                          showLoader={true}
-                          message="Loading Table Data ..."
+                        <DataStates
+                          isLoading={isLoading}
+                          loadingMessage="Loading Table Data ..."
                         />
                       </div>
-                      :
-                      <Status
-                        message="nothing to show in table"
+                      :<DataStates
+                        isEmpty={true}
+                        emptyMessage="nothing to show in table"
                       />
                     }
                   </td>
                 </tr>
-            }
+              }
             </tbody>
           </table>
           {
@@ -134,12 +131,11 @@ const Table = (prop: ParentProp) => {
           <div className="table-status_wrapper">
             {
               didFail &&
-              <Status
-                variant="error"
-                message={error || "something went wrong."}
+              <DataStates
+                isError={true}
+                errorMessage={error || "something went wrong."}
                 buttonText="retry"
-                showButton={true}
-                onButtonClick={refetchAssets}
+                retryFunction={refetchAssets}
               />
             }
           </div>

@@ -6,6 +6,7 @@ import api from "../axios/api";
 import { STATUS_TEXT, User } from "../types/types";
 
 const fetchUser = async (): Promise<User | undefined> => {
+  
   try {
     const response: AxiosResponse = await api.get("user");
     if (response.statusText === STATUS_TEXT){      
@@ -24,6 +25,7 @@ export const useFetchUser  = (
 
   return useQuery("fetchUserData", fetchUser, {
     enabled: !!Cookies.get("session_id"),
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       if (data){
         setUserInfo(data);

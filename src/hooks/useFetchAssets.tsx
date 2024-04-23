@@ -1,55 +1,66 @@
-import { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
-import queryString from "query-string";
-import { useLocation } from "react-router-dom";
 
 import api from "../axios/api";
-import { AssetsPayload, STATUS_TEXT } from "../types/types";
+import { AssetsPayload, STATUS_TEXT, PAGE_COUNT } from "../types/types";
 
 type AssetsParams = {
   documentId?: string,
   search?: string,
-  page?: number,
+  pageNumber?: number,
   pageCount?: number,
 }
 
-const fetchAssets = async ({documentId, search, page, pageCount}: AssetsParams) => {
-    
+const fetchAssets = async ({documentId, search, pageNumber, pageCount}: AssetsParams): Promise<AssetsPayload | null> => {
+  
+  if(!documentId) {
+    return null;
+  }
+
+  const page_count = pageCount || PAGE_COUNT;
+
   let url = `assets/getDocumentAssets/${documentId}`;
 
-  if (search && page && pageCount){ //these checks will be removed by using query-string
-    url += `?search=${search.toLowerCase()}&start=${page}&count=${pageCount}`
+  if (search && pageNumber && pageCount){ //these checks will be removed by using query-string
+    url += `?search=${search.toLowerCase()}&start=${pageNumber}&count=${page_count}`
   }
-  else if (search && pageCount && !page){
-    url += `?search=${search.toLowerCase()}&count=${pageCount}`
+  else if (search && pageCount && !pageNumber){
+    url += `?search=${search.toLowerCase()}&count=${page_count}`
   }
-  else if (page && !search && pageCount){    
-    url += `?start=${page}&count=${pageCount}`
+  else if (pageNumber && !search && pageCount){    
+    url += `?start=${pageNumber}&count=${page_count}`
   }
-  else if (!page && !search && pageCount){    
-    url += `?count=${pageCount}`
+  else if (!pageNumber && !search && page_count){    
+    url += `?count=${page_count}`
   }
   
-  try {
-    const response = await api.get(url);
-    if (response.statusText === STATUS_TEXT){
-      return response.data;
-    }
-  } catch (err){
-    const error = err as Error;
-    console.log("Assets: Something went wrong.", error);
-    throw new Error("Something went wrong while fetching assets. Please try again.");
+  const response = await api.get(url);
+  if (response.statusText !== STATUS_TEXT){ // will never go into this check if api fails.
+    throw new Error("Error while fetching assets.");
   }
+
+  return response.data;
+
+  // try {
+  //   const response = await api.get(url);
+  //   if (response.statusText === STATUS_TEXT){
+  //     return response.data;
+  //   }
+  // } catch (err){
+  //   const error = err as Error;
+  //   console.log("Assets: Something went wrong.", error);
+  //   throw new Error("Something went wrong while fetching assets. Please try again.");
+  // }
 }
 
 export const useFetchAssets  = (
   toastHandler: (message: string, variant: string, timeOut?: number) => void,
   documentId?: string,
   search?: string,
-  page?: number,
+  pageNumber?: number,
   pageCount?: number
 ) => {
-  return useQuery(["fetchAssets", {documentId, search, page, pageCount}], () => fetchAssets({documentId, search, page, pageCount}), {
+  return useQuery(["fetchAssets", {documentId, search, pageNumber, pageCount}], () => fetchAssets({documentId, search, pageNumber, pageCount}), {
+    refetchOnWindowFocus: false,
     enabled: !!documentId,
     onError: () => {  
       toastHandler("Something went wrong while fetching assets. Please try again.", "error")
