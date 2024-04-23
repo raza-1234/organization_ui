@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
-import DialogBox from './utils/Modal';
+import Modal from './utils/Modal';
 import { Document, Payload, PAGE_COUNT } from "../types/types";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
@@ -22,7 +22,7 @@ const AssetDashboard = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModelOpen, setIsModelOpen] = useState(false);
-  const [id, setId] = useState<string>();
+  const [docId, setDocId] = useState<string>();
   
   const [documentId, setDocumentId] = useState<string>(documentID as string);
   const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || PAGE_COUNT);
@@ -68,7 +68,7 @@ const AssetDashboard = () => {
     return payload;
   }  
 
-  const onChange = (value: string) => {
+  const searchHandler = (value: string) => {
     setTitle(value);
     setPage(0);
     setSearchParams((prevValues) => {
@@ -83,15 +83,15 @@ const AssetDashboard = () => {
   }
 
   const modalSuccessHandler = () => {
-    if (id){
-      setDocumentId(id);
-      navigate(`/asset-library/${id}`);
+    if (docId){
+      setDocumentId(docId);
+      navigate(`/asset-library/${docId}`);
     }
   }
 
   const onSelectDocument = (id: string) => {
-    setId(id) // naming convention.
-  }  
+    setDocId(id)
+  }
 
   const onPageChange = (page: number) => {
     const currentPage =
@@ -142,7 +142,7 @@ const AssetDashboard = () => {
   const resetFilter = () => {
     setPage(0);
     setTitle("");
-  }  
+  }
   
   return (
     <div className='organization-asset_wrapper'>
@@ -150,7 +150,7 @@ const AssetDashboard = () => {
         payload = {documentPayload()}
         documentId = {documentId}
         setDocumentId = {setDocumentId}
-        onChange = {onChange}
+        onChange = {searchHandler}
         loading = {isDocumentLoading}
         // error = {documentError?.message && "Something went wrong."}
         refetchDocuments = {refetchDocuments}
@@ -158,7 +158,7 @@ const AssetDashboard = () => {
         resetFilter = {resetFilter}
       />
       {isModelOpen &&
-        <DialogBox
+        <Modal
           title="select a document to view assets"
           component={
             <Select
