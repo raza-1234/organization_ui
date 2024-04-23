@@ -1,9 +1,8 @@
 import "../../css/Table.css";
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
-import Loader from "./Loader";
 import { Column } from "../../types/types";
 import Pagination from "./Pagination";
 import Status from "./Status";
@@ -21,7 +20,8 @@ type ParentProp = {
   onPageSizeChanged: (value: string) => void
   totalDataCount: number;
   moreData: boolean;
-  currentPage: number
+  currentPage: number;
+  refetchAssets?: () => void
 }
 
 const Table = (prop: ParentProp) => {
@@ -37,7 +37,8 @@ const Table = (prop: ParentProp) => {
     onPageSizeChanged,
     totalDataCount,
     moreData,
-    currentPage
+    currentPage,
+    refetchAssets
   } = prop;
 
   const rowClickHandler = () => {
@@ -45,8 +46,7 @@ const Table = (prop: ParentProp) => {
   }
 
   return (
-    <>
-    {console.log('errrrrr', error)}
+    <Fragment>
       {
         !didFail && !error  ?
         <div className="table_Wrapper container">
@@ -103,16 +103,14 @@ const Table = (prop: ParentProp) => {
                     {
                       isLoading ? 
                       <div className="table-status_wrapper">
-                        <Loader/>
                         <Status
+                          showLoader={true}
                           message="Loading Table Data ..."
-                          variant="information"
                         />
                       </div>
                       :
                       <Status
                         message="nothing to show in table"
-                        variant="information"
                       />
                     }
                   </td>
@@ -135,15 +133,18 @@ const Table = (prop: ParentProp) => {
         :
           <div className="table-status_wrapper">
             {
-              error &&
+              didFail &&
               <Status
                 variant="error"
-                message={error}
+                message={error || "something went wrong."}
+                buttonText="retry"
+                showButton={true}
+                onButtonClick={refetchAssets}
               />
             }
           </div>
       }
-    </>
+    </Fragment>
   )
 }
 

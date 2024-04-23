@@ -12,7 +12,6 @@ import { useFecthDocuments } from "../hooks/useFetchDocuments";
 import Table from "./utils/Table";
 import useAssetColumns from "../hooks/useAssetColumns";
 import Status from "./utils/Status";
-import Button from "./utils/Button";
 import useToastContext from "../contexts/ToastContext";
 import SearchableSelect from "./utils/SearchableSelect";
 
@@ -182,16 +181,15 @@ const Asset = () => {
             totalDataCount={assetsData?.pagingInfo?.totalCount as number}
             moreData={assetsData?.pagingInfo?.nextPage ? true: false}
             currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount as number)}
+            refetchAssets={refetchAssets}
           />
-          :
-          <div className="assets-error_wrapper">
+          :<div className="assets-error_wrapper">
             <Status
+              showButton={true}
               variant="error"
-              message={('hellooooooooooo') as string}
-            />
-            <Button
-              value="retry"
-              clickHandler={refetchAssets}
+              message={"something went wrong, please try again."}
+              onButtonClick={refetchAssets}
+              buttonText="retry"
             />
           </div>
         }
