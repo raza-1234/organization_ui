@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
 import api from "../axios/api";
-import { AssetsPayload, STATUS_TEXT } from "../types/types";
+import { AssetsPayload, STATUS_TEXT, PAGE_COUNT } from "../types/types";
 
 type AssetsParams = {
   documentId?: string,
@@ -16,28 +16,29 @@ const fetchAssets = async ({documentId, search, pageNumber, pageCount}: AssetsPa
     return null;
   }
 
-//  const pageCount = PAGE_COUNT || pageCount;
+ const page_count = pageCount || PAGE_COUNT;
+
   let url = `assets/getDocumentAssets/${documentId}`;
 
   if (search && pageNumber && pageCount){ //these checks will be removed by using query-string
-    url += `?search=${search.toLowerCase()}&start=${pageNumber}&count=${pageCount}`
+    url += `?search=${search.toLowerCase()}&start=${pageNumber}&count=${page_count}`
   }
   else if (search && pageCount && !pageNumber){
-    url += `?search=${search.toLowerCase()}&count=${pageCount}`
+    url += `?search=${search.toLowerCase()}&count=${page_count}`
   }
   else if (pageNumber && !search && pageCount){    
-    url += `?start=${pageNumber}&count=${pageCount}`
+    url += `?start=${pageNumber}&count=${page_count}`
   }
-  else if (!pageNumber && !search && pageCount){    
-    url += `?count=${pageCount}`
+  else if (!pageNumber && !search && page_count){    
+    url += `?count=${page_count}`
   }
   
   const response = await api.get(url);
-    if (response.statusText !== STATUS_TEXT){
-      throw new Error("Error while fetching assets.");
-    }
+  if (response.statusText !== STATUS_TEXT){
+    throw new Error("Error while fetching assets.");
+  }
 
-    return response.data;
+  return response.data;
 }
 
 export const useFetchAssets  = (

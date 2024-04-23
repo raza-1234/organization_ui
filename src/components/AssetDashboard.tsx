@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import DialogBox from './utils/Modal';
-import { Document, Payload, FetchDocuments } from "../types/types";
+import { Document, Payload, PAGE_COUNT } from "../types/types";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
@@ -25,7 +25,7 @@ const AssetDashboard = () => {
   const [id, setId] = useState<string>();
   
   const [documentId, setDocumentId] = useState<string>(documentID as string);
-  const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || 5); //5 should be in const 
+  const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || PAGE_COUNT);
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const [page, setPage] = useState<number>();
 
