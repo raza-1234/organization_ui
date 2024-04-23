@@ -152,7 +152,7 @@ const AssetDashboard = () => {
         setDocumentId = {setDocumentId}
         onChange = {searchHandler}
         loading = {isDocumentLoading}
-        // error = {documentError?.message && "Something went wrong."}
+        error = {isDocumentError ? 'something went wrong.' : ''}
         refetchDocuments = {refetchDocuments}
         value = {title}
         resetFilter = {resetFilter}
@@ -175,7 +175,7 @@ const AssetDashboard = () => {
         />
       }
       <div className="organization-asset-table">
-        {(!isAssetError || !isDocumentError) ?
+        {(!isAssetError && !isDocumentError) ?
           <Table
             columns = {columns}
             data = {assetsData?.documentAssets}
@@ -188,12 +188,16 @@ const AssetDashboard = () => {
             totalDataCount={assetsData?.pagingInfo?.totalCount as number}
             moreData={assetsData?.pagingInfo?.nextPage ? true: false}
             currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
-            refetchAssets={refetchAssets}
+            refetchAssets={isAssetError? refetchAssets: refetchDocuments}
           />
-          :<DataStates
-            isError={true}
-            errorMessage="Error while fetching assets."
-          />
+          :<div className="assets-error_wrapper">
+            <DataStates
+              isError={true}
+              errorMessage="Error while fetching assets."
+              retryFunction={isDocumentError ? refetchDocuments: refetchAssets}
+              buttonText="retry"
+            />
+          </div>
         }
       </div>
     </div>
