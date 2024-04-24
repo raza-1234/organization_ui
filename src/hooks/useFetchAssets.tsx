@@ -60,6 +60,7 @@ export const useFetchAssets  = (
   pageCount?: number
 ) => {
   return useQuery(["fetchAssets", {documentId, search, pageNumber, pageCount}], () => fetchAssets({documentId, search, pageNumber, pageCount}), {
+    refetchOnWindowFocus: false,
     enabled: !!documentId,
     onError: () => {  
       toastHandler("Something went wrong while fetching assets. Please try again.", "error")
