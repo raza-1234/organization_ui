@@ -24,11 +24,18 @@
   height: 20px;
   rotate: 45deg;
   position: absolute;
-  bottom: -10px;
   box-shadow: 3px 3px 8px rgba(0, 0, 0,0.2);
   background-color: #FFFFFF;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
+}
+
+.top {
+  top: -10px;
+}
+
+.bottom {
+  bottom: -10px;
 }

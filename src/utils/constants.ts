@@ -22,9 +22,14 @@ export enum ModalButtonText {
   CANCEL = "cancel"
 }
 
+export enum TooltipPosition {
+  TOP = "top",
+  Bottom = "bottom"
+}
+
+
 export const ModalTitle = "modal title text";
-
 export const Select_Option_PlaceHolder = "select option";
-
 export const InputType = "text"; 
+export const Tooltip = "Tooltip";
 
