@@ -60,14 +60,14 @@ const Pagination = (prop: ParentProp) => {
 
   const previousPageButtonClasses = classNames({
     page_switcher_button: true,
-    disabled_cursor: currentPage === 1,
-    cursor: currentPage !== 1,
+    disabled_page_switcher: currentPage === 1,
+    enabled_page_switcher:  currentPage !== 1,
   });
 
   const nextPageButtonClasses = classNames({
     page_switcher_button: true,
-    disabled_cursor: !moreData,
-    cursor: moreData,
+    disabled_page_switcher: !moreData,
+    enabled_page_switcher:  moreData,
   });
 
   const paginationEllipse = (currentPage: number) => {
@@ -97,7 +97,7 @@ const Pagination = (prop: ParentProp) => {
           onClick={() => onPageChange(currentPage - 1)}
         >
           <GrFormPrevious className={previousArrowClass} />
-          <p className="previous_page">Previous</p>
+          <p>Previous</p>
         </button>
         {startPage > 1 && <p className={ellipsisClass}>...</p>}
         {pages.slice(startPage - 1, endPage).map((page) => (
@@ -115,7 +115,7 @@ const Pagination = (prop: ParentProp) => {
           className={`${nextPageButtonClasses} ${nextButtonClass}`}
           onClick={() => onPageChange(currentPage + 1)}
         >
-          <p className="next_page">Next</p>
+          <p>Next</p>
           <GrFormNext className={nextArrowClass} />
         </button>
       </div>
@@ -126,6 +126,7 @@ const Pagination = (prop: ParentProp) => {
           payLoad={dataPerPage()}
           initialValue={pageCount?.toString()}
           searchAble={false}
+          className="page_limit"
         />
       </div>
     </div>

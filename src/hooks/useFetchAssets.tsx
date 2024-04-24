@@ -33,23 +33,19 @@ const fetchAssets = async ({documentId, search, pageNumber, pageCount}: AssetsPa
     url += `?count=${page_count}`
   }
   
-  const response = await api.get(url);
-  if (response.statusText !== STATUS_TEXT){ // will never go into this check if api fails.
-    throw new Error("Error while fetching assets.");
+  try {
+    const response = await api.get(url);
+
+    if (response?.statusText !== STATUS_TEXT){
+      throw new Error("Error while fetching assets");
+    }
+
+    return response.data;
+
+  } catch (err){
+    console.log("Assets: Something went wrong.", err);
+    throw new Error("Error while fetching assets");
   }
-
-  return response.data;
-
-  // try {
-  //   const response = await api.get(url);
-  //   if (response.statusText === STATUS_TEXT){
-  //     return response.data;
-  //   }
-  // } catch (err){
-  //   const error = err as Error;
-  //   console.log("Assets: Something went wrong.", error);
-  //   throw new Error("Something went wrong while fetching assets. Please try again.");
-  // }
 }
 
 export const useFetchAssets  = (

@@ -15,7 +15,7 @@ type ParentProp = {
   initialValue?: string,
   retryHandler?: () => void,
   searchAble?: boolean,
-  inputClass?: string
+  className?: string
 }
 
 const Select = (prop: ParentProp) => {
@@ -29,7 +29,7 @@ const Select = (prop: ParentProp) => {
     initialValue,
     retryHandler,
     searchAble = true,
-    inputClass
+    className
   } = prop;  
 
   const [isDropdown, setIsDropDown] = useState(false);
@@ -128,9 +128,8 @@ const Select = (prop: ParentProp) => {
 
   return (
     <div className="select_wrapper">
-      <div className="select_input_wrapper">
+      <div className={`select_input_wrapper ${className}`}>
         <input
-          className={inputClass}
           type="text"
           onChange = {(e) => onChangeInput(e.target.value)}
           placeholder = {placeholder}

@@ -45,8 +45,8 @@ const DataStates = (props: ParentProp) => {
     render = 
     <Fragment>
       <h4 className="information_state">{emptyMessage}</h4>
-      {
-        showButton && <Button value={buttonText} clickHandler={retryFunction}/>
+      { showButton && 
+          <Button value={buttonText} clickHandler={retryFunction}/>
       }
     </Fragment>
   }

@@ -6,12 +6,13 @@
   padding: 5px 8px;
   text-transform: capitalize;
   width: 100%;
+  border: none;
 }
 
 .dropdown_icon {
   position: absolute;
   right: 0;
-  top: 2.5px;
+  top: 1px;
   font-size: 25px;
   cursor: pointer;
 }
