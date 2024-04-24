@@ -1,4 +1,4 @@
-import "../../css/SearchableSelect.css"
+import "../../css/Select.css"
 
 import React, { useEffect, useState } from 'react'
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -7,14 +7,15 @@ import { Payload } from "../../types/types";
 import DataStates from "./DataStates";
 
 type ParentProp = {
-  payLoad?: any;
-  loading?: boolean;
+  payLoad?: any,
+  loading?: boolean,
   error?: string;
-  onChange: (id: string) => void;
-  placeholder?: string;
-  initialValue?: string;
-  retryHandler?: () => void;
-  searchAble?: boolean
+  onChange: (id: string) => void,
+  placeholder?: string,
+  initialValue?: string,
+  retryHandler?: () => void,
+  searchAble?: boolean,
+  inputClass?: string
 }
 
 const Select = (prop: ParentProp) => {
@@ -27,7 +28,8 @@ const Select = (prop: ParentProp) => {
     placeholder,
     initialValue,
     retryHandler,
-    searchAble = true
+    searchAble = true,
+    inputClass
   } = prop;  
 
   const [isDropdown, setIsDropDown] = useState(false);
@@ -128,6 +130,7 @@ const Select = (prop: ParentProp) => {
     <div className="select_wrapper">
       <div className="select_input_wrapper">
         <input
+          className={inputClass}
           type="text"
           onChange = {(e) => onChangeInput(e.target.value)}
           placeholder = {placeholder}

@@ -1,9 +1,7 @@
 import "../css/Filter.css";
 
 import { LiaSearchSolid } from "react-icons/lia";
-import { useNavigate } from "react-router-dom";
-import queryString from "query-string";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Input from "./utils/Input";
 import { Payload } from "../types/types";
@@ -24,13 +22,16 @@ type ParentProp = {
 const Filter = ({payload, documentId, setDocumentId, onChange, loading, error, refetchDocuments, value, resetFilter}: ParentProp) => {
 
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const parsedQuery = queryString.parse(search);
-  const parsedString =  queryString.stringify(parsedQuery);
+  const [searchParams, setSearchParms] = useSearchParams();
+  const count = searchParams.get("count");
   
   const onSelect = (id: string) => {
+    let url = `/asset-library/${id}`;
+    if (count){
+      url += `?count=${count}`
+    }
     setDocumentId(id);
-    navigate(`/asset-library/${id}?${parsedString}`);
+    navigate(url);
     resetFilter();
   }
 

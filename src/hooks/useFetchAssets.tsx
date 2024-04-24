@@ -16,7 +16,7 @@ const fetchAssets = async ({documentId, search, pageNumber, pageCount}: AssetsPa
     return null;
   }
 
- const page_count = pageCount || PAGE_COUNT;
+  const page_count = pageCount || PAGE_COUNT;
 
   let url = `assets/getDocumentAssets/${documentId}`;
 

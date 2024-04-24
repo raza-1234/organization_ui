@@ -63,11 +63,6 @@
   color: red;
 }
 
-.select_page_limit {
-  border-radius: 5px;
-  padding: 5px;
-}
-
 @media only screen and (max-width: 1024px) {
   .data_limit_wrapper {
     min-width: 25%;
