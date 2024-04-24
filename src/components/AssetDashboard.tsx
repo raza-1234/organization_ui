@@ -2,7 +2,7 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
-import { useNavigate, useSearchParams, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useParams, useLocation } from "react-router-dom";
 
 import Modal from './utils/Modal';
 import { Document, Payload, PAGE_COUNT } from "../types/types";
@@ -19,7 +19,11 @@ const AssetDashboard = () => {
 
   const navigate = useNavigate();
   const { documentID } = useParams();
-
+  let location = useLocation();
+  
+  // const urlSearchParams = new URLSearchParams(location.search);
+  // console.log('urlSearchParams', urlSearchParams);
+  
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [docId, setDocId] = useState<string>();
@@ -175,7 +179,7 @@ const AssetDashboard = () => {
         />
       }
       <div className="organization-asset-table">
-        {(!isAssetError && !isDocumentError) ?
+        {(!isAssetError && !isDocumentError && !assetLoading) &&
           <Table
             columns = {columns}
             data = {assetsData?.documentAssets}
@@ -190,15 +194,17 @@ const AssetDashboard = () => {
             currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
             refetchAssets={isAssetError? refetchAssets: refetchDocuments}
           />
-          :<div className="assets-error_wrapper">
-            <DataStates
-              isError={true}
-              errorMessage="Error while fetching assets."
-              retryFunction={isDocumentError ? refetchDocuments: refetchAssets}
-              buttonText="retry"
-            />
-          </div>
         }
+        <div className="assets-error_wrapper">
+          <DataStates
+            isLoading={assetLoading}
+            loadingMessage="Assets Loading ..."
+            isError={isAssetError}
+            errorMessage="Error while fetching assets."
+            retryFunction={isDocumentError ? refetchDocuments: refetchAssets}
+            buttonText="retry"
+          />
+        </div>
       </div>
     </div>
   )
