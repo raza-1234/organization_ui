@@ -34,7 +34,7 @@ export const ToastProvider = ({children}: Children) => {
   return (
     <ToastContext.Provider value={{toastHandler}}>
       {
-        toastInfo.message && //have to work on it.
+        toastInfo.message &&
         <Toast {...props}/>
       }
       {children}

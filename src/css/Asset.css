@@ -33,13 +33,32 @@
 }
 
 .action-column_delete-icon {
+  /* border: 1px solid red; */
   color: #C9263F;
   cursor: pointer;
   text-align: center;
-  width: 40px;
+  /* width: 40px; */
   font-size: 16px;
 }
 
 .date {
   text-align: center;
+}
+
+.delete_cell_wrapper {
+  /* border: 1px solid red; */
+  position: relative;
+  /* border: 2px solid red; */
+}
+
+.delete_tooltip {
+  /* border: 2px solid red; */
+  position: absolute;
+  top: -460%;
+  left: -80%;
+  /* left: -125px; */
+  /* left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto; */
 }

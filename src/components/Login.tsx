@@ -8,7 +8,7 @@ import { ButtonText } from "../types/types";
 import { useCheckEmail } from "../hooks/useCheckEmail";
 import { useLogin } from "../hooks/useLogin";
 import useToastContext from "../contexts/ToastContext";
-import useAuthData from "../contexts/authContext";
+import useAuthData from "../contexts/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();

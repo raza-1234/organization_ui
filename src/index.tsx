@@ -4,9 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './contexts/authContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastProvider } from './contexts/ToastContext';
+import { TooltipProvider } from './contexts/TootlipContext';
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,9 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <AuthProvider>
-          <App />
+          <TooltipProvider>
+            <App />
+          </TooltipProvider>
         </AuthProvider>
       </ToastProvider>
     </QueryClientProvider>
