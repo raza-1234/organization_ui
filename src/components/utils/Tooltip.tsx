@@ -1,7 +1,7 @@
 import "../../css/Tooltip.css";
 
-import React, { useState } from 'react';
-import { Tooltip as ToolTip, TooltipPosition } from "../../utils/constants";
+import React from 'react';
+import { Tooltip as ToolTip, TooltipPosition, ShapePosition } from "../../utils/constants";
 
 type TooltipProps = {
   message?: string,
@@ -13,10 +13,19 @@ type TooltipProps = {
 const Tooltip = (prop: TooltipProps) => {
 
   const { message, className, position, children } = prop;
-  let shapePosition = position?.toLowerCase();
+  let tooltipPosition = position?.toLowerCase();
+  let shapePosition;
 
-  if (shapePosition !== TooltipPosition.TOP && shapePosition !== TooltipPosition.Bottom){
-    shapePosition = TooltipPosition.Bottom
+  if (tooltipPosition !== TooltipPosition.TOP && tooltipPosition !== TooltipPosition.BOTTOM){
+    tooltipPosition = TooltipPosition.TOP
+  }
+
+  if (tooltipPosition === TooltipPosition.TOP){
+    shapePosition = ShapePosition.BOTTOM
+  }
+
+  if (tooltipPosition === TooltipPosition.BOTTOM){
+    shapePosition = ShapePosition.TOP
   }
 
   return (
@@ -24,7 +33,7 @@ const Tooltip = (prop: TooltipProps) => {
       <div className="children">
         {children}
       </div>
-      <div className="tooltip_wrapper">
+      <div className={`tooltip_wrapper ${tooltipPosition}`}>
         <div className={`tooltip_content ${className}`}>
           <p>
             {message || ToolTip}

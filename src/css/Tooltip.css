@@ -5,18 +5,26 @@
 .tooltip_wrapper {
   display: none;
   position: absolute;
-  width: max-content;
-  top: -450%;
-  left: -80%;
+  /* left: -115%; */
+  left: -85%;
   border-radius: 5px;
   box-shadow: 1px 1px 10px rgba(0, 0, 0,0.1);
   border: 1px solid #E4E4E7;
+  z-index: 1;
+}
+
+.top {
+  bottom: 200%;
+}
+
+.bottom {
+  top: 200%;
 }
 
 .tooltip_content {
   position: relative;
-  width: 100%;
-  /* width: fit-content; */
+  /* width: 200px; */
+  width: 150px;
   background-color: #FFFFFF;
   color: #272D41;
   font-size: 16px;
@@ -24,6 +32,7 @@
   padding: 25px;
   border-radius: 5px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .shape {
@@ -39,11 +48,11 @@
   margin-right: auto;
 }
 
-.top {
+.shape_top {
   top: -10px;
 }
 
-.bottom {
+.shape_bottom {
   bottom: -10px;
 }
 
