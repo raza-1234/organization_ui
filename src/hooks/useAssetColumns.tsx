@@ -87,7 +87,7 @@ const useAssetColumns = () => {
         sort: false,
         render: (value: string, item: DocumentAsset) => {
           return (
-            <Tooltip message='Delete asset'>
+            <Tooltip message='You are not authorized on this project to delete an asset. Please contact support.'>
               <RiDeleteBin6Line className="action-column_delete-icon" 
                 onClick={(event) => {
                   event.stopPropagation();

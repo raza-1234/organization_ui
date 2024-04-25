@@ -3,14 +3,18 @@
 }
 
 .tooltip_wrapper {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
   position: absolute;
-  /* left: -115%; */
-  left: -85%;
+  left: 8px;
   border-radius: 5px;
   box-shadow: 1px 1px 10px rgba(0, 0, 0,0.1);
   border: 1px solid #E4E4E7;
   z-index: 1;
+  max-width: 500px;
+  width: max-content;
+  transform: translateX(-50%);
+  transition: opacity 0.4s;
 }
 
 .top {
@@ -23,8 +27,6 @@
 
 .tooltip_content {
   position: relative;
-  /* width: 200px; */
-  width: 150px;
   background-color: #FFFFFF;
   color: #272D41;
   font-size: 16px;
@@ -62,6 +64,7 @@
 }
 
 .children:hover + .tooltip_wrapper {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
