@@ -13,6 +13,7 @@
   transform: translateX(-50%);
   background-color: white;
   padding: 25px;
+  max-width: 400px;
   width: max-content;
   border-radius: 5px;
   visibility: hidden;
