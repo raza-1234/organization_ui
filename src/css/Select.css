@@ -2,6 +2,12 @@
   position: relative;
 }
 
+.select_input_wrapper {
+  border: 1px solid #B2B6BE;
+  border-radius: 4px ;
+  overflow: hidden;
+}
+
 .select_input_wrapper input {
   padding: 5px 8px;
   text-transform: capitalize;
