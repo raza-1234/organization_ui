@@ -25,7 +25,8 @@
 .select-document-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  /* gap: 10px; */
 }
 
 .select-document-wrapper h5{
@@ -49,6 +50,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+  }
+  .select-document-wrapper {
+    gap: 10px;
   }
 }
 
