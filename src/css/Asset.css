@@ -32,13 +32,22 @@
   gap: 5px;
 }
 
-.action-column_delete-icon {
-  /* border: 1px solid red; */
+.delete_icon {
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+}
+
+.active_delete-icon {
   color: #C9263F;
   cursor: pointer;
-  text-align: center;
-  /* width: 40px; */
-  font-size: 16px;
+}
+
+.disabled_delete-icon {
+  color: grey;
+  cursor: not-allowed;
+
 }
 
 .date {

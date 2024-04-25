@@ -4,8 +4,11 @@ import { MdAudioFile } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { DocumentAsset, AssetMedia } from '../types/types';
 import Tooltip from '../components/utils/Tooltip';
+import useAuthData from '../contexts/AuthContext';
 
 const useAssetColumns = () => {
+
+  const { userInfo } = useAuthData();
 
   return (
     [
@@ -87,13 +90,22 @@ const useAssetColumns = () => {
         sort: false,
         render: (value: string, item: DocumentAsset) => {
           return (
-            <Tooltip message='You are not authorized on this project to delete an asset. Please contact support.'>
-              <RiDeleteBin6Line className="action-column_delete-icon" 
+            <Tooltip 
+              message={
+                userInfo?.role !== 'user'? 'Delete asset' 
+                :'You are not authorized on this project to delete an asset. Please contact support.'
+              }
+            >
+              <button
+                disabled={userInfo?.role === 'user'}
+                className={`delete_icon ${userInfo?.role !== 'user'? "active_delete-icon": "disabled_delete-icon"}`}
                 onClick={(event) => {
                   event.stopPropagation();
                   console.log("item presssing del button");
                 }}
-              />
+              >
+                <RiDeleteBin6Line/>
+              </button>
             </Tooltip>
           )
         }
