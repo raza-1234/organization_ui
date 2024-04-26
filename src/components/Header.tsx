@@ -4,7 +4,6 @@ import { Fragment, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthData from "../contexts/AuthContext";
-import { STATUS_TEXT } from "../types/types";
 import { useLogout } from "../hooks/useLogout";
 
 const Header = () => {

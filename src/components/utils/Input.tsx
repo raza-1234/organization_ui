@@ -1,6 +1,5 @@
 import "../../css/Input.css";
 
-import React from 'react';
 import classNames from 'classnames';
 import { INPUT_TYPE } from "../../utils/constants";
 

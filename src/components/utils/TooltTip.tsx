@@ -1,7 +1,5 @@
 import "../../css/Toltip.css"
 
-import React from 'react'
-
 type TooltipProps = {
   message?: string,
   children: JSX.Element
