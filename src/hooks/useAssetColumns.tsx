@@ -5,7 +5,6 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { DocumentAsset, AssetMedia, USER } from '../types/types';
 import Tooltip from '../components/utils/Tooltip';
 import useAuthData from '../contexts/AuthContext';
-import Modal from '../components/Modal';
 
 const useAssetColumns = (openConfirmationModal: () => void) => {
 

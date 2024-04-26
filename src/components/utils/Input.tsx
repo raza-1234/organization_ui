@@ -2,7 +2,7 @@ import "../../css/Input.css";
 
 import React from 'react';
 import classNames from 'classnames';
-import { InputType } from "../../utils/constants";
+import { INPUT_TYPE } from "../../utils/constants";
 
 type ParentProp = {
   type?: string;
@@ -16,7 +16,7 @@ type ParentProp = {
 
 const Input = (prop: ParentProp) => {
   const {
-    type = InputType,
+    type = INPUT_TYPE,
     onChange,
     value,
     required,

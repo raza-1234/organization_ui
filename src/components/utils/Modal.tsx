@@ -4,7 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import Button from "./Button";
 import { useState } from "react";
 import classNames from "classnames";
-import { ModalButtonText, ModalTitle } from "../../utils/constants";
+import { ModalButtonText, MODAL_TITLE } from "../../utils/constants";
 
 type ParentProp = {
   title?: string;
@@ -30,7 +30,7 @@ type ParentProp = {
 const Modal = (prop: ParentProp) => {
 
   const {
-    title = ModalTitle,
+    title = MODAL_TITLE,
     component,
     onClose,
     onOk,
