@@ -2,11 +2,12 @@ import React from 'react'
 import { BsCameraVideoFill, BsImage } from 'react-icons/bs';
 import { MdAudioFile } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { DocumentAsset, AssetMedia } from '../types/types';
+import { DocumentAsset, AssetMedia, USER } from '../types/types';
 import Tooltip from '../components/utils/Tooltip';
 import useAuthData from '../contexts/AuthContext';
+import Modal from '../components/Modal';
 
-const useAssetColumns = () => {
+const useAssetColumns = (openConfirmationModal: () => void) => {
 
   const { userInfo } = useAuthData();
 
@@ -91,17 +92,17 @@ const useAssetColumns = () => {
         render: (value: string, item: DocumentAsset) => {
           return (
             <Tooltip 
-              message={ userInfo?.role !== 'user' ?
-                'Delete asset' //USER const
+              message={ userInfo?.role !== USER ?
+                'Delete asset'
                 : 'You are not authorized on this project to delete an asset. Please contact support.'
               }
             >
               <button
-                disabled={userInfo?.role === 'user'} //USER const
-                className={`delete_icon ${userInfo?.role !== 'user'? "active_delete-icon": "disabled_delete-icon"}`}
+                disabled={userInfo?.role === USER}
+                className={`delete_icon ${userInfo?.role !== USER? "active_delete-icon": "disabled_delete-icon"}`}
                 onClick={(event) => {
                   event.stopPropagation();
-                  console.log("item presssing del button");
+                  openConfirmationModal();
                 }}
               >
                 <RiDeleteBin6Line/>

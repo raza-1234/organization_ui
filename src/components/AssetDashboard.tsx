@@ -28,11 +28,11 @@ const AssetDashboard = () => {
   const [pageCount, setPageCount] = useState<number>(Number(searchParams.get("count")) || PAGE_COUNT);
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const [page, setPage] = useState<number>();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const [debouncedValue] = useDebounce(title, 500);
   
   const { toastHandler } = useToastContext();
-  const columns = useAssetColumns();
 
   useEffect(() => {
     if (documentId){
@@ -42,6 +42,10 @@ const AssetDashboard = () => {
     }
     setIsModelOpen(true);
   }, []);
+
+  const toggleConfirmationModel = () => {
+    setShowConfirmModal(!showConfirmModal);
+  }
 
   const { 
     isError: isAssetError,
@@ -56,6 +60,8 @@ const AssetDashboard = () => {
     isError: isDocumentError,
     refetch: refetchDocuments
   } = useFecthDocuments(toastHandler);
+
+  const columns = useAssetColumns(toggleConfirmationModel);
   
   const documentPayload = () => {
     const payload: Payload[] = [];
@@ -143,6 +149,11 @@ const AssetDashboard = () => {
     setPage(0);
     setTitle("");
   }
+
+  const deleteAsset = () => {
+    toggleConfirmationModel();
+    console.log("?>>>>>> asset delte");
+  }
   
   return (
     <div className='organization-asset_wrapper'>
@@ -172,6 +183,7 @@ const AssetDashboard = () => {
           }
           okButtonText="done"
           onOk={modalSuccessHandler}
+          okButtonClassName="ok_button"
         />
       }
       <div className="organization-asset-table">
@@ -193,6 +205,24 @@ const AssetDashboard = () => {
               currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
               refetchFunction={isAssetError? refetchAssets: refetchDocuments}
             />
+        }
+        {showConfirmModal && 
+          <Modal
+            title="Delete asset"
+            component={<p className="confirm_message">This asset will be permanently deleted. Continue?</p>}
+            buttonPosition="space-between"
+            okButtonText="Yes,delete"
+            closeButton={false}
+            footerClassName="modal_footer"
+            okButtonClassName="confirm_delete"
+            cancelButtonClassName="cancel_delete"
+            closeOnBgClick={false}
+            onOk={deleteAsset}
+            onCancel={toggleConfirmationModel}
+            modalContentClassName="confirm-modal_content"
+            bodyClassName="confirm-modal_body"
+            headerClassName="confirm-modal_header"
+          />
         }
         <div className="assets-error_wrapper">
           <DataStates

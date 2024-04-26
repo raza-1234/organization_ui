@@ -5,7 +5,6 @@ import Button from "./Button";
 import { useState } from "react";
 import classNames from "classnames";
 import { ModalButtonText, ModalTitle } from "../../utils/constants";
-import Loader from "./Loader";
 
 type ParentProp = {
   title?: string;
@@ -19,6 +18,13 @@ type ParentProp = {
   crossIconClassName?: string;
   buttonPosition?: string;
   closeOnBgClick?: boolean;
+  closeButton?: boolean;
+  okButtonClassName?: string;
+  cancelButtonClassName?: string;
+  modalContentClassName?: string;
+  headerClassName?: string;
+  bodyClassName?: string;
+  footerClassName?: string;
 }
 
 const Modal = (prop: ParentProp) => {
@@ -35,6 +41,13 @@ const Modal = (prop: ParentProp) => {
     crossIconClassName,
     buttonPosition,
     closeOnBgClick = true,
+    closeButton = true,
+    footerClassName,
+    okButtonClassName,
+    cancelButtonClassName,
+    headerClassName,
+    bodyClassName,
+    modalContentClassName
   } = prop;
 
   const [isShowModal, setIsShowModal] = useState(true);
@@ -64,31 +77,34 @@ const Modal = (prop: ParentProp) => {
     {
       isShowModal &&
       <div className= "modal_wrapper">
-        <div className='modal_content'>
-          <header className='modal_header'>
+        <div className={`modal_content ${modalContentClassName && modalContentClassName}`}>
+          <header className={`modal_header ${headerClassName && headerClassName}`}>
             <h3>
               {title}
             </h3>
-            <RxCross1
-              className={crossIconClassName}
-              onClick={handleClose}
-            />
+            {closeButton && 
+              <RxCross1
+                className={crossIconClassName}
+                onClick={handleClose}
+              />
+            }
           </header>
-          <div className='modal_body'>
+          <div className={`modal_body ${bodyClassName && bodyClassName}`}>
             {component}
           </div>  
           {
             footer && 
-            <footer className={modal_button_group_classes}>
+            <footer className={`${modal_button_group_classes} ${footerClassName && footerClassName}`}>
             <Button
               value={cancelButtonText}
               variant="secondary"
               clickHandler={handleCancel}
+              className={cancelButtonClassName}
             />
             <Button
               value={okButtonText}
               clickHandler={handleOk}
-              className="ok_button"
+              className={okButtonClassName}
             />
           </footer>
           }
