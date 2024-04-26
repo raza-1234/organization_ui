@@ -179,21 +179,24 @@ const AssetDashboard = () => {
         />
       }
       <div className="organization-asset-table">
-        {(!isAssetError && !isDocumentError && !assetLoading) &&
-          <Table
-            columns = {columns}
-            data = {assetsData?.documentAssets}
-            isLoading = {assetLoading}
-            didFail = {isAssetError}
-            onRowClicked={() => {}}
-            pageCount = {pageCount}
-            onPageChange = {onPageChange}
-            onPageSizeChanged = {onPageSizeChanged}
-            totalDataCount={assetsData?.pagingInfo?.totalCount as number}
-            moreData={assetsData?.pagingInfo?.nextPage ? true: false}
-            currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
-            refetchAssets={isAssetError? refetchAssets: refetchDocuments}
-          />
+        {(!isAssetError && 
+          !isDocumentError && 
+          !assetLoading && 
+          (assetsData && assetsData.documentAssets.length > 0)) &&
+            <Table
+              columns = {columns}
+              data = {assetsData?.documentAssets}
+              isLoading = {assetLoading}
+              didFail = {isAssetError}
+              onRowClicked={() => {}}
+              pageCount = {pageCount}
+              onPageChange = {onPageChange}
+              onPageSizeChanged = {onPageSizeChanged}
+              totalDataCount={assetsData?.pagingInfo?.totalCount as number}
+              moreData={assetsData?.pagingInfo?.nextPage ? true: false}
+              currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
+              refetchAssets={isAssetError? refetchAssets: refetchDocuments}
+            />
         }
         <div className="assets-error_wrapper">
           <DataStates

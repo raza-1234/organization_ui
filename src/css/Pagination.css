@@ -30,7 +30,7 @@
   text-align: right;
 }
 
-.page_switcher_button {
+.pagnitation_page_change {
   display: flex;
   align-items: center;
   font-weight: 600;
@@ -39,12 +39,12 @@
   border: 0;
 }
 
-.enabled_page_switcher {
+.enable_page_change_button {
   color: #358BBA;
   cursor: pointer;
 }
 
-.disabled_page_switcher {
+.disable_page_change_button {
   cursor: not-allowed;
   color: #7B808F;
 }
@@ -76,9 +76,19 @@
 
 @media only screen and (max-width: 640px) {
   .data_limit_wrapper {
-    min-width: 50%;
+    width: 40%;
+    justify-content: space-between;
   }
   .select_limit_label {
     min-width: 55%;
+    text-align: left;
+  }
+  .pagination_wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pages_link_wrapper {
+    width: 60%;
+    justify-content: space-between;
   }
 }

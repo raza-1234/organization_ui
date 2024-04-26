@@ -3,7 +3,7 @@
   width: fit-content;
   position: fixed;
   top: 13px;
-  right: 50px;
+  right: 3.5%;
   color: white;
   border-radius: 4px;
   z-index: 1;
@@ -18,14 +18,9 @@
   background-color: rgb(233, 128, 72);
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 425px) {
   .toast-wrapper {
-    right: 15px;
-  }
-}
-
-@media only screen and (max-width: 375px) {
-  .toast-wrapper {
-    left: 15px;
+    right: 10px;
+    left: 10px;
   }
 }
