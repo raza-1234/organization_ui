@@ -2,7 +2,7 @@ import "../css/Asset.css";
 
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
-import { useNavigate, useSearchParams, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import Modal from './utils/Modal';
 import { Document, Payload, PAGE_COUNT } from "../types/types";
@@ -19,10 +19,6 @@ const AssetDashboard = () => {
 
   const navigate = useNavigate();
   const { documentID } = useParams();
-  let location = useLocation();
-  
-  // const urlSearchParams = new URLSearchParams(location.search);
-  // console.log('urlSearchParams', urlSearchParams);
   
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -195,7 +191,7 @@ const AssetDashboard = () => {
               totalDataCount={assetsData?.pagingInfo?.totalCount as number}
               moreData={assetsData?.pagingInfo?.nextPage ? true: false}
               currentPage={getCurrentPage(assetsData?.pagingInfo?.start as number, pageCount)}
-              refetchAssets={isAssetError? refetchAssets: refetchDocuments}
+              refetchFunction={isAssetError? refetchAssets: refetchDocuments}
             />
         }
         <div className="assets-error_wrapper">
@@ -206,6 +202,8 @@ const AssetDashboard = () => {
             errorMessage="Error while fetching assets."
             retryFunction={isDocumentError ? refetchDocuments: refetchAssets}
             buttonText="retry"
+            isEmpty={assetsData && assetsData.documentAssets.length > 0 ? false: true}
+            emptyMessage="No Data Found ."
           />
         </div>
       </div>

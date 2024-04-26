@@ -20,7 +20,7 @@ type ParentProp = {
   totalDataCount: number;
   moreData: boolean;
   currentPage: number;
-  refetchAssets?: () => void
+  refetchFunction?: () => void
 }
 
 const Table = (prop: ParentProp) => {
@@ -37,7 +37,7 @@ const Table = (prop: ParentProp) => {
     totalDataCount,
     moreData,
     currentPage,
-    refetchAssets
+    refetchFunction
   } = prop;
 
   const rowClickHandler = () => {
@@ -59,6 +59,8 @@ const Table = (prop: ParentProp) => {
         isLoading={isDataLoading}
         loadingMessage={message}
         emptyMessage={message}
+        buttonText="retry"
+        retryFunction={refetchFunction}
       />
     </div>
     )
@@ -70,66 +72,69 @@ const Table = (prop: ParentProp) => {
       className={`table-header_cell ${column.className}`}
       style={{width: column.width}}
     >
-        {column.header}
+      {column.header}
     </th>
   )
 
 
   return (
     <Fragment>
-      {didFail && tableStates(isLoading, false, didFail, error || '')}
-      <div className="table_Wrapper container">
-        <table className='table'>
-          <thead className='table_header'>
-            <tr className='table-header_row'>
-            {columns?.map((column, index) => (
-              tableHeaders(column, index)
-            ))}
-            </tr>
-          </thead>
-          <tbody className='table_body'>
-            {data?.length > 0 && data?.map((item) => (
-              <tr
-                key={item.id}
-                className="table-body_row"
-                onClick={rowClickHandler}
-              >
-                {columns?.map((column, index) => (
-                    <td 
-                      key={index + 1}
-                      className="table-body_Cell"
-                    >
-                      {column.render? 
-                        column.render(column.field && item[column.field], item)
-                        : (column.field && item[column.field])
-                      }
-                    </td>
-                  ))
-                }
+      {didFail ? tableStates(isLoading, false, didFail, error || 'Error while fetching data.')
+        : <div className="table_Wrapper container">
+          <table className='table'>
+            <thead className='table_header'>
+              <tr className='table-header_row'>
+              {columns?.map((column, index) => (
+                tableHeaders(column, index)
+              ))}
               </tr>
-            ))}
-            <tr className="table-body_status-row table-body_row">
-              <td colSpan={columns?.length}>
-                {tableStates(isLoading, 
-                  !isLoading ? false : true, 
-                  didFail,
-                  isLoading ? 'Loading Table Data...' : data?.length === 0 ? "No Data Found" : ""
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        {data?.length > 0 &&
-          <Pagination
-            onPageChange= {onPageChange}
-            pageCount= {pageCount}
-            onPageSizeChanged= {onPageSizeChanged}
-            totalDataCount= {totalDataCount}
-            moreData= {moreData}
-            currentPage= {currentPage}
-          />
-        }
-      </div>
+            </thead>
+            <tbody className='table_body'>
+              {data?.length > 0 && data?.map((item) => (
+                <tr
+                  key={item.id}
+                  className="table-body_row"
+                  onClick={rowClickHandler}
+                >
+                  {columns?.map((column, index) => (
+                      <td 
+                        key={index + 1}
+                        className="table-body_Cell"
+                      >
+                        {column.render? 
+                          column.render(column.field && item[column.field], item)
+                          : (column.field && item[column.field])
+                        }
+                      </td>
+                    ))
+                  }
+                </tr>
+              ))}
+              {(isLoading || data?.length === 0 )&&
+                <tr className="table-body_row">
+                  <td colSpan={columns?.length}>
+                    {tableStates(isLoading, 
+                      isLoading ? false : true, 
+                      didFail,
+                      isLoading ? 'Loading Table Data...' : "No Data Found. "
+                    )}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+          {data?.length > 0 &&
+            <Pagination
+              onPageChange= {onPageChange}
+              pageCount= {pageCount}
+              onPageSizeChanged= {onPageSizeChanged}
+              totalDataCount= {totalDataCount}
+              moreData= {moreData}
+              currentPage= {currentPage}
+            />
+          }
+        </div>      
+      }
     </Fragment>
   )
 }
