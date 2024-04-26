@@ -29,15 +29,6 @@
   padding: 10px;
 }
 
-.table-body_status-row {
-  text-align: center;
-}
-
-.table-body_status-row td {
-  padding: 10px;
-  border: 1px solid red;
-}
-
 .table-status_wrapper {
   padding: 100px 0;
   width: 100%;

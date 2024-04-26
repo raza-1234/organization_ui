@@ -7,7 +7,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastProvider } from './contexts/ToastContext';
-import { TooltipProvider } from './contexts/TootlipContext';
 
 const queryClient = new QueryClient();
 
@@ -19,9 +18,7 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <AuthProvider>
-          <TooltipProvider>
-            <App />
-          </TooltipProvider>
+          <App />
         </AuthProvider>
       </ToastProvider>
     </QueryClientProvider>
