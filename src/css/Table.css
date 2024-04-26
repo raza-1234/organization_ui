@@ -35,6 +35,7 @@
 
 .table-body_status-row td {
   padding: 10px;
+  border: 1px solid red;
 }
 
 .table-status_wrapper {

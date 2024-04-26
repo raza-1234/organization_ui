@@ -1,7 +1,6 @@
 import "../../css/Tooltip.css";
 
-import React from 'react';
-import { Tooltip as ToolTip, TooltipPosition, ShapePosition } from "../../utils/constants";
+import { TOOLTIP, TooltipPosition, ShapePosition } from "../../utils/constants";
 
 type TooltipProps = {
   message?: string,
@@ -36,7 +35,7 @@ const Tooltip = (prop: TooltipProps) => {
       <div className={`tooltip_wrapper ${tooltipPosition}`}>
         <div className={`tooltip_content ${className}`}>
           <p>
-            {message || ToolTip}
+            {message || TOOLTIP}
           </p>
         </div>
         <div className={`shape ${shapePosition}`}/>

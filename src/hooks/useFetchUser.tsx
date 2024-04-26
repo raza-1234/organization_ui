@@ -11,9 +11,8 @@ const fetchUser = async (): Promise<User | undefined> => {
     const response: AxiosResponse = await api.get("user");
     if (response.statusText !== STATUS_TEXT){      
       throw new Error("Error while fetching user.")
-    }      
-    console.log(">>>>", response.data.user);
-    
+    }
+        
     return response?.data?.user;
   } catch (err){
     console.log("Fetching User: Something went wrong.", err);

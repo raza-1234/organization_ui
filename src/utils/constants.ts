@@ -35,5 +35,5 @@ export enum ShapePosition {
 export const ModalTitle = "modal title text";
 export const Select_Option_PlaceHolder = "select option";
 export const InputType = "text"; 
-export const Tooltip = "Tooltip";
+export const TOOLTIP = "Tooltip";
 

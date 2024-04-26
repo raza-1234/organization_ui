@@ -48,7 +48,7 @@ const useAssetColumns = () => {
         className: "date",
         width: "30%",
         sort: true,
-        render: (value: string, item: DocumentAsset) => {
+        render: (value: string) => {
           return (
             <div className="date">
               {value}
@@ -91,13 +91,13 @@ const useAssetColumns = () => {
         render: (value: string, item: DocumentAsset) => {
           return (
             <Tooltip 
-              message={
-                userInfo?.role !== 'user'? 'Delete asset' 
-                :'You are not authorized on this project to delete an asset. Please contact support.'
+              message={ userInfo?.role !== 'user' ?
+                'Delete asset' //USER const
+                : 'You are not authorized on this project to delete an asset. Please contact support.'
               }
             >
               <button
-                disabled={userInfo?.role === 'user'}
+                disabled={userInfo?.role === 'user'} //USER const
                 className={`delete_icon ${userInfo?.role !== 'user'? "active_delete-icon": "disabled_delete-icon"}`}
                 onClick={(event) => {
                   event.stopPropagation();
