@@ -4,9 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './client/contexts/AuthContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ToastProvider } from './contexts/ToastContext';
+import { ToastProvider } from './client/contexts/ToastContext';
 
 const queryClient = new QueryClient();
 
