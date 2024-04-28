@@ -11,15 +11,16 @@
 }
 
 .modal_content {
+  overflow: hidden;
   position: relative;
   width: 40%;
-  min-height: 250px;
+  height: max-content;
   display: flex;
   flex-direction: column;
-  padding: 20px;
   border-radius: 10px;
   background-color: white;
   z-index: 2;
+  justify-content: space-between;
 }
 
 .modal_header {
@@ -27,6 +28,7 @@
   align-items: center;
   justify-content: space-between;
   text-transform: capitalize;
+  padding: 20px;
 }
 
 .modal_header h3 {
@@ -38,15 +40,16 @@
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-height: 170px;
   margin-bottom: 5px;
+  padding: 0 20px;
 }
 
 .modal_button-grp {
   display: flex;
   justify-content: flex-end;
   gap: 20px;
+  padding: 10px 20px;
 }
 
 .flex-start {
@@ -91,10 +94,6 @@
   width: 93%;
   color: red;
   text-transform: lowercase;
-}
-
-.ok_button {
-  background-color: #0079B0 !important;
 }
 
 @media only screen and (max-width: 768px) {

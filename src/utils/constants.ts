@@ -32,8 +32,7 @@ export enum ShapePosition {
   BOTTOM = 'shape_bottom'
 }
 
-export const ModalTitle = "modal title text";
-export const Select_Option_PlaceHolder = "select option";
-export const InputType = "text"; 
+export const MODAL_TITLE = "modal title text";
+export const INPUT_TYPE = "text"; 
 export const TOOLTIP = "Tooltip";
 

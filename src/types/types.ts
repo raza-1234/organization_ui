@@ -112,3 +112,4 @@ export type CheckEmail = {
 }
 
 export const PAGE_COUNT = 5;
+export const USER = 'user'
