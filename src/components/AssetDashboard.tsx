@@ -1,11 +1,11 @@
 import "../css/Asset.css";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, MouseEvent } from 'react';
 import { useDebounce } from "use-debounce";
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 
 import Modal from './utils/Modal';
-import { Document, Payload, PAGE_COUNT } from "../types/types";
+import { Document, Payload, PAGE_COUNT, DocumentAsset } from "../types/types";
 import Filter from "./Filter";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useFecthDocuments } from "../hooks/useFetchDocuments";
@@ -14,6 +14,7 @@ import useAssetColumns from "../hooks/useAssetColumns";
 import useToastContext from "../contexts/ToastContext";
 import Select from "./utils/Select";
 import DataStates from "./utils/DataStates";
+import { useDeleteAsset } from "../hooks/useDeleteAsset";
 
 const AssetDashboard = () => {
 
@@ -29,6 +30,7 @@ const AssetDashboard = () => {
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const [page, setPage] = useState<number>();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [assetId, setAssetId] = useState<string>();
 
   const [debouncedValue] = useDebounce(title, 500);
   
@@ -47,6 +49,12 @@ const AssetDashboard = () => {
     setShowConfirmModal(!showConfirmModal);
   }
 
+  const deleteAssetHandler = (event: MouseEvent<HTMLElement>, item: DocumentAsset) => {
+    event.stopPropagation();
+    toggleConfirmationModel();
+    setAssetId(item.id);
+  }
+
   const { 
     isError: isAssetError,
     isLoading: assetLoading,
@@ -61,7 +69,9 @@ const AssetDashboard = () => {
     refetch: refetchDocuments
   } = useFecthDocuments(toastHandler);
 
-  const columns = useAssetColumns(toggleConfirmationModel);
+  const { mutate: deleteAssetMutation } = useDeleteAsset(toastHandler);
+
+  const columns = useAssetColumns(deleteAssetHandler);
   
   const documentPayload = () => {
     const payload: Payload[] = [];
@@ -72,7 +82,7 @@ const AssetDashboard = () => {
       })
     })
     return payload;
-  }  
+  }
 
   const searchHandler = (value: string) => {
     setTitle(value);
@@ -152,7 +162,7 @@ const AssetDashboard = () => {
 
   const deleteAsset = () => {
     toggleConfirmationModel();
-    console.log("?>>>>>> asset delte");
+    deleteAssetMutation(assetId);
   }
   
   return (

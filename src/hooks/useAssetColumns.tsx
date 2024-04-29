@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {MouseEvent} from 'react'
 import { BsCameraVideoFill, BsImage } from 'react-icons/bs';
 import { MdAudioFile } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
@@ -6,8 +6,9 @@ import { DocumentAsset, AssetMedia, USER } from '../types/types';
 import Tooltip from '../components/utils/Tooltip';
 import useAuthData from '../contexts/AuthContext';
 
-const useAssetColumns = (openConfirmationModal: () => void) => {
-
+const useAssetColumns = (
+  deleteAssetHandler: (event: MouseEvent<HTMLElement>, item: DocumentAsset) => void
+) => {
   const { userInfo } = useAuthData();
 
   return (
@@ -99,10 +100,7 @@ const useAssetColumns = (openConfirmationModal: () => void) => {
               <button
                 disabled={userInfo?.role === USER}
                 className={`delete_icon ${userInfo?.role !== USER? "active_delete-icon": "disabled_delete-icon"}`}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  openConfirmationModal();
-                }}
+                onClick={(event) => deleteAssetHandler(event, item)}
               >
                 <RiDeleteBin6Line/>
               </button>
