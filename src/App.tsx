@@ -1,12 +1,12 @@
 import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import PrivateRoutes from './components/PrivateRoutes';
-import AssetDashboard from './components/AssetDashboard';
-import Missing from './components/Missing';
+import Login from './client/components/Login';
+import Header from './client/components/Header';
+import Dashboard from './client/components/Dashboard';
+import PrivateRoutes from './client/components/PrivateRoutes';
+import AssetDashboard from './client/components/AssetDashboard';
+import Missing from './client/components/Missing';
 
 function App() {
 
